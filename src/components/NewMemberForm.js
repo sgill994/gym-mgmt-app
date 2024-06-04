@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import 'bootstrap-datepicker/dist/js/bootstrap-datepicker';
 
 const NewMemberForm = ({ addMember }) => {
+
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -25,6 +27,14 @@ const NewMemberForm = ({ addMember }) => {
       // If the form is invalid, set the validated state to true to display validation feedback
       setValidated(true);
     }
+
+    useEffect(() => {
+      $('#datepicker').datepicker({
+        format: 'mm/dd/yyyy', // specify your desired format
+        autoclose: true
+        // Other options you might need...
+      });
+    }, []);
 
   };
   
@@ -62,20 +72,12 @@ const NewMemberForm = ({ addMember }) => {
         <br/>
         <textarea className="form-control" placeholder="Leave a comment here" style={{width:'100%'}} name="customerComments"></textarea>
         <br/>
-        <div class="row form-group">
-                <label for="date" class="col-sm-1 col-form-label">Date</label>
-                <div class="col-sm-4">
-                    <div class="input-group date" id="datepicker">
-                        <input type="text" class="form-control"/>
-                        <span class="input-group-append">
-                            <span class="input-group-text bg-white d-block">
-                                <i class="fa fa-calendar"></i>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
+        <div class="input-group date" data-provide="datepicker">
+          <input type="text" class="form-control"/>
+          <div class="input-group-addon">
+              <span class="glyphicon glyphicon-th"></span>
+          </div>
+      </div>
 
       </div>
 
