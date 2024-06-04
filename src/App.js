@@ -25,7 +25,7 @@ const App = () => {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === 'new' && <NewMembersPage addMember={addMember} />}
       {activeTab === 'existing' && <ExistingMembersPage members={members} />}
-      {activeTab === 'classes' && <ManageClassesPage addClass={addClass} />}
+      {activeTab === 'classes' && <ManageClassesPage classes={classes} addClass={addClass} />}
       {/* Add other tab conditions here */}
     </div>
   );
