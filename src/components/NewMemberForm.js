@@ -12,8 +12,9 @@ const NewMemberForm = ({ addMember }) => {
       const firstName = formData.get('firstName');
       const lastName = formData.get('lastName');
       const phoneNumber = formData.get('phoneNumber');
-  
-      addMember({ firstName, lastName, phoneNumber });
+      const email = formData.get('email');
+
+      addMember({ firstName, lastName, phoneNumber, email });
       form.reset();
   
       // Reset validated state to false to turn off feedback
