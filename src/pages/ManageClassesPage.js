@@ -9,8 +9,6 @@ const ManageClassesPage = ({ classes, addClass }) => {
 
     const handleOpen = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
-<<<<<<< Updated upstream
-=======
 
     const openClassDetails = (course) => {
         // Create an HTML string with the form for editing course data
@@ -84,7 +82,6 @@ const ManageClassesPage = ({ classes, addClass }) => {
         // Close the document writing
         newWindow.document.close();
     };
->>>>>>> Stashed changes
     
     
     

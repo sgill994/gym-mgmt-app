@@ -23,7 +23,6 @@ const NewMemberForm = ({ addMember }) => {
     else {
       // If the form is invalid, set the validated state to true to display validation feedback
       setValidated(true);
-      //<textarea className="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
     }
 
   };
@@ -33,47 +32,50 @@ const NewMemberForm = ({ addMember }) => {
           
       <div className = 'customerWelcome'>
       <legend>We are welcoming..</legend>
-        <div className="col-md-4">
           <label htmlFor="validationCustom01" className="form-label">First name</label>
           <input type="text" className="form-control" id="validationCustom01" placeholder="First Name" name="firstName" required />
           <div className="invalid-feedback">Please add First Name!</div>
-        </div>
         <br/>
-        <div className="col-md-4">
           <label htmlFor="validationCustom02" className="form-label">Last name</label>
           <input type="text" className="form-control" id="validationCustom02" placeholder="Last Name" name="lastName" required />
           <div className="invalid-feedback">Looks good!</div>
-        </div>
         <br />
-        <div className="col-md-4">
           <label htmlFor="validationCustom03" className="form-label">Phone Number</label>
           <input type="text" className="form-control" id="validationCustom03" placeholder="Phone Number" name="phoneNumber" required />
           <div className="invalid-feedback">Looks good!</div>
-        </div>
         <br />
-        <div className="col-md-4">
           <label htmlFor="validationCustom03" className="form-label">Email</label>
-          <input type="text" className="form-control" id="validationCustom03" placeholder="Email" name="email" required />
+          <input type="text" className="form-control" id="validationCustom04" placeholder="Email" name="email" required />
           <div className="invalid-feedback">Looks good!</div>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-          <label className="form-check-label" for="flexCheckDefault">
+       <br/>
+          <input  type="checkbox" value="notSub" id="flexCheckDefault"/>
+          <label for="flexCheckDefault">
             Mark as unsubscibed
           </label>
-        </div>
-
       </div>
 
-
       <div className = 'customerAdditionalInfo'>
+      <legend>Additonal Info</legend>
 
-        <div className="col-md-4">
-          <label htmlFor="validationCustom03" className="form-label">Email</label>
-          <input type="text" className="form-control" id="validationCustom03" placeholder="Email" name="email" required />
-          <div className="invalid-feedback">Looks good!</div>
-        </div>
-        
+        <label htmlFor="validationCustom03" className="form-label">Customer Notes</label>
+        <br/>
+        <textarea className="form-control" placeholder="Leave a comment here" style={{width:'100%'}} name="customerComments"></textarea>
+        <br/>
+        <div class="row form-group">
+                <label for="date" class="col-sm-1 col-form-label">Date</label>
+                <div class="col-sm-4">
+                    <div class="input-group date" id="datepicker">
+                        <input type="text" class="form-control"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-white d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
       </div>
 
       <div className = 'customerAddress'>
