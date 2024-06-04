@@ -8,7 +8,8 @@ const NewClassForm = ({ addClass }) => {
   const [instructor, setInstructor] = useState('');
   const [limitReservations, setLimitReservations] = useState(false);
   const [reservationLimit, setReservationLimit] = useState('');
-  const [error, setError] = useState('');
+  const [checkBoxError, setCheckBoxError] = useState('');
+  const [reservationError, setReservationError] = useState('');
 
 
   const handleCheckBoxChange = (e) => {
@@ -20,20 +21,17 @@ const NewClassForm = ({ addClass }) => {
     }
   };
 
-  const handleReservationLimitChange = (e) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value)) {
-      setReservationLimit(value);
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (days.length === 0) {
-      setError('Please select at least one day.');
+      setCheckBoxError('Please select at least one day.');
       return;
     }
-    const course = { title, days: days.join(', '), time, length, instructor}
+    if (limitReservations && !(/^\d*$/.test(reservationLimit))) {
+      setReservationError('Please enter a valid number.');
+      return;
+    }
+    const course = {title, days: days.join(', '), time, length, instructor}
     if (limitReservations) {
       course.reservationLimit = reservationLimit;
     }
@@ -43,9 +41,10 @@ const NewClassForm = ({ addClass }) => {
     setTime('');
     setLength('');
     setInstructor('');
-    setError('');
+    setCheckBoxError('');
     setLimitReservations(false);
     setReservationLimit('');
+    setReservationError('');
   };
 
     return (
@@ -71,7 +70,7 @@ const NewClassForm = ({ addClass }) => {
         <label htmlFor="sun-check"> Sunday </label>
         <input type="checkbox" id="Sunday" checked={days.includes('Sunday')} onChange={handleCheckBoxChange}/><br />
       </div>
-      {error && <div className="text-danger">{error}</div>}
+      {checkBoxError && <div className="text-danger">{checkBoxError}</div>}
       <div className="class-form-group">
         <label htmlFor="class-time-select">Class Start Time:</label>
         <select className="time-form-select" id="class-time-select" value={time} onChange={(e) => setTime(e.target.value)} required>
@@ -165,7 +164,8 @@ const NewClassForm = ({ addClass }) => {
       {limitReservations && (
         <div className="class-form-group">
           <label htmlFor="reservation-limit"> Reservation Limit: </label>
-          <input type="text" id="reservation-limit" className="class-form-control" value={reservationLimit} onChange={handleReservationLimitChange} required/>
+          <input type="text" id="reservation-limit" className="class-form-control" value={reservationLimit} onChange={(e) => setReservationLimit(e.target.value)} required/>
+          {reservationError && <div className="text-danger">{reservationError}</div>}
         </div>
       )}
       <button type="submit" className="btn btn-primary">Save</button>
