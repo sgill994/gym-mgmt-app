@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { Modal, Button, Table } from 'react-bootstrap'
 import NewClassForm from '../components/NewClassForm';
 import ClassList from '../components/ClassList';
@@ -83,8 +82,7 @@ const ManageClassesPage = ({ classes, addClass }) => {
         newWindow.document.close();
     };
     
-    
-    
+
     
     return (
         <div id="manage-classes" className="tab active">
