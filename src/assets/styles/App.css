@@ -1,4 +1,15 @@
+.nunya{
+    margin-left: 20px;
+}
+.new-members{
+    width: 100%;
+}
 .customerWelcome{
+    float: left;
+    width: 50%;
+}
+
+.customerAdditionalInfo{
     float: left;
     width: 50%;
 }
