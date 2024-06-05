@@ -3,18 +3,11 @@ import React from 'react';
 const Tabs = ({ activeTab, setActiveTab }) => (
   <div id="tabs">
     <div
-      id="new-members-tab"
-      className={activeTab === 'new' ? 'active' : ''}
-      onClick={() => setActiveTab('new')}
+      id="members-tab"
+      className={activeTab === 'members' ? 'active' : ''}
+      onClick={() => setActiveTab('members')}
     >
-      New Members
-    </div>
-    <div
-      id="existing-members-tab"
-      className={activeTab === 'existing' ? 'active' : ''}
-      onClick={() => setActiveTab('existing')}
-    >
-      Existing Members
+      Members
     </div>
     <div
       id="manage-staff-tab"

@@ -27,31 +27,65 @@ const MemberDetails = ({ member }) => {
                 border: none;
                 cursor: pointer;
             }
+            .hidden{
+                display:none
+            }
         </style>
     </head>
     <body>
-        <h2>Edit Member Details</h2>
+        <header> 
+            <h2>Member Details</h2>
+            <button id="edit-button">Edit</button>
+            <button id="cancel-button" class="hidden">Cancel</button>
+        </header>
         <form id="memberDetailsForm">
             <label for="first-name">First Name: </label>
-            <input type="text" id="first-name" name="first-name" value="${member.firstName}">
+            <input type="text" id="first-name" name="firstName" value="${member.firstName}" readonly>
             <label for="last-name">Last Name: </label>
-            <input type="text" id="last-name" name="last-name" value="${member.lastName}">
+            <input type="text" id="last-name" name="lastName" value="${member.lastName}" readonly>
             <label for="phone">Phone Number: </label>
-            <input type="text" id="phone" name="phone" value="${member.phoneNumber}">
+            <input type="text" id="phone" name="phoneNumber" value="${member.phoneNumber}"readonly>
             <label for="email">Email: </label>
-            <input type="text" id="email" name="email" value="${member.email}">
-            <button type="submit">Save Changes</button>
+            <input type="text" id="email" name="email" value="${member.email}" readonly>
+            <button type="submit" id="save-button" class="hidden">Save Changes</button>
         </form>
         
         <script>
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const formFields = document.querySelectorAll('input');
+            const originalValues = {};
+
+            formFields.forEach(field => {originalValues[field.id] = field.value;});
+
+            editButton.addEventListener('click', function() {
+                formFields.forEach(field => field.removeAttribute('readonly'));
+                saveButton.classList.remove('hidden');
+                cancelButton.classList.remove('hidden');
+                editButton.classList.add('hidden');
+            });
+
+            cancelButton.addEventListener('click', function() {
+                formFields.forEach(field => {
+                    field.setAttribute('readonly', true);
+                    field.value = originalValues[field.id];
+                });
+                saveButton.classList.add('hidden');
+                cancelButton.classList.add('hidden');
+                editButton.classList.remove('hidden');
+            });
+
             document.getElementById('memberDetailsForm').addEventListener('submit', function(event) {
                 event.preventDefault();
                 const formData = new FormData(event.target);
                 const updatedMember = {};
+                
                 for (const [key, value] of formData.entries()) {
                     updatedMember[key] = value;
                 }
-                console.log('Updated Member Data:', updatedMember);
+
+                console.log('Updated Member Data:', member);
                 window.close();
             });
         </script>

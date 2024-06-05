@@ -15,7 +15,7 @@ const ManageClassesPage = ({ classes, addClass }) => {
             <Button variant="primary" onClick={handleOpen}>Add New Class</Button>
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title> Add New Class</Modal.Title>
+                    <Modal.Title>Add New Class</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <NewClassForm addClass={(course) => { addClass(course); handleClose();}} />
