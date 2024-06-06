@@ -85,11 +85,12 @@ const MemberDetails = ({ member }) => {
                     updatedMember[key] = value;
                 }
 
-                window.opener.updateMember(updatedMember, member);
+                window.opener.updateMember(updatedMember, originalValues);
+                console.log(members);
                 
                 formFields.forEach(field => {
                     field.setAttribute('readonly', true);
-                    field.value = originalValues[field.id];
+                    field.value = updatedValues[field.id];
                 });
 
                 saveButton.classList.add('hidden');
