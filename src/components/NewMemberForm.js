@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap-datepicker/dist/js/bootstrap-datepicker';
-import $ from 'jquery'; // Import jQuery
+import $ from 'jquery'; 
+import { v4 as uuidv4 } from 'uuid';
 
 const NewMemberForm = ({ addMember }) => {
 
   useEffect(() => {
     $('#datepicker').datepicker({
-      format: 'mm/dd/yyyy', // specify your desired format
+      format: 'mm/dd/yyyy', 
       autoclose: true
-      // Other options you might need...
     });
   }, []);
 
@@ -24,8 +24,9 @@ const NewMemberForm = ({ addMember }) => {
       const lastName = formData.get('lastName');
       const phoneNumber = formData.get('phoneNumber');
       const email = formData.get('email');
+      const memberID = uuidv4();
 
-      addMember({ firstName, lastName, phoneNumber, email });
+      addMember({ firstName, lastName, phoneNumber, email, memberID });
       form.reset();
   
       // Reset validated state to false to turn off feedback

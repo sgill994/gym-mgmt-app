@@ -2,9 +2,9 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
-const MemberList = ({ members }) => {
+const MemberList = ({ members, updateMember }) => {
   const openMemberDetails = (member) => {
-    const memberInfo = MemberDetails({ member });
+    const memberInfo = MemberDetails({ member, updateMember });
     const newWindow = window.open('', '_blank', 'width=600,height=400');
     newWindow.document.write(memberInfo);
     newWindow.document.close();

@@ -85,8 +85,17 @@ const MemberDetails = ({ member }) => {
                     updatedMember[key] = value;
                 }
 
-                console.log('Updated Member Data:', member);
-                window.close();
+                window.opener.updateMember(updatedMember, member);
+                
+                formFields.forEach(field => {
+                    field.setAttribute('readonly', true);
+                    field.value = originalValues[field.id];
+                });
+
+                saveButton.classList.add('hidden');
+                cancelButton.classList.add('hidden');
+                editButton.classList.remove('hidden');
+                setTimeout(() => window.close(), 100);
             });
         </script>
     </body>
