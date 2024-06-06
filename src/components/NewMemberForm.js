@@ -4,69 +4,138 @@ import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
 
 const NewMemberForm = ({ addMember }) => {
+  // State variable to track form validation status
+  const [validated, setValidated] = useState(false);
 
+  const [phoneNumber, setPhoneNumber] = useState('');
+  
+  const handlePhoneNumberChange = (event) => {
+    const input = event.target.value;
+    // Remove non-digit characters from the input
+    const formattedInput = input.replace(/\D/g, '');
+    
+    // Format the phone number with hyphens
+    let formattedPhoneNumber = '';
+    if (formattedInput.length > 3) {
+      formattedPhoneNumber = formattedInput.slice(0, 3) + '-';
+      if (formattedInput.length > 6) {
+        formattedPhoneNumber += formattedInput.slice(3, 6) + '-';
+        formattedPhoneNumber += formattedInput.slice(6, 10);
+      } else {
+        formattedPhoneNumber += formattedInput.slice(3, 10);
+      }
+    } else {
+      formattedPhoneNumber = formattedInput;
+    }
+
+    // Update the state with the formatted phone number
+    setPhoneNumber(formattedPhoneNumber);
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    if (form.checkValidity() === true) {
+      // Store data
+      const formData = new FormData(form);
+      const memberID = uuidv4();
+      const firstName = formData.get('firstName');
+      const lastName = formData.get('lastName');
+      const phoneNumber = formData.get('phoneNumber');
+      const email = formData.get('email');
+      const dateOfBirth = formData.get('dateOfBirth');
+      const customerComments = formData.get('customerComments');
+      const referralSource = formData.get('referralSource');
+      const customCustomerID = formData.get('customCustomerID');
+      const streetAddress = formData.get('streetAddress');
+      const city = formData.get('city');
+      const postalCode = formData.get('postalCode');
+      const province = formData.get('province');
+      const country = formData.get('country');
+      const emergencyContactName = formData.get('emergencyContactName');
+      const emergencyContactPhone = formData.get('emergencyContactPhone');
+
+      // Store all info in addMembers
+      addMember({
+        memberID,
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        dateOfBirth,
+        customerComments,
+        referralSource,
+        customCustomerID,
+        streetAddress,
+        city,
+        postalCode,
+        province,
+        country,
+        emergencyContactName,
+        emergencyContactPhone
+      });
+
+      // Reset form and validation status
+      form.reset();
+      setValidated(false);
+    } else {
+      // If the form is invalid, set the validated state to true to display validation feedback
+      setValidated(true);
+    }
+  };
+  
+  // Create the date picker
   useEffect(() => {
     $('#datepicker').datepicker({
       format: 'mm/dd/yyyy', 
       autoclose: true
     });
   }, []);
-
-  const [validated, setValidated] = useState(false);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-  
-    if (form.checkValidity() === true) {
-      const formData = new FormData(form);
-      const firstName = formData.get('firstName');
-      const lastName = formData.get('lastName');
-      const phoneNumber = formData.get('phoneNumber');
-      const email = formData.get('email');
-      const memberID = uuidv4();
-
-      addMember({ firstName, lastName, phoneNumber, email, memberID });
-      form.reset();
-  
-      // Reset validated state to false to turn off feedback
-      setValidated(false);
-    } 
-
-    else {
-      // If the form is invalid, set the validated state to true to display validation feedback
-      setValidated(true);
-      //<label htmlFor="validationCustom04" className="form-label">Email</label>
-    }
-
-  };
   
   return (
     <form className={`row g-3 ${validated ? 'was-validated' : ''}`} onSubmit={handleSubmit} noValidate >
           
       <div className = 'customerWelcome'>
         <legend>We are welcoming..</legend>
-        <div class="mb-3">
+        <div className="mb-3">
             <label htmlFor="validationCustom01" className="form-label">First name</label>
             <input type="text" className="form-control" id="validationCustom01" placeholder="First Name" name="firstName" required />
             <div className="invalid-feedback">Please add First Name!</div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom02" className="form-label">Last name</label>
             <input type="text" className="form-control" id="validationCustom02" placeholder="Last Name" name="lastName" required />
             <div className="invalid-feedback">Please add Last Name!</div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom03" className="form-label">Phone Number</label>
-            <input type="text" className="form-control" id="validationCustom03" placeholder="Phone Number" name="phoneNumber" required />
+            <input
+              type="text"
+              className="form-control"
+              id="validationCustom03"
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+              required
+            />
             <div className="invalid-feedback">Please add a valid phone number!</div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <div>Email</div>
-            <input type="text" className="form-control" id="validationCustom04" placeholder="Email" name="email" required />
+            <input 
+                type="email" 
+                className="form-control" 
+                id="validationCustom04" 
+                placeholder="Email" 
+                name="email" 
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                required 
+            />
             <div className="invalid-feedback">Please add a valid email!</div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
           <input  type="checkbox" value="notSub" id="flexCheckDefault"/>
           <label htmlFor="flexCheckDefault">
             Mark as unsubscibed
@@ -76,11 +145,11 @@ const NewMemberForm = ({ addMember }) => {
 
       <div className = 'customerAdditionalInfo'>
         <legend>Additonal Info</legend>
-        <div class="mb-3">
+        <div className="mb-3">
           <label htmlFor="validationCustom05" className="form-label">Customer Notes</label>
           <textarea className="form-control" placeholder="Leave a comment here" id="validationCustom05" name="customerComments"></textarea>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
           <label htmlFor="validationCustom06" className="form-label">Date of Birth</label><br/>
           <div className="input-group date" data-provide="datepicker">
             <input type="text" className="form-control" id='validationCustom06' name="dateOfBirth"/>
@@ -89,11 +158,11 @@ const NewMemberForm = ({ addMember }) => {
             </div>
           </div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom07" className="form-label">Referral Source</label>
             <input type="text" className="form-control" id="validationCustom07" placeholder="Referral Source" name="referralSource" />
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom08" className="form-label">Custom Customer ID</label>
             <input type="text" className="form-control" id="validationCustom08" placeholder="Custom Customer ID" name="customCustomerID" />
         </div>
@@ -102,39 +171,46 @@ const NewMemberForm = ({ addMember }) => {
       <div className = 'customerAddress'>
 
       <legend>Address</legend>
-        <div class="mb-3">
+        <div className="mb-3">
             <label htmlFor="validationCustom09" className="form-label">Street Adress</label>
             <input type="text" className="form-control" id="validationCustom09" placeholder="Street Adress" name="referralSource" required/>
+            <div className="invalid-feedback">Please add a valid address!</div>
         </div>
-        <div class="row g-3">
-          <div class="col-sm-7">
+        <div className="row g-3">
+          <div className="col-sm-7">
             <label htmlFor="validationCustom10" className="form-label">City</label>
             <input type="text" class="form-control" id="validationCustom10" placeholder="City" name='city' required/>
+            <div className="invalid-feedback">Please add a valid City!</div>
           </div>
-          <div class="col-sm">
+          <div className="col-sm">
            <label htmlFor="validationCustom11" className="form-label">Zip/Postal Code</label>
             <input type="text" class="form-control" id="validationCustom11" placeholder="Zip/Postal Code"  required/>
+            <div className="invalid-feedback">Please add a valid Zip/Postal Code!</div>
           </div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom12" className="form-label">State/Province</label>
             <input type="text" className="form-control" id="validationCustom12" placeholder="Province/Territory" name="province" required/>
+            <div className="invalid-feedback">Please add a valid State/Province!</div>
         </div>
-        <div class="mb-1">
+        <div className="mb-1">
             <label htmlFor="validationCustom13" className="form-label">Country</label>
             <input type="text" className="form-control" id="validationCustom13" placeholder="Country" name="country" required/>
+            <div className="invalid-feedback">Please add a valid Country!</div>
         </div>
       </div>
 
       <div className = 'customerEmergencyContact'>
       <legend>Emergency Contact</legend>
-        <div class="mb-3">
+        <div className="mb-3">
             <label htmlFor="validationCustom14" className="form-label">Emergency Contact Name</label>
             <input type="text" className="form-control" id="validationCustom14" placeholder="Emergency Contact Name" name="emergencyContactName" required/>
+            <div className="invalid-feedback">Please add a Contact Name!</div>
         </div>
         <div class="mb-1">
             <label htmlFor="validationCustom15" className="form-label">Emergency Contact Phone</label>
             <input type="text" className="form-control" id="validationCustom15" placeholder="Emergency Contact Phone" name="emergencyContactPhone" required/>
+            <div className="invalid-feedback">Please add a Contact Phone Number!</div>
         </div>
       </div>
 

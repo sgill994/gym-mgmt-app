@@ -86,7 +86,6 @@ const MemberDetails = ({ member }) => {
                 }
 
                 window.opener.updateMember(updatedMember, originalValues);
-                console.log(members);
                 
                 formFields.forEach(field => {
                     field.setAttribute('readonly', true);
