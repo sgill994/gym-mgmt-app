@@ -1,40 +1,55 @@
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Table, Modal } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
 const MemberList = ({ members, updateMember }) => {
+  const [selectedMember, setSelectedMember] = useState(null);
+
   const openMemberDetails = (member) => {
-    const memberInfo = MemberDetails({ member, updateMember });
-    const newWindow = window.open('', '_blank', 'width=600,height=400');
-    newWindow.document.write(memberInfo);
-    newWindow.document.close();
+    setSelectedMember(member);
+  };
+
+  const closeMemberDetails = () => {
+    setSelectedMember(null);
   };
 
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Phone Number</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {members.map((member, index) => (
-          <tr key={index}>
-            <td>
-              <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openMemberDetails(member)}>
-                {member.firstName}
-              </a>
-            </td>
-            <td>{member.lastName}</td>
-            <td>{member.phoneNumber}</td>
-            <td>{member.email}</td>
+    <div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {members.map((member, index) => (
+            <tr key={index}>
+              <td>
+                <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openMemberDetails(member)}>
+                  {member.firstName}
+                </a>
+              </td>
+              <td>{member.lastName}</td>
+              <td>{member.phoneNumber}</td>
+              <td>{member.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Modal show={selectedMember !== null} onHide={closeMemberDetails}>
+        <Modal.Header closeButton>
+          <Modal.Title>Member Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedMember && (<MemberDetails member={selectedMember} updateMember={updateMember} closeDetails={closeMemberDetails} />
+          )}
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 }
 

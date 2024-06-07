@@ -20,17 +20,9 @@ const App = () => {
 
   const updateMember = (updatedMember, originalMember) => {
     setMembers((prevMembers) =>
-      prevMembers.map((member) => {
-        if (member.memberID === originalMember.memberID) {
-          Object.keys(updatedMember).forEach((key) => {
-            if (updatedMember[key] !== originalMember[key]) {
-              member[key] = updatedMember[key];
-            }
-          });
-          return { ...member }; 
-        }
-        return member;
-      })
+      prevMembers.map((member) => 
+        member.memberID === originalMember.memberID ? updatedMember : member
+      )
     );
   };
   
@@ -40,7 +32,6 @@ const App = () => {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} />}
       {activeTab === 'classes' && <ManageClassesPage classes={classes} addClass={addClass} />}
-      {/* Add other tab conditions here */}
     </div>
   );
 };
