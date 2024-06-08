@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap'
 import NewClassForm from '../components/NewClassForm';
 import ClassList from '../components/ClassList';
 
-const ManageClassesPage = ({ classes, addClass }) => {
+const ManageClassesPage = ({ classes, addClass, updateClass }) => {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpen = () => setShowModal(true);
@@ -22,7 +22,7 @@ const ManageClassesPage = ({ classes, addClass }) => {
                 </Modal.Body>
             </Modal>
             <h2>Active Classes</h2>
-            <ClassList classes={classes} />
+            <ClassList classes={classes} updateClass={updateClass} />
         </div>
     );
 }

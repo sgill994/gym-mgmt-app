@@ -1,69 +1,131 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const ClassDetails = ({ course }) => {
-  const classDetailsHTML = `
-    <html>
-    <head>
-        <title>Edit Class Details</title>
-        <style>
-            form {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            label {
-                margin-bottom: 8px;
-            }
-            input {
-                margin-bottom: 16px;
-                padding: 8px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            button {
-                padding: 8px 16px;
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-    <body>
-        <h2>Edit Class Details - ${course.title}</h2>
-        <form id="classDetailsForm">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" value="${course.title}">
-            <label for="days">Days:</label>
-            <input type="text" id="days" name="days" value="${course.days}">
-            <label for="time">Start Time:</label>
-            <input type="text" id="time" name="time" value="${course.time}">
-            <label for="length">Length:</label>
-            <input type="text" id="length" name="length" value="${course.length}">
-            <label for="instructor">Instructor:</label>
-            <input type="text" id="instructor" name="instructor" value="${course.instructor}">
-            ${course.reservationLimit ? `<label for="reservationLimit">Class Limit:</label>
-            <input type="text" id="reservationLimit" name="reservationLimit" value="${course.reservationLimit}">` : ''}
-            <button type="submit">Save Changes</button>
+const ClassDetails = ({ course, updateClass, closeDetails }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedClass, setUpdatedClass] = useState(course);
+
+  const handleEdit = () => setIsEditing(true);
+  
+  const handleCancel = () => {
+    setIsEditing(false);
+    setUpdatedClass(course);
+  };
+
+  const handleChange = (e) => {
+    const {name, value, type, checked} = e.target;
+    setUpdatedClass({...updatedClass, [name]: type === 'checkbox' ? checked : value,});
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateClass(updatedClass, course);
+    setIsEditing(false);
+    closeDetails();
+  };
+
+  return (
+    <div>
+        <h2>Class Details</h2>
+        <form onSubmit={handleSubmit}>
+            <label>Title:</label>
+            <input type="text" name="title" value={updatedClass.title} onChange={handleChange} readOnly={!isEditing} />
+            <label>Days:</label><br />
+            {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+              <div key={day}>
+                <label>{day}</label>
+                <input type="checkbox" name={day} checked={updatedClass[day]} onChange={handleChange} disabled={!isEditing} /><br />
+              </div>
+            ))}
+            <label>Time:</label>
+            <select name="time" value={updatedClass.time} onChange={handleChange} disabled={!isEditing}>
+              <option disabled value="">--:--</option>
+              <option>9:00 AM</option>
+            <option>9:15 AM</option>
+            <option>9:30 AM</option>
+            <option>9:45 AM</option>
+            <option>10:00 AM</option>
+            <option>10:15 AM</option>
+            <option>10:30 AM</option>
+            <option>10:45 AM</option>
+            <option>11:00 AM</option>
+            <option>11:15 AM</option>
+            <option>11:30 AM</option>
+            <option>11:45 AM</option>
+            <option>12:00 PM</option>
+            <option>12:15 PM</option>
+            <option>12:30 PM</option>
+            <option>12:45 PM</option>
+            <option>1:00 PM</option>
+            <option>1:15 PM</option>
+            <option>1:30 PM</option>
+            <option>1:45 PM</option>
+            <option>2:00 PM</option>
+            <option>2:15 PM</option>
+            <option>2:30 PM</option>
+            <option>2:45 PM</option>
+            <option>3:00 PM</option>
+            <option>3:15 PM</option>
+            <option>3:30 PM</option>
+            <option>3:45 PM</option>
+            <option>4:00 PM</option>
+            <option>4:15 PM</option>
+            <option>4:30 PM</option>
+            <option>4:45 PM</option>
+            <option>5:00 PM</option>
+            <option>5:15 PM</option>
+            <option>5:30 PM</option>
+            <option>5:45 PM</option>
+            <option>6:00 PM</option>
+            <option>6:15 PM</option>
+            <option>6:30 PM</option>
+            <option>6:45 PM</option>
+            <option>7:00 PM</option>
+            <option>7:15 PM</option>
+            <option>7:30 PM</option>
+            <option>7:45 PM</option>
+            <option>8:00 PM</option>
+            <option>8:15 PM</option>
+            <option>8:30 PM</option>
+            <option>8:45 PM</option>
+            <option>8:00 PM</option>
+            <option>8:15 PM</option>
+            <option>8:30 PM</option>
+            <option>8:45 PM</option>
+            </select>
+            <label>Length:</label>
+            <select name="length" value={updatedClass.length} onChange={handleChange} disabled={!isEditing}>
+              <option disabled value="">---</option>
+              <option>45 min</option>
+              <option>60 min</option>
+              <option>1 hr 15 min</option>
+              <option>1 hr 30 min</option>
+              <option>1 hr 45 min</option>
+              <option>2 hr</option>
+            </select>
+            <label>Instructor:</label>
+            <select name="instructor" value={updatedClass.instructor} onChange={handleChange} disable={!isEditing}>
+              <option disabled value="">---</option>
+              <option>Oneal Mendoza</option>
+              <option>Sandeep Mendoza</option>
+              <option>Michael Viloria</option>
+              <option>Terrence Viloria</option>
+              <option>Angelo Viloria</option>
+              <option>Naseem Bains</option>
+              <option>Iain Small</option>
+              <option>Alvin Valle</option>
+            </select>
+            {isEditing && (
+              <>
+              <button type="submit">Save Changes</button>
+              <button type="button" onClick={handleCancel}>Cancel</button>
+              </>
+            )}
+            {!isEditing && (
+              <button type="button" onClick={handleEdit}>Edit</button>
+            )}
         </form>
-        
-        <script>
-            document.getElementById('classDetailsForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const formData = new FormData(event.target);
-                const updatedCourse = {};
-                for (const [key, value] of formData.entries()) {
-                    updatedCourse[key] = value;
-                }
-                console.log('Updated Course Data:', updatedCourse);
-                window.close();
-            });
-        </script>
-    </body>
-    </html>
-  `;
-
-  return classDetailsHTML;
+    </div>
+  )
 };
 
 export default ClassDetails;

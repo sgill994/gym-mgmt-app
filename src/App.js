@@ -25,13 +25,21 @@ const App = () => {
       )
     );
   };
+
+  const updateClass = (updatedClass, originalClass) => {
+    setClasses((prevClasses) => 
+      prevClasses.map((course) => 
+        course.courseID === originalClass.courseID ? updatedClass : course
+      )
+    );
+  };
   
   return (
     <div>
       <h1>Gym Membership Management</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} />}
-      {activeTab === 'classes' && <ManageClassesPage classes={classes} addClass={addClass} />}
+      {activeTab === 'classes' && <ManageClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
     </div>
   );
 };

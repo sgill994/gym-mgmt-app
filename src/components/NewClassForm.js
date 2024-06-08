@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
-  const [days, setDays] = useState([]);
+  const [Monday, setMonday] = useState(false);
+  const [Tuesday, setTuesday] = useState(false);
+  const [Wednesday, setWednesday] = useState(false);
+  const [Thursday, setThursday] = useState(false);
+  const [Friday, setFriday] = useState(false);
+  const [Saturday, setSaturday] = useState(false);
+  const [Sunday, setSunday] = useState(false);
   const [time, setTime] = useState('');
   const [length, setLength] = useState('');
   const [instructor, setInstructor] = useState('');
@@ -13,31 +19,56 @@ const NewClassForm = ({ addClass }) => {
 
 
   const handleCheckBoxChange = (e) => {
-    const {id, checked } = e.target;
-    if (checked) {
-      setDays([...days, id]);
-    } else {
-      setDays(days.filter(day => day !== id))
-    }
+    const {id, checked} = e.target;
+    const setDay = {
+      Monday: setMonday,
+      Tuesday: setTuesday,
+      Wednesday: setWednesday,
+      Thursday: setThursday,
+      Friday: setFriday,
+      Saturday: setSaturday,
+      Sunday: setSunday,
+    }[id];
+    setDay(checked);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (days.length === 0) {
+    if (![Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday].some(Boolean)) {
       setCheckBoxError('Please select at least one day.');
       return;
     }
+
     if (limitReservations && !(/^\d*$/.test(reservationLimit))) {
       setReservationError('Please enter a valid number.');
       return;
     }
-    const course = {title, days: days.join(', '), time, length, instructor}
-    if (limitReservations) {
-      course.reservationLimit = reservationLimit;
-    }
+
+    const course = {
+      title, 
+      Monday, 
+      Tuesday, 
+      Wednesday, 
+      Thursday, 
+      Friday, 
+      Saturday, 
+      Sunday, 
+      time, 
+      length, 
+      instructor, 
+      reservationLimit: limitReservations ? reservationLimit : undefined
+    };
+
     addClass(course);
+
     setTitle('');
-    setDays([]);
+    setMonday(false);
+    setTuesday(false);
+    setWednesday(false);
+    setThursday(false);
+    setFriday(false);
+    setSaturday(false);
+    setSunday(false);
     setTime('');
     setLength('');
     setInstructor('');
@@ -55,20 +86,12 @@ const NewClassForm = ({ addClass }) => {
       </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
-        <label htmlFor="mon-check"> Monday </label>
-        <input type="checkbox" id="Monday" checked={days.includes('Monday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="tues-check"> Tuesday </label>
-        <input type="checkbox" id="Tuesday" checked={days.includes('Tuesday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="weds-check"> Wednesday </label>
-        <input type="checkbox" id="Wednesday" checked={days.includes('Wednesday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="thurs-check"> Thursday </label>
-        <input type="checkbox" id="Thursday" checked={days.includes('Thursday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="fri-check"> Friday </label>
-        <input type="checkbox" id="Friday" checked={days.includes('Friday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="sat-check"> Saturday </label>
-        <input type="checkbox" id="Saturday" checked={days.includes('Saturday')} onChange={handleCheckBoxChange}/><br />
-        <label htmlFor="sun-check"> Sunday </label>
-        <input type="checkbox" id="Sunday" checked={days.includes('Sunday')} onChange={handleCheckBoxChange}/><br />
+        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+          <div key={day}>
+            <label>{day}</label>
+            <input type="checkbox" id={day} check={{Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}[day]} onChange={handleCheckBoxChange} /><br />
+          </div>
+        ))}
       </div>
       {checkBoxError && <div className="text-danger">{checkBoxError}</div>}
       <div className="class-form-group">
@@ -139,7 +162,7 @@ const NewClassForm = ({ addClass }) => {
             <option>1 hr 30 min</option>
             <option>1 hr 45 min</option>
             <option>2 hr</option>
-          </select>
+        </select>
       </div>
       <div className="class-form-group">
         <label htmlFor="class-instructor-select">Class Instructor:</label>

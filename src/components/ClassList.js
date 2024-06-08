@@ -1,44 +1,62 @@
-import React from 'react';
-import { Table } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Table, Modal } from 'react-bootstrap';
 import ClassDetails from '../components/ClassDetails';
 
-const ClassList = ({ classes }) => {
+const ClassList = ({ classes, updateClass }) => {
+  const [selectedClass, setSelectedClass] = useState(null);
+
   const openClassDetails = (course) => {
-    const courseInfo = ClassDetails({ course });
-    const newWindow = window.open('', '_blank', 'width=600,height=400');
-    newWindow.document.write(courseInfo);
-    newWindow.document.close();
+    setSelectedClass(course);
   };
 
+  const closeClassDetails = () => {
+    setSelectedClass(null);
+  }
+
+  const countDays = (course) => {
+    return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].filter(day => course[day]).length;
+  }
+
   return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Weekly Classes</th>
-          <th>Start Time</th>
-          <th>Length</th>
-          <th>Class Limit</th>
-          <th>Instructor</th>
-        </tr>
-      </thead>
-      <tbody>
-        {classes.map((course, index) => (
-          <tr key={index}>
-            <td>
-              <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openClassDetails(course)}>
-                {course.title}
-              </a>
-            </td>
-            <td>{course.days.split(', ').length}</td>
-            <td>{course.time}</td>
-            <td>{course.length}</td>
-            <td>{course.reservationLimit ? course.reservationLimit : 'No limit'}</td>
-            <td>{course.instructor}</td>
+    <div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Weekly Classes</th>
+            <th>Start Time</th>
+            <th>Length</th>
+            <th>Class Limit</th>
+            <th>Instructor</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {classes.map((course, index) => (
+            <tr key={index}>
+              <td>
+                <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openClassDetails(course)}>
+                  {course.title}
+                </a>
+              </td>
+              <td>{countDays(course)}</td>
+              <td>{course.time}</td>
+              <td>{course.length}</td>
+              <td>{course.reservationLimit ? course.reservationLimit : 'No limit'}</td>
+              <td>{course.instructor}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Modal show={selectedClass !== null} onHide={closeClassDetails}>
+        <Modal.Header closeButton>
+          <Modal.Title>Class Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedClass && (<ClassDetails course={selectedClass} updateClass={updateClass} closeDetails={closeClassDetails} />)}
+        </Modal.Body>
+      </Modal>
+    </div>
   );
 };
 
