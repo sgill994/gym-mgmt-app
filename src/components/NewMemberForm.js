@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap-datepicker/dist/js/bootstrap-datepicker';
 import $ from 'jquery'; 
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types'; // Import PropTypes module
 
 const NewMemberForm = ({ addMember }) => {
+
+  NewMemberForm.propTypes = {
+    addMember: PropTypes.func.isRequired, // Validate addMember prop
+  };
+
   // State variable to track form validation status
   const [validated, setValidated] = useState(false);
-
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [emergencyContactPhone, setEmergencyContactPhone] = useState('');
+
+  const isValidEmail = (email) => {
+    const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    return regex.test(String(email).toLowerCase());
+  };
   
+  //function to handle phone validation
   const handlePhoneNumberChange = (event) => {
     const input = event.target.value;
     // Remove non-digit characters from the input
@@ -32,12 +44,39 @@ const NewMemberForm = ({ addMember }) => {
     setPhoneNumber(formattedPhoneNumber);
   };
 
+  const handleEmergencyContactPhoneChange = (event) => {
+    const input = event.target.value;
+    // Remove non-digit characters from the input
+    const formattedInput = input.replace(/\D/g, '');
+    
+    // Format the phone number with hyphens
+    let formattedPhoneNumber = '';
+    if (formattedInput.length > 3) {
+      formattedPhoneNumber = formattedInput.slice(0, 3) + '-';
+      if (formattedInput.length > 6) {
+        formattedPhoneNumber += formattedInput.slice(3, 6) + '-';
+        formattedPhoneNumber += formattedInput.slice(6, 10);
+      } else {
+        formattedPhoneNumber += formattedInput.slice(3, 10);
+      }
+    } else {
+      formattedPhoneNumber = formattedInput;
+    }
+  
+    // Update the state with the formatted phone number
+    setEmergencyContactPhone(formattedPhoneNumber);
+  };
+
   // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
 
     if (form.checkValidity() === true) {
+
+      event.preventDefault();
+      const form = event.currentTarget;
+
       // Store data
       const formData = new FormData(form);
       const memberID = uuidv4();
@@ -80,6 +119,8 @@ const NewMemberForm = ({ addMember }) => {
       // Reset form and validation status
       form.reset();
       setValidated(false);
+
+      console.log(addMember);
     } else {
       // If the form is invalid, set the validated state to true to display validation feedback
       setValidated(true);
@@ -130,7 +171,10 @@ const NewMemberForm = ({ addMember }) => {
                 id="validationCustom04" 
                 placeholder="Email" 
                 name="email" 
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                onChange={(e) => {
+                  const isValid = isValidEmail(e.target.value);
+                  e.target.setCustomValidity(isValid ? '' : 'Please enter a valid email address');
+              }}
                 required 
             />
             <div className="invalid-feedback">Please add a valid email!</div>
@@ -209,7 +253,15 @@ const NewMemberForm = ({ addMember }) => {
         </div>
         <div class="mb-1">
             <label htmlFor="validationCustom15" className="form-label">Emergency Contact Phone</label>
-            <input type="text" className="form-control" id="validationCustom15" placeholder="Emergency Contact Phone" name="emergencyContactPhone" required/>
+            <input 
+              type="text" 
+              className="form-control" 
+              id="validationCustom15" 
+              placeholder="Emergency Contact Phone" 
+              value={emergencyContactPhone}
+              onChange={handleEmergencyContactPhoneChange}
+              required 
+            />
             <div className="invalid-feedback">Please add a Contact Phone Number!</div>
         </div>
       </div>
