@@ -4,16 +4,23 @@ import { Table, Button, DropdownButton, Dropdown } from 'react-bootstrap';
 const LeadList = ({leads, setLeadStatus}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
+    const [currentStatus, setCurrentStatus] = useState('');
 
     const handleEdit = (leadID, currentStatus) => {
         setEditingLeadID(leadID);
         setFUStatus(currentStatus);
+        setCurrentStatus(currentStatus);
     };
 
     const handleSave = (leadID) => {
         setLeadStatus(leadID, FUStatus);
         setEditingLeadID(null);
     };
+
+    const handleStatusChange = (status) => {
+        setFUStatus(status);
+        setCurrentStatus(status);
+    }
 
     return (
         <div>
@@ -37,21 +44,21 @@ const LeadList = ({leads, setLeadStatus}) => {
                             <td>
                                 {editingLeadID === lead.leadID ? (
                                     <>
-                                    <DropdownButton id="dropdown-status-button" title={lead.followUpStatus}>
-                                        <Dropdown.Item onClick={() => setFUStatus('1st Follow Up')}>1st Follow Up</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('2nd Follow Up')}>2nd Follow Up</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('3rd Follow Up')}>3rd Follow Up</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('4th Follow Up')}>4th Follow Up</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('5th Follow Up')}>5th Follow Up</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('1st Trial Booked')}>1st Trial Booked</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('1st Trial Complete')}>1st Trial Complete</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('2nd Trial Booked')}>2nd Trial Booked</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('2nd Trial Complete')}>2nd Trial Complete</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('Signed - Bronze')}>Signed - Bronze</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('Signed - Silver')}>Signed - Silver</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('Signed - Gold')}>Signed - Gold</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('Declined')}>Declined</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setFUStatus('Archived')}>Archived</Dropdown.Item>
+                                    <DropdownButton id="dropdown-status-button" title={currentStatus}>
+                                        <Dropdown.Item onClick={() => handleStatusChange('1st Follow Up')}>1st Follow Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('2nd Follow Up')}>2nd Follow Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('3rd Follow Up')}>3rd Follow Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('4th Follow Up')}>4th Follow Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('5th Follow Up')}>5th Follow Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('1st Trial Booked')}>1st Trial Booked</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('1st Trial Complete')}>1st Trial Complete</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('2nd Trial Booked')}>2nd Trial Booked</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('2nd Trial Complete')}>2nd Trial Complete</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('Signed - Bronze')}>Signed - Bronze</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('Signed - Silver')}>Signed - Silver</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('Signed - Gold')}>Signed - Gold</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('Declined')}>Declined</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => handleStatusChange('Archived')}>Archived</Dropdown.Item>
                                     </DropdownButton>
                                     <Button variant="success" onClick={() => handleSave(lead.leadID)}>Save</Button>
                                     </>

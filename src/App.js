@@ -12,8 +12,12 @@ const App = () => {
   const [activeTab, setActiveTab] = useState('members');
   const [leads, setLeads] = useState([]);
 
-  const addLead = (lead) => {
-    setLeads([...leads, lead]);
+  const addLead = (newLeads) => {
+    if (Array.isArray(newLeads)) {
+      setLeads(prevLeads => [...prevLeads, ...newLeads]);
+    } else {
+      setLeads(prevLeads => [...prevLeads, newLeads]);
+    }
   };
 
   const setLeadStatus = (leadID, newFollowUpStatus) => {

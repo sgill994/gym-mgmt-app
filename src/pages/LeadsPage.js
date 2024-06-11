@@ -17,7 +17,7 @@ const LeadsPage = ({members, leads, addLead, setLeadStatus}) => {
                     <Modal.Title>Create New Lead</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <NewLeadForm  members={members} leads={leads} addLead={(lead) => {addLead(lead); handleClose();}} />
+                    <NewLeadForm  members={members} leads={leads} addLead={addLead} closeModal={handleClose} />
                 </Modal.Body>
             </Modal>
             <h3>Active Leads</h3>

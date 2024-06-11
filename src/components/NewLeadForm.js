@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Table } from 'react-bootstrap';
 
 
-const NewLeadForm = ({ addLead, members, leads }) => {
+const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
     const [addArchivedMember, setAddArchivedMember] = useState(false);
     const [addNewLead, setAddNewLead] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
@@ -50,19 +50,20 @@ const NewLeadForm = ({ addLead, members, leads }) => {
             form.reset();
         }
         else {
-            selectedMembers.forEach(member => {
-                addLead({
-                    leadID: member.memberID,
-                    firstName: member.firstName,
-                    lastName: member.lastName,
-                    phoneNumber: member.phoneNumber,
-                    email: member.email,
-                    followUpStatus: 'Never Contacted'
-                });
-            });
+            const newLeads = selectedMembers.map(member => ({
+                leadID: member.memberID,
+                firstName: member.firstName,
+                lastName: member.lastName,
+                phoneNumber: member.phoneNumber,
+                email: member.email,
+                followUpStatus: 'Never Contacted'
+            }));
+
+            addLead(newLeads);        
             setSelectedMembers([]);
             closeArchivedMember();
         }
+        closeModal();
     };
 
     const handleCheckBoxChange = (member) => {
@@ -79,59 +80,59 @@ const NewLeadForm = ({ addLead, members, leads }) => {
 
     return (
         <div>
-        <form className="new-lead-form" onSubmit={handleSubmit}>
-            <div className="new-lead-options">
-                <button type="button" onClick={openArchivedMembers}>Add Existing Member</button>
-                <button type="button" onClick={openNewLeadForm}>Add New Lead</button>
-            </div>
-            {addNewLead && (
-                <>
-                    <div className="lead-form-group">
-                        <label>First Name: </label>
-                        <input type="text" name="firstName" className="lead-form-control" required /><br />
-                        <label>Last Name: </label>
-                        <input type="text" name="lastName" className="lead-form-control" required /><br />
-                        <label>Phone Number: </label>
-                        <input type="text" name="phoneNumber" className="lead-form-control" required /><br />
-                        <label>Email Address:</label>
-                        <input type="text" name="email" className="lead-form-control" required /><br />
-                    </div>
-                </>
-            )}
-            {addArchivedMember && (
-                <>
-                    <div>
-                        <Table striped border hover>
-                            <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Email Address:</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredMembers.map((member, index) => (
-                                    <tr key={index}>
-                                        <td>
-                                            <input type="checkbox" onChange={() => handleCheckBoxChange(member)} />
-                                        </td>
-                                        <td>{member.firstName}</td>
-                                        <td>{member.lastName}</td>
-                                        <td>{member.phoneNumber}</td>
-                                        <td>{member.email}</td>
+            <form className="new-lead-form" onSubmit={handleSubmit}>
+                <div className="new-lead-options">
+                    <button type="button" onClick={openArchivedMembers}>Add Existing Member</button>
+                    <button type="button" onClick={openNewLeadForm}>Add New Lead</button>
+                </div>
+                {addNewLead && (
+                    <>
+                        <div className="lead-form-group">
+                            <label>First Name: </label>
+                            <input type="text" name="firstName" className="lead-form-control" required /><br />
+                            <label>Last Name: </label>
+                            <input type="text" name="lastName" className="lead-form-control" required /><br />
+                            <label>Phone Number: </label>
+                            <input type="text" name="phoneNumber" className="lead-form-control" required /><br />
+                            <label>Email Address:</label>
+                            <input type="text" name="email" className="lead-form-control" required /><br />
+                        </div>
+                    </>
+                )}
+                {addArchivedMember && (
+                    <>
+                        <div>
+                            <Table striped border hover>
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Phone Number</th>
+                                        <th>Email Address:</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    </div>
-                </>
-            )}
-            <div>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+                                </thead>
+                                <tbody>
+                                    {filteredMembers.map((member, index) => (
+                                        <tr key={index}>
+                                            <td>
+                                                <input type="checkbox" onChange={() => handleCheckBoxChange(member)} />
+                                            </td>
+                                            <td>{member.firstName}</td>
+                                            <td>{member.lastName}</td>
+                                            <td>{member.phoneNumber}</td>
+                                            <td>{member.email}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
+                    </>
+                )}
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
         </div>
     );
 };
