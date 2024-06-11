@@ -9,6 +9,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
     setIsEditing(false);
     setUpdatedMember(member);
   };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedMember({ ...updatedMember, [name]: value });
@@ -24,7 +25,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
   return (
     <div>
       <h2>Member Details</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="memberDetailsForm" onSubmit={handleSubmit}>
         <label>First Name:</label>
         <input type="text" name="firstName" value={updatedMember.firstName} onChange={handleChange} readOnly={!isEditing} />
         <label>Last Name:</label>

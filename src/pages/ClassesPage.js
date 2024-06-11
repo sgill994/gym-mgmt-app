@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap'
 import NewClassForm from '../components/NewClassForm';
 import ClassList from '../components/ClassList';
 
-const ManageClassesPage = ({ classes, addClass, updateClass }) => {
+const ClassesPage = ({ classes, addClass, updateClass }) => {
     const [showModal, setShowModal] = useState(false);
 
     const handleOpen = () => setShowModal(true);
@@ -27,4 +27,4 @@ const ManageClassesPage = ({ classes, addClass, updateClass }) => {
     );
 }
 
-export default ManageClassesPage;
+export default ClassesPage;

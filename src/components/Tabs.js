@@ -10,25 +10,25 @@ const Tabs = ({ activeTab, setActiveTab }) => (
       Members
     </div>
     <div
-      id="manage-staff-tab"
-      className={activeTab === 'staff' ? 'active' : ''}
-      onClick={() => setActiveTab('staff')}
+      id="manage-tab"
+      className={activeTab === 'manage' ? 'active' : ''}
+      onClick={() => setActiveTab('manage')}
     >
-      Manage Staff
+      Manage
+    </div>
+    <div 
+      id="schedule-tab"
+      className={activeTab === 'schedule' ? 'active' : ''}
+      onClick={() => setActiveTab('schedule')}
+    >
+      Schedule 
     </div>
     <div
-      id="manage-classes-tab"
+      id="classes-tab"
       className={activeTab === 'classes' ? 'active' : ''}
       onClick={() => setActiveTab('classes')}
     >
-      Manage Classes
-    </div>
-    <div
-      id="reports-tab"
-      className={activeTab === 'reports' ? 'active' : ''}
-      onClick={() => setActiveTab('reports')}
-    >
-      Reports
+      Classes
     </div>
     <div
       id="leads-tab"

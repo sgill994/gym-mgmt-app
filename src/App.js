@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/App.css'
 import Tabs from './components/Tabs';
 import MembersPage from './pages/MembersPage';
-import ManageClassesPage from './pages/ManageClassesPage'
+import ClassesPage from './pages/ClassesPage';
+import ManagePage from './pages/ManagePage';
 
 const App = () => {
   const [members, setMembers] = useState([]);
@@ -11,11 +12,6 @@ const App = () => {
 
   const addMember = (member) => {
     setMembers([...members, member]);
-  };
-
-  const [classes, setClasses] = useState([]);
-  const addClass = (course) => {
-    setClasses([...classes, course]);
   };
 
   const updateMember = (updatedMember, originalMember) => {
@@ -26,10 +22,28 @@ const App = () => {
     );
   };
 
+  const [classes, setClasses] = useState([]);
+  const addClass = (course) => {
+    setClasses([...classes, course]);
+  };
+
   const updateClass = (updatedClass, originalClass) => {
     setClasses((prevClasses) => 
       prevClasses.map((course) => 
         course.courseID === originalClass.courseID ? updatedClass : course
+      )
+    );
+  };
+
+  const [employees, setEmployees] = useState([]);
+  const addEmployee = (employee) => {
+    setEmployees([...employees, employee]);
+  };
+
+  const updateEmployee = (updatedEmployee, originalEmployee) => {
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((employee) =>
+        employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
       )
     );
   };
@@ -39,7 +53,8 @@ const App = () => {
       <h1>Gym Membership Management</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} />}
-      {activeTab === 'classes' && <ManageClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
+      {activeTab === 'classes' && <ClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
+      {activeTab === 'manage' && <ManagePage employees={employees} addEmployee={addEmployee} updateEmployee={updateEmployee} />  }
     </div>
   );
 };
