@@ -5,10 +5,24 @@ import Tabs from './components/Tabs';
 import MembersPage from './pages/MembersPage';
 import ClassesPage from './pages/ClassesPage';
 import ManagePage from './pages/ManagePage';
+import LeadsPage from './pages/LeadsPage';
 
 const App = () => {
   const [members, setMembers] = useState([]);
   const [activeTab, setActiveTab] = useState('members');
+  const [leads, setLeads] = useState([]);
+
+  const addLead = (lead) => {
+    setLeads([...leads, lead]);
+  };
+
+  const setLeadStatus = (leadID, newFollowUpStatus) => {
+    setLeads((prevLeads) =>
+      prevLeads.map((lead) =>
+      lead.leadID === leadID ? {...lead, followUpStatus: newFollowUpStatus} : lead
+      )
+    );
+  };
 
   const addMember = (member) => {
     setMembers([...members, member]);
@@ -22,7 +36,7 @@ const App = () => {
     );
   };
 
-  const setArchived = (memberID, archivedStatus) => {
+  const setMemberArchived = (memberID, archivedStatus) => {
     setMembers((prevMembers) =>
       prevMembers.map((member) =>
         member.memberID === memberID ? {...member, archived: archivedStatus} : member
@@ -55,14 +69,15 @@ const App = () => {
       )
     );
   };
-  
+
   return (
     <div>
       <h1>Gym Membership Management</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} setArchived={setArchived} />}
+      {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} setMemberArchived={setMemberArchived} />}
       {activeTab === 'classes' && <ClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
       {activeTab === 'manage' && <ManagePage employees={employees} addEmployee={addEmployee} updateEmployee={updateEmployee} />  }
+      {activeTab === 'leads' && <LeadsPage members={members} leads={leads} addLead={addLead} setLeadStatus={setLeadStatus} /> }
     </div>
   );
 };

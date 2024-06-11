@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
-const MemberList = ({ members, updateMember, setArchived }) => {
+const MemberList = ({ members, updateMember, setMemberArchived }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [editingMemberID, setEditingMemberID] = useState(null);
   const [archivedStatus, setArchivedStatus] = useState(null);
@@ -21,7 +21,7 @@ const MemberList = ({ members, updateMember, setArchived }) => {
   };
 
   const handleSave = (memberID) => {
-    setArchived(memberID, archivedStatus);
+    setMemberArchived(memberID, archivedStatus);
     setEditingMemberID(null);
   }
 

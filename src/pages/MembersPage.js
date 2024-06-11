@@ -4,7 +4,7 @@ import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
 
-const MembersPage = ({ members, addMember, updateMember, setArchived }) => {
+const MembersPage = ({ members, addMember, updateMember, setMemberArchived }) => {
   const [activeTab, setActiveTab] = useState('active-members');
   const [showModal, setShowModal] = useState(false);
 
@@ -27,13 +27,13 @@ const MembersPage = ({ members, addMember, updateMember, setArchived }) => {
         </Modal.Body>
       </Modal>
       <h3>Active Members</h3>
-      <MemberList members={members.filter(member => !member.archived)} updateMember={updateMember} setArchived={setArchived} />
+      <MemberList members={members.filter(member => !member.archived)} updateMember={updateMember} setMemberArchived={setMemberArchived} />
       </>
       )}
       {activeTab === 'archived-members' && (
         <>
         <h3>Archived Members</h3>
-        <MemberList members={members.filter(member => member.archived)} updateMember={updateMember} setArchived={setArchived} />
+        <MemberList members={members.filter(member => member.archived)} updateMember={updateMember} setMemberArchived={setMemberArchived} />
         </>
       )}
     </div>
