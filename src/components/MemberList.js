@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Table, Modal } from 'react-bootstrap';
+import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
-const MemberList = ({ members, updateMember }) => {
+const MemberList = ({ members, updateMember, setArchived }) => {
   const [selectedMember, setSelectedMember] = useState(null);
+  const [editingMemberID, setEditingMemberID] = useState(null);
+  const [archivedStatus, setArchivedStatus] = useState(null);
 
   const openMemberDetails = (member) => {
     setSelectedMember(member);
@@ -12,6 +14,16 @@ const MemberList = ({ members, updateMember }) => {
   const closeMemberDetails = () => {
     setSelectedMember(null);
   };
+
+  const handleEdit = (memberID, currentStatus) => {
+    setEditingMemberID(memberID);
+    setArchivedStatus(currentStatus);
+  };
+
+  const handleSave = (memberID) => {
+    setArchived(memberID, archivedStatus);
+    setEditingMemberID(null);
+  }
 
   return (
     <div>
@@ -22,6 +34,7 @@ const MemberList = ({ members, updateMember }) => {
             <th>Last Name</th>
             <th>Phone Number</th>
             <th>Email</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +48,21 @@ const MemberList = ({ members, updateMember }) => {
               <td>{member.lastName}</td>
               <td>{member.phoneNumber}</td>
               <td>{member.email}</td>
+              <td>
+                {editingMemberID === member.memberID ? (
+                  <DropdownButton id="dropdown-status-button" title={archivedStatus ? 'Archived' : 'Active'}>
+                    <Dropdown.Item onClick={() => setArchivedStatus(false)}>Active</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setArchivedStatus(true)}>Archived</Dropdown.Item>
+                  </DropdownButton>
+                ) : (
+                  member.archived ? 'Archived' : 'Active'
+                )}
+                {editingMemberID === member.memberID ? (
+                  <Button variant="success" onClick={() => handleSave(member.memberID)}>Save</Button>
+                ) : (
+                  <Button varient="primary" onClick={() => handleEdit(member.memberID, member.archived)}>Edit</Button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

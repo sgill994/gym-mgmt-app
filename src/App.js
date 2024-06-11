@@ -22,6 +22,14 @@ const App = () => {
     );
   };
 
+  const setArchived = (memberID, archivedStatus) => {
+    setMembers((prevMembers) =>
+      prevMembers.map((member) =>
+        member.memberID === memberID ? {...member, archived: archivedStatus} : member
+      )
+    );
+  };
+
   const [classes, setClasses] = useState([]);
   const addClass = (course) => {
     setClasses([...classes, course]);
@@ -52,7 +60,7 @@ const App = () => {
     <div>
       <h1>Gym Membership Management</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} />}
+      {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} setArchived={setArchived} />}
       {activeTab === 'classes' && <ClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
       {activeTab === 'manage' && <ManagePage employees={employees} addEmployee={addEmployee} updateEmployee={updateEmployee} />  }
     </div>

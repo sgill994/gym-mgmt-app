@@ -113,7 +113,8 @@ const NewMemberForm = ({ addMember }) => {
         province,
         country,
         emergencyContactName,
-        emergencyContactPhone
+        emergencyContactPhone,
+        archived: false
       });
 
       // Reset form and validation status
