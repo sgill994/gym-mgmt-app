@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
+import ExportCSV from '../components/exportCSV';
+import ImportCSV from '../components/importCSV';
 
 const MembersPage = ({ members, addMember, updateMember, setMemberArchived }) => {
   const [activeTab, setActiveTab] = useState('active-members');
@@ -10,6 +12,12 @@ const MembersPage = ({ members, addMember, updateMember, setMemberArchived }) =>
 
   const handleOpen = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+
+  // Callback function to handle imported CSV data
+  const handleImportCSV = (importedData) => {
+    // Process the imported data as needed (e.g., update state with imported members)
+    console.log('Imported data:', importedData);
+  };
 
   return (
     <div id="members" className="tab active">
@@ -36,6 +44,8 @@ const MembersPage = ({ members, addMember, updateMember, setMemberArchived }) =>
         <MemberList members={members.filter(member => member.archived)} updateMember={updateMember} setMemberArchived={setMemberArchived} />
         </>
       )}
+      <ExportCSV members={members} />
+      <ImportCSV onImportCSV={handleImportCSV} /> {/* Pass the callback to handle imported CSV data */}
     </div>
   );
 };

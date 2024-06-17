@@ -2,15 +2,9 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap-datepicker/dist/js/bootstrap-datepicker';
 import $ from 'jquery'; 
 import { v4 as uuidv4 } from 'uuid';
-import PropTypes from 'prop-types'; // Import PropTypes module
+import PropTypes from 'prop-types';
 
 const NewMemberForm = ({ addMember }) => {
-
-  NewMemberForm.propTypes = {
-    addMember: PropTypes.func.isRequired, // Validate addMember prop
-  };
-
-  // State variable to track form validation status
   const [validated, setValidated] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [emergencyContactPhone, setEmergencyContactPhone] = useState('');
@@ -19,14 +13,11 @@ const NewMemberForm = ({ addMember }) => {
     const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     return regex.test(String(email).toLowerCase());
   };
-  
-  //function to handle phone validation
+
   const handlePhoneNumberChange = (event) => {
     const input = event.target.value;
-    // Remove non-digit characters from the input
     const formattedInput = input.replace(/\D/g, '');
-    
-    // Format the phone number with hyphens
+
     let formattedPhoneNumber = '';
     if (formattedInput.length > 3) {
       formattedPhoneNumber = formattedInput.slice(0, 3) + '-';
@@ -40,16 +31,13 @@ const NewMemberForm = ({ addMember }) => {
       formattedPhoneNumber = formattedInput;
     }
 
-    // Update the state with the formatted phone number
     setPhoneNumber(formattedPhoneNumber);
   };
 
   const handleEmergencyContactPhoneChange = (event) => {
     const input = event.target.value;
-    // Remove non-digit characters from the input
     const formattedInput = input.replace(/\D/g, '');
-    
-    // Format the phone number with hyphens
+
     let formattedPhoneNumber = '';
     if (formattedInput.length > 3) {
       formattedPhoneNumber = formattedInput.slice(0, 3) + '-';
@@ -62,83 +50,57 @@ const NewMemberForm = ({ addMember }) => {
     } else {
       formattedPhoneNumber = formattedInput;
     }
-  
-    // Update the state with the formatted phone number
+
     setEmergencyContactPhone(formattedPhoneNumber);
   };
 
-  // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-
+  
     if (form.checkValidity() === true) {
-
-      event.preventDefault();
-      const form = event.currentTarget;
-
-      // Store data
       const formData = new FormData(form);
       const memberID = uuidv4();
-      const firstName = formData.get('firstName');
-      const lastName = formData.get('lastName');
-      const phoneNumber = formData.get('phoneNumber');
-      const email = formData.get('email');
-      const dateOfBirth = formData.get('dateOfBirth');
-      const customerComments = formData.get('customerComments');
-      const referralSource = formData.get('referralSource');
-      const customCustomerID = formData.get('customCustomerID');
-      const streetAddress = formData.get('streetAddress');
-      const city = formData.get('city');
-      const postalCode = formData.get('postalCode');
-      const province = formData.get('province');
-      const country = formData.get('country');
-      const emergencyContactName = formData.get('emergencyContactName');
-      const emergencyContactPhone = formData.get('emergencyContactPhone');
-
-      // Store all info in addMembers
-      addMember({
+  
+      const data = {
         memberID,
-        firstName,
-        lastName,
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
         phoneNumber,
-        email,
-        dateOfBirth,
-        customerComments,
-        referralSource,
-        customCustomerID,
-        streetAddress,
-        city,
-        postalCode,
-        province,
-        country,
-        emergencyContactName,
+        email: formData.get('email'),
+        dateOfBirth: formData.get('dateOfBirth'),
+        customerComments: formData.get('customerComments'),
+        referralSource: formData.get('referralSource'),
+        customCustomerID: formData.get('customCustomerID'),
+        streetAddress: formData.get('streetAddress'),
+        city: formData.get('city'),
+        postalCode: formData.get('postalCode'),
+        province: formData.get('province'),
+        country: formData.get('country'),
+        emergencyContactName: formData.get('emergencyContactName'),
         emergencyContactPhone,
-        archived: false
-      });
-
-      // Reset form and validation status
+        archived: document.getElementById('flexCheckDefault').checked, // Include checkbox state
+      };
+  
+      addMember(data);
+  
       form.reset();
       setValidated(false);
-
-      console.log(addMember);
     } else {
-      // If the form is invalid, set the validated state to true to display validation feedback
       setValidated(true);
     }
   };
-  
-  // Create the date picker
+
   useEffect(() => {
     $('#datepicker').datepicker({
-      format: 'mm/dd/yyyy', 
+      format: 'mm/dd/yyyy',
       autoclose: true
     });
   }, []);
   
   return (
-    <form className={`row g-3 ${validated ? 'was-validated' : ''}`} onSubmit={handleSubmit} noValidate >
-          
+    <form className={`row g-3 ${validated ? 'was-validated' : ''}`} onSubmit={handleSubmit} noValidate>
+
       <div className = 'customerWelcome'>
         <legend>We are welcoming..</legend>
         <div className="mb-3">
@@ -271,6 +233,10 @@ const NewMemberForm = ({ addMember }) => {
       
     </form>
   );
+};
+
+NewMemberForm.propTypes = {
+  addMember: PropTypes.func.isRequired,
 };
 
 export default NewMemberForm;
