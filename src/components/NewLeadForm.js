@@ -7,6 +7,7 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
     const [addArchivedMember, setAddArchivedMember] = useState(false);
     const [addNewLead, setAddNewLead] = useState(false);
     const [selectedMembers, setSelectedMembers] = useState([]);
+    const [selectAll, setSelectAll] = useState(false);
     
     const openArchivedMembers = () => {
         setAddArchivedMember(true);
@@ -74,6 +75,16 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
         ); 
     };
 
+    const handleSelectAllChange = () => {
+        if(selectAll) {
+            setSelectedMembers([]);
+        }
+        else {
+            setSelectedMembers(filteredMembers);
+        }
+        setSelectAll(!selectAll);
+    }
+
     const filteredMembers = members.filter(member =>
         member.archived && !leads.some(lead => lead.leadID === member.memberID)
     );
@@ -105,18 +116,21 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
                             <Table striped border hover>
                                 <thead>
                                     <tr>
-                                        <th>Select</th>
+                                        <th>
+                                            <input type="checkbox" checked={selectAll} onChange={handleSelectAllChange}/>
+                                            Select
+                                        </th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Phone Number</th>
-                                        <th>Email Address:</th>
+                                        <th>Email Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredMembers.map((member, index) => (
                                         <tr key={index}>
                                             <td>
-                                                <input type="checkbox" onChange={() => handleCheckBoxChange(member)} />
+                                                <input type="checkbox" checked={selectedMembers.includes(member)} onChange={() => handleCheckBoxChange(member)} />
                                             </td>
                                             <td>{member.firstName}</td>
                                             <td>{member.lastName}</td>
