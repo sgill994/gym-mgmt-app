@@ -40,6 +40,12 @@ const App = () => {
     );
   };
 
+  const deleteMember = (memberID) => {
+    setMembers((prevMembers) =>
+      prevMembers.filter((member) => member.memberID !== memberID)
+    );
+  };
+
   const setMemberArchived = (memberID, archivedStatus) => {
     setMembers((prevMembers) =>
       prevMembers.map((member) =>
@@ -78,10 +84,27 @@ const App = () => {
     <div>
       <h1>Gym Membership Management</h1>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 'members' && <MembersPage members={members} addMember={addMember} updateMember={updateMember} setMemberArchived={setMemberArchived} />}
-      {activeTab === 'classes' && <ClassesPage classes={classes} addClass={addClass} updateClass={updateClass} />}
-      {activeTab === 'manage' && <ManagePage employees={employees} addEmployee={addEmployee} updateEmployee={updateEmployee} />  }
-      {activeTab === 'leads' && <LeadsPage members={members} leads={leads} addLead={addLead} setLeadStatus={setLeadStatus} /> }
+
+      {activeTab === 'members' && 
+      <MembersPage members={members} 
+      addMember={addMember} updateMember={updateMember} 
+      deleteMember={deleteMember} 
+      setMemberArchived={setMemberArchived} />}
+
+      {activeTab === 'classes' && 
+      <ClassesPage classes={classes} 
+      addClass={addClass} updateClass={updateClass} />}
+
+      {activeTab === 'manage' && 
+      <ManagePage employees={employees} 
+      addEmployee={addEmployee} 
+      updateEmployee={updateEmployee} />  }
+
+      {activeTab === 'leads' && 
+      <LeadsPage members={members} 
+      leads={leads} 
+      addLead={addLead} 
+      setLeadStatus={setLeadStatus} /> }
     </div>
   );
 };
