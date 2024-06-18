@@ -3,7 +3,7 @@ import {Button, Modal} from 'react-bootstrap';
 import NewLeadForm from '../components/NewLeadForm';
 import LeadList from '../components/LeadList';
 
-const LeadsPage = ({members, leads, addLead, setLeadStatus}) => {
+const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus}) => {
     const [showModal, setShowModal] = useState(false);
     const handleOpen = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
@@ -21,7 +21,11 @@ const LeadsPage = ({members, leads, addLead, setLeadStatus}) => {
                 </Modal.Body>
             </Modal>
             <h3>Active Leads</h3>
-            <LeadList leads={leads} setLeadStatus={setLeadStatus} />
+            <LeadList 
+                leads={leads} 
+                setLeadStatus={setLeadStatus}
+                deleteLead={deleteLead}
+            />
         </div>
     );
 }

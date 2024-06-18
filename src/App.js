@@ -28,6 +28,12 @@ const App = () => {
     );
   };
 
+  const deleteLead = (leadID) => {
+    setLeads((prevLeads) =>
+      prevLeads.filter((lead) => lead.leadID !== leadID)
+    );
+  };
+
   const addMember = (member) => {
     setMembers([...members, member]);
   };
@@ -74,18 +80,18 @@ const App = () => {
   }
 
   // TO DO: have not started on Staff Tab in Manage Page 
-  // const [employees, setEmployees] = useState([]);
-  // const addEmployee = (employee) => {
-  //   setEmployees([...employees, employee]);
-  // };
+  const [employees, setEmployees] = useState([]);
+  const addEmployee = (employee) => {
+    setEmployees([...employees, employee]);
+  };
 
-  // const updateEmployee = (updatedEmployee, originalEmployee) => {
-  //   setEmployees((prevEmployees) =>
-  //     prevEmployees.map((employee) =>
-  //       employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
-  //     )
-  //   );
-  // };
+  const updateEmployee = (updatedEmployee, originalEmployee) => {
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((employee) =>
+        employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
+      )
+    );
+  };
 
   return (
     <div>
@@ -120,6 +126,7 @@ const App = () => {
         members={members} 
         leads={leads} 
         addLead={addLead} 
+        deleteLead={deleteLead}
         setLeadStatus={setLeadStatus} 
       /> }
     </div>

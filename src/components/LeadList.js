@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import { Table, Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Table, Button, DropdownButton, Dropdown, Modal } from 'react-bootstrap';
 
-const LeadList = ({leads, setLeadStatus}) => {
+const LeadList = ({leads, setLeadStatus, deleteLead}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
     const [currentStatus, setCurrentStatus] = useState('');
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [leadToDelete, setLeadToDelete] = useState(null);
 
     const handleEdit = (leadID, currentStatus) => {
         setEditingLeadID(leadID);
@@ -22,6 +24,22 @@ const LeadList = ({leads, setLeadStatus}) => {
         setCurrentStatus(status);
     }
 
+    const handleDelete = (lead) => {
+        setLeadToDelete(lead);
+        setDeleteModal(true);
+    }
+
+    const cancelDelete = () => {
+        setLeadToDelete(null);
+        setDeleteModal(false);
+    }
+
+    const confirmDelete = () => {
+        deleteLead(leadToDelete.leadID);
+        setDeleteModal(false);
+        setLeadToDelete(null);
+    }
+
     return (
         <div>
             <Table striped bordered hover>
@@ -32,6 +50,7 @@ const LeadList = ({leads, setLeadStatus}) => {
                         <th>Phone Number</th>
                         <th>Email</th>
                         <th>Status</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,10 +88,26 @@ const LeadList = ({leads, setLeadStatus}) => {
                                     </>
                                 )}
                             </td>
+                            <td>
+                                <Button variant="danger" onClick={() => handleDelete(lead)}>Delete</Button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+
+            <Modal show={deleteModal} onHide={cancelDelete}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Lead</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Are you sure you want to permanently delete this lead?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={cancelDelete}>Cancel</Button>
+                    <Button variant="danger" onClick={confirmDelete}>Confirm</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

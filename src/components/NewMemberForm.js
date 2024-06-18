@@ -145,7 +145,7 @@ const NewMemberForm = ({ addMember }) => {
         <div className="mb-1">
           <input  type="checkbox" value="notSub" id="flexCheckDefault"/>
           <label htmlFor="flexCheckDefault">
-            Mark as unsubscibed
+            Mark as unsubscribed
           </label>
         </div>
       </div>
