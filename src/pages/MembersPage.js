@@ -3,32 +3,33 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
-import ExportCSV from '../components/exportCSV';
-import ImportCSV from '../components/importCSV';
+import ExportCSV from '../components/ExportCSV'; 
+import ImportCSV from '../components/ImportCSV'; 
 
 const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived }) => {
-  const [activeTab, setActiveTab] = useState('active-members');
-  const [showModal, setShowModal] = useState(false);
-  const [members, setMembers] = useState([]);
+  // State variables
+  const [activeTab, setActiveTab] = useState('active-members'); // Active tab (active-members or archived-members)
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [members, setMembers] = useState([]); // List of members
 
+  // Open modal to add new member
   const handleOpen = () => setShowModal(true);
+
+  // Close modal
   const handleClose = () => setShowModal(false);
 
   // Callback function to handle imported CSV data
   const handleImportCSV = (importedData) => {
-    setMembers([...members, ...importedData]); // Assuming importedData is an array of new members
-    console.log('Members State:', [...members, ...importedData]); // Add this line for debugging
+    setMembers([...members, ...importedData]); // Add imported data to members state
+
     // Process imported data and add members
     importedData.forEach((member) => {
-      addMember(member); // Assuming addMember adds each member to the state
+      addMember(member); // Add each member using addMember function
     });
 
     // Optionally close modal or provide feedback
     handleClose();
   };
-
-  // Log imported data for debugging
-  console.log('Imported CSV data:', members);
 
   return (
     <div id="members" className="tab active">
@@ -37,7 +38,9 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
       
       {activeTab === 'active-members' && (
         <>
+          {/* Button to open modal for adding new member */}
           <Button variant="primary" onClick={handleOpen}>Add New Member</Button>
+          {/* Modal for adding new member */}
           <Modal show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Add New Member</Modal.Title>
@@ -47,8 +50,9 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
             </Modal.Body>
           </Modal>
           <h3>Active Members</h3>
+          {/* Display list of active members */}
           <MemberList
-            members={members.filter(member => !member.archived)} // Update based on your filter condition
+            members={members.filter(member => !member.archived)} // Filter active members
             updateMember={updateMember}
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived}
@@ -59,8 +63,9 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
       {activeTab === 'archived-members' && (
         <>
           <h3>Archived Members</h3>
+          {/* Display list of archived members */}
           <MemberList
-            members={members.filter(member => member.archived)}
+            members={members.filter(member => member.archived)} // Filter archived members
             updateMember={updateMember}
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived}
@@ -68,8 +73,11 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
         </>
       )}
 
+      {/* Export members to CSV */}
       <ExportCSV members={members} />
-      <ImportCSV onImportCSV={handleImportCSV} /> {/* Pass the callback to handle imported CSV data */}
+
+      {/* Import CSV data */}
+      <ImportCSV onImportCSV={handleImportCSV} />
     </div>
   );
 };
