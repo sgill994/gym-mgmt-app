@@ -3,26 +3,29 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
-import ExportCSV from '../components/exportCSV';
-import ImportCSV from '../components/importCSV';
+import ExportCSV from '../components/ExportCSV'; 
+import ImportCSV from '../components/ImportCSV'; 
 
-const MembersPage = ({ members, addMember, updateMember, deleteMember, setMemberArchived }) => {
-  const [activeTab, setActiveTab] = useState('active-members');
-  const [showModal, setShowModal] = useState(false);
+const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived }) => {
+  // State variables
+  const [activeTab, setActiveTab] = useState('active-members'); // Active tab (active-members or archived-members)
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [members, setMembers] = useState([]); // List of members
 
+  // Open modal to add new member
   const handleOpen = () => setShowModal(true);
+
+  // Close modal
   const handleClose = () => setShowModal(false);
 
   // Callback function to handle imported CSV data
   const handleImportCSV = (importedData) => {
-    // Merge importedData with current members state
-    const updatedMembers = [...members, ...importedData];
+    setMembers([...members, ...importedData]); // Add imported data to members state
 
-    // Update state with new members
-    updatedMembers.forEach(member => addMember(member));
-
-    // Log updated members array
-    console.log('Updated members array:', updatedMembers);
+    // Process imported data and add members
+    importedData.forEach((member) => {
+      addMember(member); // Add each member using addMember function
+    });
 
     // Optionally close modal or provide feedback
     handleClose();
@@ -32,37 +35,49 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
     <div id="members" className="tab active">
       <h1>Members</h1>
       <MemberTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      
       {activeTab === 'active-members' && (
         <>
-      <Button variant="primary" onClick={handleOpen}>Add New Member</Button>
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Member</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <NewMemberForm addMember={(member) => {addMember(member); handleClose();}} />
-        </Modal.Body>
-      </Modal>
-      <h3>Active Members</h3>
-      <MemberList 
-      members={members.filter(member => !member.archived)}
-      updateMember={updateMember} 
-      deleteMember={deleteMember}
-      setMemberArchived={setMemberArchived} />
-      </>
-      )}
-      {activeTab === 'archived-members' && (
-        <>
-        <h3>Archived Members</h3>
-        <MemberList 
-        members={members.filter(member => member.archived)} 
-        updateMember={updateMember} 
-        deleteMember={deleteMember}
-        setMemberArchived={setMemberArchived} />
+          {/* Button to open modal for adding new member */}
+          <Button variant="primary" onClick={handleOpen}>Add New Member</Button>
+          {/* Modal for adding new member */}
+          <Modal show={showModal} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add New Member</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <NewMemberForm addMember={(member) => { addMember(member); handleClose(); }} />
+            </Modal.Body>
+          </Modal>
+          <h3>Active Members</h3>
+          {/* Display list of active members */}
+          <MemberList
+            members={members.filter(member => !member.archived)} // Filter active members
+            updateMember={updateMember}
+            deleteMember={deleteMember}
+            setMemberArchived={setMemberArchived}
+          />
         </>
       )}
+
+      {activeTab === 'archived-members' && (
+        <>
+          <h3>Archived Members</h3>
+          {/* Display list of archived members */}
+          <MemberList
+            members={members.filter(member => member.archived)} // Filter archived members
+            updateMember={updateMember}
+            deleteMember={deleteMember}
+            setMemberArchived={setMemberArchived}
+          />
+        </>
+      )}
+
+      {/* Export members to CSV */}
       <ExportCSV members={members} />
-      <ImportCSV onImportCSV={handleImportCSV} /> {/* Pass the callback to handle imported CSV data */}
+
+      {/* Import CSV data */}
+      <ImportCSV onImportCSV={handleImportCSV} />
     </div>
   );
 };
