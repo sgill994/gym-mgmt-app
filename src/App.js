@@ -67,18 +67,25 @@ const App = () => {
     );
   };
 
-  const [employees, setEmployees] = useState([]);
-  const addEmployee = (employee) => {
-    setEmployees([...employees, employee]);
-  };
-
-  const updateEmployee = (updatedEmployee, originalEmployee) => {
-    setEmployees((prevEmployees) =>
-      prevEmployees.map((employee) =>
-        employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
-      )
+  const deleteClass = (courseID) => {
+    setClasses((prevClasses) =>
+      prevClasses.filter((course) => course.courseID !== courseID)
     );
-  };
+  }
+
+  // TO DO: have not started on Staff Tab in Manage Page 
+  // const [employees, setEmployees] = useState([]);
+  // const addEmployee = (employee) => {
+  //   setEmployees([...employees, employee]);
+  // };
+
+  // const updateEmployee = (updatedEmployee, originalEmployee) => {
+  //   setEmployees((prevEmployees) =>
+  //     prevEmployees.map((employee) =>
+  //       employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
+  //     )
+  //   );
+  // };
 
   return (
     <div>
@@ -86,25 +93,35 @@ const App = () => {
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {activeTab === 'members' && 
-      <MembersPage members={members} 
-      addMember={addMember} updateMember={updateMember} 
-      deleteMember={deleteMember} 
-      setMemberArchived={setMemberArchived} />}
+      <MembersPage
+        members={members} 
+        addMember={addMember} updateMember={updateMember} 
+        deleteMember={deleteMember} 
+        setMemberArchived={setMemberArchived} 
+      />}
 
       {activeTab === 'classes' && 
-      <ClassesPage classes={classes} 
-      addClass={addClass} updateClass={updateClass} />}
+      <ClassesPage 
+        classes={classes} 
+        addClass={addClass} 
+        updateClass={updateClass}
+        deleteClass={deleteClass} 
+      />}
 
       {activeTab === 'manage' && 
-      <ManagePage employees={employees} 
-      addEmployee={addEmployee} 
-      updateEmployee={updateEmployee} />  }
+      <ManagePage 
+        employees={employees} 
+        addEmployee={addEmployee} 
+        updateEmployee={updateEmployee} 
+      />  }
 
       {activeTab === 'leads' && 
-      <LeadsPage members={members} 
-      leads={leads} 
-      addLead={addLead} 
-      setLeadStatus={setLeadStatus} /> }
+      <LeadsPage 
+        members={members} 
+        leads={leads} 
+        addLead={addLead} 
+        setLeadStatus={setLeadStatus} 
+      /> }
     </div>
   );
 };
