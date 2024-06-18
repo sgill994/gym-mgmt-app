@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -44,7 +45,9 @@ const NewClassForm = ({ addClass }) => {
       return;
     }
 
+    const courseID = uuidv4();
     const course = {
+      courseID,
       title, 
       Monday, 
       Tuesday, 

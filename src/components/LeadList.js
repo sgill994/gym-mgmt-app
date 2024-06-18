@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Table, Button, DropdownButton, Dropdown, Modal } from 'react-bootstrap';
+import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
 
 const LeadList = ({leads, setLeadStatus, deleteLead}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
@@ -79,17 +80,17 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                                         <Dropdown.Item onClick={() => handleStatusChange('Declined')}>Declined</Dropdown.Item>
                                         <Dropdown.Item onClick={() => handleStatusChange('Archived')}>Archived</Dropdown.Item>
                                     </DropdownButton>
-                                    <Button variant="success" onClick={() => handleSave(lead.leadID)}>Save</Button>
+                                    <Button variant="success" onClick={() => handleSave(lead.leadID)}><FaCheck /></Button>
                                     </>
                                 ) : (
                                     <> 
                                         {lead.followUpStatus}
-                                        <Button variant="primary" onClick={() => handleEdit(lead.leadID, lead.followUpStatus)}>Edit</Button>
+                                        <Button variant="primary" onClick={() => handleEdit(lead.leadID, lead.followUpStatus)}><FaPencilAlt /></Button>
                                     </>
                                 )}
                             </td>
                             <td>
-                                <Button variant="danger" onClick={() => handleDelete(lead)}>Delete</Button>
+                                <Button variant="danger" onClick={() => handleDelete(lead)}><FaTimes /></Button>
                             </td>
                         </tr>
                     ))}
@@ -105,7 +106,7 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={cancelDelete}>Cancel</Button>
-                    <Button variant="danger" onClick={confirmDelete}>Confirm</Button>
+                    <Button variant="danger" onClick={confirmDelete}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         </div>

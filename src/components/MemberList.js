@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import MemberDetails from './MemberDetails';
+import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
 
 const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) => {
   // State variables
@@ -93,15 +94,15 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
                 )}
                 {editingMemberID === member.memberID ? (
                   // Save button during edit mode
-                  <Button variant="success" onClick={() => handleSave(member.memberID)}>Save</Button>
+                  <Button variant="success" onClick={() => handleSave(member.memberID)}><FaCheck /></Button>
                 ) : (
                   // Edit button to enter edit mode
-                  <Button variant="primary" onClick={() => handleEdit(member.memberID, member.archived)}>Edit</Button>
+                  <Button variant="primary" onClick={() => handleEdit(member.memberID, member.archived)}><FaPencilAlt /></Button>
                 )}
               </td>
               <td>
                 {/* Delete button */}
-                <Button variant="danger" onClick={() => handleDelete(member)}>Delete</Button>
+                <Button variant="danger" onClick={() => handleDelete(member)}><FaTimes /></Button>
               </td>
             </tr>
           ))}
