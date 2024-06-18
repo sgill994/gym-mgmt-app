@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import MemberDetails from '../components/MemberDetails';
+import MemberDetails from './MemberDetails';
 
 const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) => {
   const [selectedMember, setSelectedMember] = useState(null);
@@ -19,29 +19,29 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
 
   const handleEdit = (memberID, currentStatus) => {
     setEditingMemberID(memberID);
-    setArchivedStatus(currentStatus);
+    setArchivedStatus(currentStatus === 'Yes');
   };
 
   const handleSave = (memberID) => {
-    setMemberArchived(memberID, archivedStatus);
+    setMemberArchived(memberID, archivedStatus ? 'Yes' : 'No');
     setEditingMemberID(null);
-  }
+  };
 
   const handleDelete = (member) => {
     setMemberToDelete(member);
     setDeleteModal(true);
-  }
+  };
 
   const confirmDelete = () => {
     deleteMember(memberToDelete.memberID);
     setDeleteModal(false);
     setMemberToDelete(null);
-  }
+  };
 
   const cancelDelete = () => {
     setDeleteModal(false);
     setMemberToDelete(null);
-  }
+  };
 
   return (
     <div>
@@ -60,7 +60,11 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
           {members.map((member, index) => (
             <tr key={index}>
               <td>
-                <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openMemberDetails(member)}>
+                <a
+                  href="#"
+                  style={{ color: 'blue', textDecoration: 'underline' }}
+                  onClick={() => openMemberDetails(member)}
+                >
                   {member.firstName}
                 </a>
               </td>
@@ -74,12 +78,12 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
                     <Dropdown.Item onClick={() => setArchivedStatus(true)}>Archived</Dropdown.Item>
                   </DropdownButton>
                 ) : (
-                  member.archived ? 'Archived' : 'Active'
+                  member.archived === 'Yes' ? 'Archived' : 'Active'
                 )}
                 {editingMemberID === member.memberID ? (
                   <Button variant="success" onClick={() => handleSave(member.memberID)}>Save</Button>
                 ) : (
-                  <Button varient="primary" onClick={() => handleEdit(member.memberID, member.archived)}>Edit</Button>
+                  <Button variant="primary" onClick={() => handleEdit(member.memberID, member.archived)}>Edit</Button>
                 )}
               </td>
               <td>
@@ -90,30 +94,28 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
         </tbody>
       </Table>
 
-      <Modal show={selectedMember !== null} onHide={closeMemberDetails}>
-        <Modal.Header closeButton>
-          <Modal.Title>Member Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedMember && (<MemberDetails member={selectedMember} updateMember={updateMember} closeDetails={closeMemberDetails} />
-          )}
-        </Modal.Body>
-      </Modal>
-
       <Modal show={deleteModal} onHide={cancelDelete}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete Member</Modal.Title>
+          <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Are you sure you want to permanently delete this member?
+          Are you sure you want to delete {memberToDelete && `${memberToDelete.firstName} ${memberToDelete.lastName}`}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={cancelDelete}>Cancel</Button>
-          <Button variant="danger" onClick={confirmDelete}>Confirm</Button>
+          <Button variant="danger" onClick={confirmDelete}>Delete</Button>
         </Modal.Footer>
       </Modal>
+
+      {selectedMember && (
+        <MemberDetails
+          member={selectedMember}
+          updateMember={updateMember}
+          closeDetails={closeMemberDetails}
+        />
+      )}
     </div>
   );
-}
+};
 
 export default MemberList;

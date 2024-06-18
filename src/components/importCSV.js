@@ -23,20 +23,17 @@ const ImportCSV = ({ onImportCSV }) => {
   const parseCSVData = (text) => {
     // Split text into rows
     const rows = text.trim().split(/\r?\n/);
-
-    // Extract headers from the first row
     const headers = rows[0].split(',');
-
-    // Parse remaining rows into data objects
     const data = rows.slice(1).map((row) => {
       const values = row.split(',');
       return headers.reduce((obj, header, index) => {
-        obj[header.trim()] = values[index].trim();
+        // Convert headers to camelCase
+        const key = header.trim().toLowerCase().replace(/\s+(\w)/g, (_, c) => c.toUpperCase()).replace(/\s+/g, '');
+        obj[key] = values[index] ? values[index].trim() : ''; // Ensure value exists
         return obj;
       }, {});
     });
-
-    return data;
+    return data; // Ensure the data is returned
   };
 
   return (

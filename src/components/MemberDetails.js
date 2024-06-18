@@ -9,7 +9,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
     setIsEditing(false);
     setUpdatedMember(member);
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedMember({ ...updatedMember, [name]: value });
@@ -17,9 +17,9 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMember(updatedMember, member);
+    updateMember(updatedMember);
     setIsEditing(false);
-    closeDetails(); 
+    closeDetails();
   };
 
   return (
@@ -32,7 +32,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
         <input type="text" name="lastName" value={updatedMember.lastName} onChange={handleChange} readOnly={!isEditing} />
         <label>Phone Number:</label>
         <input type="text" name="phoneNumber" value={updatedMember.phoneNumber} onChange={handleChange} readOnly={!isEditing} />
-        <label> Email: </label>
+        <label>Email:</label>
         <input type="text" name="email" value={updatedMember.email} onChange={handleChange} readOnly={!isEditing} />
         {isEditing && (
           <>
@@ -41,9 +41,10 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
           </>
         )}
         {!isEditing && (
-            <button type="button" onClick={handleEdit}>Edit</button>
+          <button type="button" onClick={handleEdit}>Edit</button>
         )}
       </form>
+      <button onClick={closeDetails}>Close</button>
     </div>
   );
 };
