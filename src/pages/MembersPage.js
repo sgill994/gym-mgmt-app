@@ -15,8 +15,17 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
 
   // Callback function to handle imported CSV data
   const handleImportCSV = (importedData) => {
-    // Process the imported data as needed (e.g., update state with imported members)
-    console.log('Imported data:', importedData);
+    // Merge importedData with current members state
+    const updatedMembers = [...members, ...importedData];
+
+    // Update state with new members
+    updatedMembers.forEach(member => addMember(member));
+
+    // Log updated members array
+    console.log('Updated members array:', updatedMembers);
+
+    // Optionally close modal or provide feedback
+    handleClose();
   };
 
   return (
