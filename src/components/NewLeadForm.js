@@ -45,7 +45,8 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
                 lastName,
                 phoneNumber,
                 email,
-                followUpStatus: 'Never Contacted'
+                followUpStatus: 'Never Contacted',
+                comments: []
             });
             closeNewLeadForm();
             form.reset();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const LeadDetails = ({ lead, updateLead, closeLeadEdit }) => {
+const LeadDetails = ({ lead, updateLead, closeEditModal }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedLead, setUpdatedLead] = useState(lead);
 
@@ -19,7 +19,7 @@ const LeadDetails = ({ lead, updateLead, closeLeadEdit }) => {
         e.preventDefault();
         updateLead(updatedLead, lead);
         setIsEditing(false);
-        closeLeadEdit();
+        closeEditModal();
     };
 
     return (
