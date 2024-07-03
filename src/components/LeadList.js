@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import { Table, Button, DropdownButton, Dropdown, Modal } from 'react-bootstrap';
 import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
+import LeadDetails from '../components/LeadDetails';
 
-const LeadList = ({leads, setLeadStatus, deleteLead}) => {
+const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
     const [currentStatus, setCurrentStatus] = useState('');
     const [deleteModal, setDeleteModal] = useState(false);
     const [leadToDelete, setLeadToDelete] = useState(null);
+    const [editModal, setEditModal] = useState(false);
+    const [editingLead, setEditingLead] = useState(null);
 
-    const handleEdit = (leadID, currentStatus) => {
+    const handleStatusEdit = (leadID, currentStatus) => {
         setEditingLeadID(leadID);
         setFUStatus(currentStatus);
         setCurrentStatus(currentStatus);
@@ -23,6 +26,16 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
     const handleStatusChange = (status) => {
         setFUStatus(status);
         setCurrentStatus(status);
+    }
+
+    const handleLeadEdit = (lead) => {
+        setEditingLead(lead);
+        setEditModal(true);
+    }
+
+    const closeLeadEdit = () => {
+        setEditingLead(null);
+        setEditModal(false);
     }
 
     const handleDelete = (lead) => {
@@ -51,7 +64,7 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                         <th>Phone Number</th>
                         <th>Email</th>
                         <th>Status</th>
-                        <th>Delete</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,12 +98,13 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                                 ) : (
                                     <> 
                                         {lead.followUpStatus}
-                                        <Button variant="primary" onClick={() => handleEdit(lead.leadID, lead.followUpStatus)}><FaPencilAlt /></Button>
+                                        <Button variant="primary" onClick={() => handleStatusEdit(lead.leadID, lead.followUpStatus)}><FaPencilAlt /></Button>
                                     </>
                                 )}
                             </td>
                             <td>
                                 <Button variant="danger" onClick={() => handleDelete(lead)}><FaTimes /></Button>
+                                <Button variant="primary" onClick={() => handleLeadEdit(lead)}><FaPencilAlt /></Button>
                             </td>
                         </tr>
                     ))}
@@ -108,6 +122,15 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                     <Button variant="secondary" onClick={cancelDelete}>Cancel</Button>
                     <Button variant="danger" onClick={confirmDelete}>Delete</Button>
                 </Modal.Footer>
+            </Modal>
+
+            <Modal show={editModal} onHide={closeLeadEdit}> 
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Lead Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <LeadDetails lead={editingLead} updateLead={updateLead} closeLeadEdit={closeLeadEdit} />
+                </Modal.Body>
             </Modal>
         </div>
     );

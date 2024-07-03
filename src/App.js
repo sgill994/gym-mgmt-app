@@ -39,6 +39,14 @@ const App = () => {
     );
   };
 
+  const updateLead = (updatedLead, originalLead) => {
+    setLeads((prevLeads) =>
+      prevLeads.map((lead) =>
+        lead.leadID === originalLead.leadID ? updatedLead : lead
+      )
+    );
+  };
+
   const addMember = (member) => {
     setMembers([...members, member]);
   };
@@ -138,7 +146,8 @@ const App = () => {
         leads={leads} 
         addLead={addLead} 
         deleteLead={deleteLead}
-        setLeadStatus={setLeadStatus} 
+        setLeadStatus={setLeadStatus}
+        updateLead={updateLead} 
       /> }
     </div>
   );
