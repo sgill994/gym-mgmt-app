@@ -8,15 +8,23 @@ const ImportCSV = ({ onImportCSV }) => {
     const file = event.target.files[0]; // Get the selected file
     const reader = new FileReader(); // Create a new FileReader instance
 
-    reader.onload = (e) => { // Callback function when FileReader has loaded the file
+    // Callback function when FileReader has loaded the file
+    reader.onload = (e) => {
       const text = e.target.result; // The file content
       const parsedData = parseCSVData(text); // Parse the CSV data
       setImportedData(parsedData); // Update state with parsed data
-      // Pass the parsedData to the parent component or perform further processing
       onImportCSV(parsedData); // Call the parent component's callback with imported data
     };
 
-    reader.readAsText(file); // Read the file as text
+    reader.onerror = () => {
+      console.error('File reading has failed');
+    };
+
+    if (file) {
+      reader.readAsText(file); // Read the file as text
+    } else {
+      console.error('No file selected');
+    }
   };
 
   // Function to parse CSV data
