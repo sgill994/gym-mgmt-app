@@ -13,7 +13,9 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
 
   const handleChange = (e) => {
     const {name, value, type, checked} = e.target;
-    setUpdatedClass({...updatedClass, [name]: type === 'checkbox' ? checked : value,});
+    setUpdatedClass({...updatedClass,
+                      reservationLimit: checked ? updatedClass.reservationLimit || '' : undefined,
+                      [name]: type === 'checkbox' ? checked : value,});
   };
 
   const handleSubmit = (e) => {
@@ -114,6 +116,17 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
               <option>Iain Small</option>
               <option>Alvin Valle</option>
             </select>
+            <div>
+              <label>Limit Number of Reservations
+                <input type="checkbox" name="limitReservations" checked={updatedClass.reservationLimit !== undefined} onChange={handleChange} disabled={!isEditing} />
+              </label>
+            </div>
+            {updatedClass.reservationLimit !== undefined && (
+              <div>
+                <label>Reservation Limit:</label>
+                <input type="text" name="reservationLimit" value={updatedClass.reservationLimit} onChange={handleChange} disabled={!isEditing} />
+              </div>
+            )}
             {isEditing && (
               <>
               <button type="submit">Save Changes</button>
