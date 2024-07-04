@@ -13,9 +13,24 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
 
   const handleChange = (e) => {
     const {name, value, type, checked} = e.target;
-    setUpdatedClass({...updatedClass,
-                      reservationLimit: checked ? updatedClass.reservationLimit || '' : undefined,
-                      [name]: type === 'checkbox' ? checked : value,});
+
+    if (name === 'limitReservations') {
+      setUpdatedClass({
+        ...updatedClass,
+        reservationLimit: checked ? updatedClass.reservationLimit || '' : undefined,
+        [name]: checked
+      });
+    } else if (name === 'reservationLimit') {
+      setUpdatedClass({
+        ...updatedClass,
+        reservationLimit: value
+      });
+    } else {
+      setUpdatedClass({
+        ...updatedClass,
+        [name]: type === 'checkbox' ? checked : value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -105,7 +120,7 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
               <option>2 hr</option>
             </select>
             <label>Instructor:</label>
-            <select name="instructor" value={updatedClass.instructor} onChange={handleChange} disable={!isEditing}>
+            <select name="instructor" value={updatedClass.instructor} onChange={handleChange} disabled={!isEditing}>
               <option disabled value="">---</option>
               <option>Oneal Mendoza</option>
               <option>Sandeep Mendoza</option>
