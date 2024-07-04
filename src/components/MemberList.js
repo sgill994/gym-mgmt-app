@@ -24,12 +24,11 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
   // Handle edit mode for member
   const handleEdit = (memberID, currentStatus) => {
     setEditingMemberID(memberID);
-    setArchivedStatus(currentStatus === 'Yes');
+    setArchivedStatus(currentStatus);
   };
-
-  // Save changes made to member (archive status)
+    // Save changes made to member (archive status)
   const handleSave = (memberID) => {
-    setMemberArchived(memberID, archivedStatus ? 'Yes' : 'No');
+    setMemberArchived(memberID, archivedStatus);
     setEditingMemberID(null);
   };
 
@@ -90,7 +89,7 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
                   </DropdownButton>
                 ) : (
                   // Display current status
-                  member.archived === 'Yes' ? 'Archived' : 'Active'
+                  member.archived ? 'Archived' : 'Active'
                 )}
                 {editingMemberID === member.memberID ? (
                   // Save button during edit mode
