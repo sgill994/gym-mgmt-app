@@ -168,6 +168,6 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
             </Modal>
         </div>
     );
-}
+};
 
 export default LeadList;
