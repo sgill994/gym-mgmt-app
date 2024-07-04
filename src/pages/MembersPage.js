@@ -34,7 +34,7 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
 
   const handleAddMember = (member) => {
     console.log('Adding new member:', member); // Debug log
-   //setMembers(prevMembers => [...prevMembers, member]);
+    setMembers(prevMembers => [...prevMembers, member]);
     addMember(member);
   };
   
