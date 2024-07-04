@@ -8,6 +8,8 @@ const LeadComments = ({lead, updateLead}) => {
     const [editingCommentIndex, setEditingCommentIndex] = useState(null);
     const [editingCommentText, setEditingCommentText] = useState('');
 
+    // Updates lead's comment list and timestamps on save for new and editted comments 
+    // Sets lead object to point to updated copy
     const saveComment = () => {
         const timestamp = new Date().toLocaleString();
         let updatedComments;
@@ -33,16 +35,20 @@ const LeadComments = ({lead, updateLead}) => {
         setCommentLead(updatedLead);
     };
     
+    // Sets index and comment's text for comment to edit
     const editComment = (index) => {
         setEditingCommentIndex(index);
         setEditingCommentText(commentLead.comments[index]);
     };
 
+    // Resets index and comment's text to NaN on cancel
     const cancelEdit = () => {
         setEditingCommentIndex(null);
         setEditingCommentText('');
     }
 
+    // Removes comment at index passed from list 
+    // Sets lead object to point to updated lead
     const deleteComment = (index) => {
         const updatedComments = commentLead.comments.filter((_, i) => i !== index);
         const updatedLead = {...commentLead, comments: updatedComments};
@@ -51,7 +57,7 @@ const LeadComments = ({lead, updateLead}) => {
     }
 
     return (
-        <div>
+        <div data-comment="new comment text input">
             <h2>Follow-Ups with {commentLead?.firstName} {commentLead?.lastName}</h2>
             <Form>
                 <Form.Group>
@@ -70,7 +76,7 @@ const LeadComments = ({lead, updateLead}) => {
                     <div key={index} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}> 
                         <div style={{ marginTop: '10px' }}>
                             {editingCommentIndex === index ? (
-                                <div>
+                                <div data-comment="selected commented is editable">
                                     <Form.Control
                                         as="textarea"
                                         rows="3"
@@ -81,7 +87,7 @@ const LeadComments = ({lead, updateLead}) => {
                                     <Button variant="secondary" onClick={cancelEdit}><FaTimes /></Button>
                                 </div>
                             ) : (
-                                <div>
+                                <div data-comment="read-only view for all comments">
                                     <p>{comment}</p>
                                     <small>{commentLead.timestamps[index]}</small>
                                     <Button variant="link" onClick={() => editComment(index)}><FaEdit /></Button>
