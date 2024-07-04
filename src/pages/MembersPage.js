@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
@@ -29,11 +29,18 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
 
     // Optionally close modal or provide feedback
     handleClose();
+
+  };
+
+  const handleAddMember = (member) => {
+    console.log('Adding new member:', member); // Debug log
+   //setMembers(prevMembers => [...prevMembers, member]);
+    addMember(member);
   };
   
-  console.log('Current members data:', members);
-
-  
+  useEffect(() => {
+    console.log('Current members data:', members);
+  }, [members]); // Log whenever the members state changes
 
   return (
     <div id="members" className="tab active">
@@ -50,7 +57,7 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
               <Modal.Title>Add New Member</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <NewMemberForm addMember={(member) => { addMember(member); handleClose(); }} />
+            <NewMemberForm addMember={(member) => { handleAddMember(member); handleClose(); }} />
             </Modal.Body>
           </Modal>
           <h3>Active Members</h3>
