@@ -1,44 +1,80 @@
 import React, {useState} from 'react';
 import { Table, Button, DropdownButton, Dropdown, Modal } from 'react-bootstrap';
 import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
+import LeadDetails from '../components/LeadDetails';
+import LeadComments from '../components/LeadComments';
 
-const LeadList = ({leads, setLeadStatus, deleteLead}) => {
+const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
     const [currentStatus, setCurrentStatus] = useState('');
     const [deleteModal, setDeleteModal] = useState(false);
     const [leadToDelete, setLeadToDelete] = useState(null);
-
-    const handleEdit = (leadID, currentStatus) => {
+    const [editModal, setEditModal] = useState(false);
+    const [editingLead, setLeadToEdit] = useState(null);
+    const [commentModal, setCommentModal] = useState(false);
+    const [commentLead, setCommentLead] = useState(null);
+    
+    // Allows user to edit lead's 'follow up status' with dropdown options
+    const handleStatusEdit = (leadID, currentStatus) => {
         setEditingLeadID(leadID);
         setFUStatus(currentStatus);
         setCurrentStatus(currentStatus);
     };
 
+    // Saves lead's 'follow up status' to selected option
     const handleSave = (leadID) => {
         setLeadStatus(leadID, FUStatus);
         setEditingLeadID(null);
     };
 
+    // Updates lead's 'follow up status' to option selected from dropdown menu
     const handleStatusChange = (status) => {
         setFUStatus(status);
         setCurrentStatus(status);
     }
 
+    // Sets 'Edit Modal' condition to true to open editing window
+    const openEditModal = (lead) => {
+        setLeadToEdit(lead);
+        setEditModal(true);
+    }
+
+    // Sets 'Edit Modal' condition to false to hide editing window
+    const closeEditModal = () => {
+        setLeadToEdit(null);
+        setEditModal(false);
+    }
+
+    // Opens delete confirmation window 
     const handleDelete = (lead) => {
         setLeadToDelete(lead);
         setDeleteModal(true);
     }
 
+    // Sets 'Delete Modal' condition to false to hide delete confirmation window
     const cancelDelete = () => {
         setLeadToDelete(null);
         setDeleteModal(false);
     }
 
+    // Deletes lead from leads list permanently
     const confirmDelete = () => {
         deleteLead(leadToDelete.leadID);
         setDeleteModal(false);
         setLeadToDelete(null);
+    }
+
+    // Sets 'Comment Modal' condition to true to open lead comments window
+    const openCommentModal = (lead) => {
+        setCommentLead(lead);
+        setCommentModal(true);
+    }
+
+    // Sets 'Comment Modal' condition to false to hide lead comments window
+    const closeCommentModal = () => {
+        setCommentLead(null);
+        setCommentModal(false);
     }
 
     return (
@@ -51,13 +87,15 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                         <th>Phone Number</th>
                         <th>Email</th>
                         <th>Status</th>
-                        <th>Delete</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {leads.map((lead, index) => (
                         <tr key={index}>
-                            <td>{lead.firstName}</td>
+                            <td>
+                                <Button variant="link" onClick={() => openCommentModal(lead)}>{lead.firstName}</Button>
+                            </td>
                             <td>{lead.lastName}</td>
                             <td>{lead.phoneNumber}</td>
                             <td>{lead.email}</td>
@@ -85,12 +123,13 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                                 ) : (
                                     <> 
                                         {lead.followUpStatus}
-                                        <Button variant="primary" onClick={() => handleEdit(lead.leadID, lead.followUpStatus)}><FaPencilAlt /></Button>
+                                        <Button variant="primary" onClick={() => handleStatusEdit(lead.leadID, lead.followUpStatus)}><FaPencilAlt /></Button>
                                     </>
                                 )}
                             </td>
                             <td>
                                 <Button variant="danger" onClick={() => handleDelete(lead)}><FaTimes /></Button>
+                                <Button variant="primary" onClick={() => openEditModal(lead)}><FaPencilAlt /></Button>
                             </td>
                         </tr>
                     ))}
@@ -108,6 +147,24 @@ const LeadList = ({leads, setLeadStatus, deleteLead}) => {
                     <Button variant="secondary" onClick={cancelDelete}>Cancel</Button>
                     <Button variant="danger" onClick={confirmDelete}>Delete</Button>
                 </Modal.Footer>
+            </Modal>
+
+            <Modal show={editModal} onHide={closeEditModal}> 
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Lead Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <LeadDetails lead={editingLead} updateLead={updateLead} closeEditModal={closeEditModal} />
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={commentModal} onHide={closeCommentModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Lead Interactions</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <LeadComments lead={commentLead} updateLead={updateLead} />
+                </Modal.Body>
             </Modal>
         </div>
     );

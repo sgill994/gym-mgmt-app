@@ -30,6 +30,10 @@ const MembersPage = ({ addMember, updateMember, deleteMember, setMemberArchived 
     // Optionally close modal or provide feedback
     handleClose();
   };
+  
+  console.log('Current members data:', members);
+
+  
 
   return (
     <div id="members" className="tab active">
