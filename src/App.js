@@ -27,7 +27,12 @@ const App = () => {
   const setLeadStatus = (leadID, newFollowUpStatus) => {
     setLeads((prevLeads) =>
       prevLeads.map((lead) =>
-      lead.leadID === leadID ? {...lead, followUpStatus: newFollowUpStatus} : lead
+        lead.leadID === leadID ? {
+          ...lead, 
+          followUpStatus: newFollowUpStatus,
+          archived: newFollowUpStatus === 'Archived' ? true : (lead.followUpStatus === 'Archived' ? false : lead.archived),
+          declined: newFollowUpStatus === 'Declined' ? true : (lead.followUpStatus === 'Declined' ? false : lead.declined)
+        } : lead
       )
     );
   };
