@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
+import ExportCSV from '../components/exportCSV';
 
 const MembersPage = ({ members, addMember, updateMember, deleteMember, setMemberArchived }) => {
   const [activeTab, setActiveTab] = useState('active-members');
@@ -44,6 +45,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
         setMemberArchived={setMemberArchived} />
         </>
       )}
+      <ExportCSV members={members}></ExportCSV>
     </div>
   );
 };
