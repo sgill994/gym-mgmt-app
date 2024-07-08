@@ -17,7 +17,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
     // Process imported data and add members
     importedData.forEach((member) => {
       // Convert archived field to boolean
-      if (typeof member.archived === 'yes') {
+      if (typeof member.archived !== 'boolean') {
         member.archived = member.archived.toLowerCase() === 'yes';
       } else {
         member.archived = false;

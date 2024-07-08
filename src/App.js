@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/App.css'
 import Tabs from './components/Tabs';
@@ -48,7 +48,7 @@ const App = () => {
   };
 
   const addMember = (member) => {
-    setMembers([...members, member]);
+    setMembers((prevMembers) => [...prevMembers, member]);
   };
 
   // Replaces existing member with updated member in array on edit & save in MemberDetails window
@@ -108,6 +108,12 @@ const App = () => {
       )
     );
   };
+
+  
+  useEffect(() => {
+    console.log('Current members:', members);
+  }, [members]);
+
 
   return (
     <div>

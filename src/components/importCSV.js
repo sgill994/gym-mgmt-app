@@ -39,10 +39,10 @@ const ImportCSV = ({ onImportCSV }) => {
         const key = header.trim().toLowerCase()
           .replace(/\s+(\w)/g, (_, c) => c.toUpperCase())
           .replace(/\s+/g, ''); // Convert spaces to camelCase
+          obj[key] = values[index] ? values[index].trim() : '';
+          // Special handling for the "archived" field
           if (key === 'archived') {
-            obj[key] = values[index].trim().toLowerCase() === 'yes'; // Set archived to true if value is "yes"
-          } else {
-            obj[key] = values[index] ? values[index].trim() : ''; // Assign value to object property
+            obj[key] = obj[key].toLowerCase() === 'yes';
           }
           return obj;
         }, {});
