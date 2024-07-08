@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
+import ImportCSV from '../components/ImportCSV';
+import ExportCSV from '../components/ExportCSV';
 
 const MembersPage = ({ members, addMember, updateMember, deleteMember, setMemberArchived }) => {
   const [activeTab, setActiveTab] = useState('active-members');
@@ -10,6 +12,21 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
 
   const handleOpen = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+
+  const handleImportCSV = (importedData) => {
+    // Process imported data and add members
+    importedData.forEach((member) => {
+      // Convert archived field to boolean
+      if (typeof member.archived === 'yes') {
+        member.archived = member.archived.toLowerCase() === 'yes';
+      } else {
+        member.archived = false;
+      }
+      addMember(member); // Add each member using addMember function
+    });
+    // Optionally close modal or provide feedback
+    console.log('Imported members data:', importedData);
+  };
 
   return (
     <div id="members" className="tab active">
@@ -44,6 +61,11 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
         setMemberArchived={setMemberArchived} />
         </>
       )}
+      {/* Export members to CSV */}
+      <ExportCSV members={members} />
+
+      {/* Import members from CSV */}
+      <ImportCSV onImportCSV={handleImportCSV} />
     </div>
   );
 };
