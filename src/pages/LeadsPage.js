@@ -5,7 +5,7 @@ import LeadList from '../components/LeadList';
 import LeadTabs from '../components/LeadTabs';
 
 
-const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLead}) => {
+const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLead, updateLeadList}) => {
     const [showModal, setShowModal] = useState(false);
     const [activeTab, setActiveTab] = useState('active-leads');
     const handleOpen = () => setShowModal(true);
@@ -24,7 +24,7 @@ const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLe
                             <Modal.Title>Create New Lead</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <NewLeadForm  members={members} leads={leads} addLead={addLead} closeModal={handleClose} />
+                            <NewLeadForm  members={members} leads={leads} addLead={addLead} updateLeadList={updateLeadList} closeModal={handleClose} />
                         </Modal.Body>
                     </Modal>
 

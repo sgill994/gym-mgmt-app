@@ -53,6 +53,10 @@ const App = () => {
     );
   };
 
+  const updateLeadList = (updatedLeads) => {
+    setLeads(updatedLeads);
+  }
+
   const addMember = (member) => {
     setMembers([...members, member]);
   };
@@ -154,6 +158,7 @@ const App = () => {
         deleteLead={deleteLead}
         setLeadStatus={setLeadStatus}
         updateLead={updateLead} 
+        updateLeadList={updateLeadList}
       /> }
     </div>
   );

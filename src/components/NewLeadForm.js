@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Table } from 'react-bootstrap';
 
 
-const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
+const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) => {
     const [addArchivedMember, setAddArchivedMember] = useState(false);
     const [addArchivedLead, setAddArchivedLead] = useState(false);
     const [addNewLead, setAddNewLead] = useState(false);
@@ -11,7 +11,6 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
     const [selectedLeads, setSelectedLeads] = useState([]);
     const [selectAllMembers, setSelectAllMembers] = useState(false);
     const [selectAllLeads, setSelectAllLeads] = useState(false);
-    const [removedFromArchivedLeads, setRemovedFromArchivedLeads] = useState([]);
 
     const openArchivedMembers = () => {
         setAddArchivedMember(true);
@@ -41,13 +40,12 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
     const closeNewLeadForm = () => {
         setAddNewLead(false);
     };
+
     const filteredMembers = members.filter(member =>
         member.archived && !leads.some(lead => lead.leadID === member.memberID)
     );
 
-    const filteredLeads = leads.filter(lead => 
-        (lead.archived || lead.declined)
-    )
+    const filteredLeads = leads.filter(lead => (lead.archived || lead.declined) && !lead.fromArchivedLead);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -73,7 +71,8 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
                 editedComments: [],
                 archived: false,
                 declined: false,
-                oldLeadID: ''
+                oldLeadID: '',
+                addedFromArchived: false
             });
             closeNewLeadForm();
             form.reset();
@@ -91,7 +90,8 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
                 editedComments: [],
                 archived: false,
                 declined: false,
-                oldLeadID: ''
+                oldLeadID: '',
+                addedFromArchived: false
             }));
 
             addLead(newLeads);        
@@ -99,29 +99,33 @@ const NewLeadForm = ({ addLead, members, leads, closeModal }) => {
             closeArchivedMember();
         } else if (addArchivedLead) {
             const newLeads = selectedLeads.map(lead => ({
-                leadID: uuidv4(),
-                firstName: lead.firstName,
-                lastName: lead.lastName,
-                phoneNumber: lead.phoneNumber,
-                email: lead.email,
-                followUpStatus: 'Never Contacted',
-                comments: [],
-                timestamps: [],
-                editedComments: [],
-                archived: false,
-                declined: false,
-                oldLeadID: lead.oldLeadID !== '' ? lead.oldLeadID : lead.leadID
+            leadID: uuidv4(),
+            firstName: lead.firstName,
+            lastName: lead.lastName,
+            phoneNumber: lead.phoneNumber,
+            email: lead.email,
+            followUpStatus: 'Never Contacted',
+            comments: [],
+            timestamps: [],
+            editedComments: [],
+            archived: false,
+            declined: false,
+            oldLeadID: lead.oldLeadID !== '' ? lead.oldLeadID : lead.leadID,
+            addedFromArchived: false
             }));
 
+            const updatedOriginalLeads = leads.map(lead => 
+                selectedLeads.some(selectedLead => selectedLead.leadID === lead.leadID) 
+                ? { ...lead, fromArchivedLead: true } 
+                : lead
+            );
+
+            updateLeadList(updatedOriginalLeads);
             addLead(newLeads);
-            console.log("Selected Leads:", selectedLeads);
-            const archivedLeadsToRemove = [...removedFromArchivedLeads, ...selectedLeads]
-            console.log("updated selected leads: ", archivedLeadsToRemove);
-            setRemovedFromArchivedLeads(archivedLeadsToRemove);
-            console.log("Added Archived Leads after update:", removedFromArchivedLeads);
             setSelectedLeads([]);
             closeArchivedLeads();
         }
+        console.log("All current leads: ", leads)
         closeModal();
     };
 
