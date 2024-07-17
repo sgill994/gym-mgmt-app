@@ -14,6 +14,8 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
     const [editingLead, setLeadToEdit] = useState(null);
     const [commentModal, setCommentModal] = useState(false);
     const [commentLead, setCommentLead] = useState(null);
+    const [historyModal, setHistoryModal] = useState(false);
+    const [historyLead, setHistoryLead] = useState(null);
     
     // Allows user to edit lead's 'follow up status' with dropdown options
     const handleStatusEdit = (leadID, currentStatus) => {
@@ -77,11 +79,22 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
         setCommentModal(false);
     }
 
+    const openHistoryModal = (lead) => {
+        setHistoryLead(lead);
+        setHistoryModal(true);
+    }
+
+    const closeHistoryModal = () => {
+        setHistoryLead(null);
+        setHistoryModal(false);
+    }
+
     return (
         <div>
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>History</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Phone Number</th>
@@ -93,6 +106,11 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
                 <tbody>
                     {leads.map((lead, index) => (
                         <tr key={index}>
+                            <td>
+                                {lead.oldLeadID !== '' ? 
+                                    <Button variant="primary" onClick={() => openHistoryModal(lead)}><FaCheck /></Button> : <label>''</label>
+                                }
+                            </td>
                             <td>
                                 <Button variant="link" onClick={() => openCommentModal(lead)}>{lead.firstName}</Button>
                             </td>

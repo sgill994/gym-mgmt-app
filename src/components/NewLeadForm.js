@@ -41,14 +41,19 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
         setAddNewLead(false);
     };
 
+    // Allows adding of archived Members; archived Members can only have 1 active Lead at a time to prevent accidental duplicates
+    // Members will repopulate on archived Members list existing associated Lead has been archived, declined, or deleted
     const filteredMembers = members.filter(member =>
-        member.archived && !leads.some(lead => lead.leadID === member.memberID)
+        member.archived && !leads.some(lead => lead.leadID === member.memberID && !lead.archived && !lead.declined) 
     );
 
+    // Allows adding of archived Leads (created as a 'new' Lead)
+    // Each archived Lead can be added exactly once to prevent accidental duplicates
     const filteredLeads = leads.filter(lead => (lead.archived || lead.declined) && !lead.fromArchivedLead);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        // Create a new Lead by entering contact details manually 
         if (addNewLead) {
             const form = e.currentTarget;
             const formData = new FormData(form);
@@ -74,9 +79,11 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                 oldLeadID: '',
                 addedFromArchived: false
             });
+
             closeNewLeadForm();
             form.reset();
         }
+        // Create a new Lead from an existing archived Member
         else if (addArchivedMember) {
             const newLeads = selectedMembers.map(member => ({
                 leadID: member.memberID,
@@ -97,7 +104,9 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
             addLead(newLeads);        
             setSelectedMembers([]);
             closeArchivedMember();
-        } else if (addArchivedLead) {
+        } 
+        // Create a new Lead from an existing archived Lead
+        else if (addArchivedLead) {
             const newLeads = selectedLeads.map(lead => ({
             leadID: uuidv4(),
             firstName: lead.firstName,
@@ -114,6 +123,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
             addedFromArchived: false
             }));
 
+            // Set 'fromArchivedLead' to True for all added archived Leads to remove them from archived Lead list
             const updatedOriginalLeads = leads.map(lead => 
                 selectedLeads.some(selectedLead => selectedLead.leadID === lead.leadID) 
                 ? { ...lead, fromArchivedLead: true } 
@@ -125,10 +135,10 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
             setSelectedLeads([]);
             closeArchivedLeads();
         }
-        console.log("All current leads: ", leads)
         closeModal();
     };
 
+    // Select/unselected all unchecked/checked checkboxes when first checkbox is click
     const handleSelectAllChange = (items, setSelectedItems, setSelectAll) => {
         if (selectAllLeads) {
           setSelectedItems([]);
@@ -138,7 +148,8 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
         setSelectAll(prev => !prev);
     };
 
-    const handleCheckBoxChange = (item, selectedItems, setSelectedItems) => {
+    // Add Lead or Member for associated checked checkbox to list of Leads to be created on submit
+    const handleCheckBoxChange = (item, setSelectedItems) => {
         setSelectedItems(prevSelected =>
           prevSelected.includes(item)
             ? prevSelected.filter(i => i !== item)
@@ -195,7 +206,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                                                 <input 
                                                     type="checkbox" 
                                                     checked={selectedMembers.includes(member)} 
-                                                    onChange={() => handleCheckBoxChange(member, selectedMembers, setSelectedMembers)}
+                                                    onChange={() => handleCheckBoxChange(member, setSelectedMembers)}
                                                 />
                                             </td>
                                             <td>{member.firstName}</td>
@@ -236,7 +247,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                                                 <input 
                                                     type="checkbox" 
                                                     checked={selectedLeads.includes(lead)} 
-                                                    onChange={() => handleCheckBoxChange(lead, selectedLeads, setSelectedLeads)}
+                                                    onChange={() => handleCheckBoxChange(lead, setSelectedLeads)}
                                                 />
                                             </td>
                                             <td>{lead.firstName}</td>
