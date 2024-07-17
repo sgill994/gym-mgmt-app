@@ -36,12 +36,11 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
       emergencyContactName: member.emergencyContactName,
       emergencyContactPhone: member.emergencyContactPhone
     }));
-
-    console.log('Processed Data:', processedData); // Log processed data
   
     processedData.forEach((member) => {
       addMember(member); // Add each processed member to state
     });
+    
   };
 
   return (
