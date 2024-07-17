@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid'; // Import uuid for generating unique IDs
 
 const ImportCSV = ({ onImportCSV }) => {
   const [importedData, setImportedData] = useState([]); // State to store parsed CSV data
+  const [fileInputKey, setFileInputKey] = useState(Date.now()); // Key to reset file input
 
   // Function to handle CSV file upload
   const handleFileUpload = (event) => {
@@ -11,20 +13,30 @@ const ImportCSV = ({ onImportCSV }) => {
     // Callback function when FileReader has loaded the file
     reader.onload = (e) => {
       const text = e.target.result; // The file content
+      console.log('File content:', text); // Log the file content
       const parsedData = parseCSVData(text); // Parse the CSV data
+      console.log('Parsed Data:', parsedData); // Log the parsed data to verify its structure
       setImportedData(parsedData); // Update state with parsed data
       onImportCSV(parsedData); // Call the parent component's callback with imported data
+      resetFileInput(); // Reset file input after successful upload
     };
 
     reader.onerror = () => {
       console.error('File reading has failed');
+      resetFileInput(); // Reset file input on error
     };
 
     if (file) {
       reader.readAsText(file); // Read the file as text
     } else {
       console.error('No file selected');
+      resetFileInput(); // Reset file input if no file selected
     }
+  };
+
+  // Function to reset file input
+  const resetFileInput = () => {
+    setFileInputKey(Date.now()); // Change key to reset file input
   };
 
   // Function to parse CSV data
@@ -39,21 +51,28 @@ const ImportCSV = ({ onImportCSV }) => {
         const key = header.trim().toLowerCase()
           .replace(/\s+(\w)/g, (_, c) => c.toUpperCase())
           .replace(/\s+/g, ''); // Convert spaces to camelCase
-          if (key === 'archived') {
-            obj[key] = values[index].trim().toLowerCase() === 'yes'; // Set archived to true if value is "yes"
-          } else {
-            obj[key] = values[index] ? values[index].trim() : ''; // Assign value to object property
-          }
-          return obj;
-        }, {});
-      });
-      return data; // Return parsed data array
+      
+        // Special handling for memberID
+        if (key === 'memberId') {
+          obj['memberID'] = values[index].trim() || uuidv4(); // Fill memberID if blank
+        } else if (key === 'archived') {
+          obj[key] = values[index].trim().toLowerCase() === 'yes';
+        } else {
+          obj[key] = values[index].trim(); // Assign value to object property
+        }
+
+        return obj;
+      }, {});
+    });
+
+    return data; // Return parsed data array
   };
 
   return (
     <div>
       {/* Import input */}
       <input
+        key={fileInputKey} // Use key to reset input on change
         type="file"
         onChange={handleFileUpload}
         accept=".csv"
