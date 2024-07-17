@@ -14,7 +14,8 @@ const App = () => {
   const [leads, setLeads] = useState([]);
   const [classes, setClasses] = useState([]);
 
-  // Allows single or multiple leads to be added to leads array 
+  // Allows a single (new lead form) or multiple new leads (from archived Members) 
+  // to be added to leads array 
   const addLead = (newLeads) => {
     if (Array.isArray(newLeads)) {
       setLeads(prevLeads => [...prevLeads, ...newLeads]);
