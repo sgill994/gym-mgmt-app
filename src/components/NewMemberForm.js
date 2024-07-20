@@ -74,12 +74,9 @@ const NewMemberForm = ({ addMember }) => {
       const dateOfBirth = formData.get('dateOfBirth');
       const customerComments = formData.get('customerComments');
       const referralSource = formData.get('referralSource');
-      const customCustomerID = formData.get('customCustomerID');
       const streetAddress = formData.get('streetAddress');
       const city = formData.get('city');
       const postalCode = formData.get('postalCode');
-      const province = formData.get('province');
-      const country = formData.get('country');
       const emergencyContactName = formData.get('emergencyContactName');
      //const emergencyContactPhone = formData.get('emergencyContactPhone');
 
@@ -92,12 +89,9 @@ const NewMemberForm = ({ addMember }) => {
         dateOfBirth,
         customerComments,
         referralSource,
-        customCustomerID,
         streetAddress,
         city,
         postalCode,
-        province,
-        country,
         emergencyContactName,
         emergencyContactPhone,
         archived: false
@@ -191,10 +185,6 @@ const NewMemberForm = ({ addMember }) => {
           <label htmlFor="validationCustom07" className="form-label">Referral Source</label>
           <input type="text" className="form-control" id="validationCustom07" placeholder="Referral Source" name="referralSource" />
         </div>
-        <div className="mb-1">
-          <label htmlFor="validationCustom08" className="form-label">Custom Customer ID</label>
-          <input type="text" className="form-control" id="validationCustom08" placeholder="Custom Customer ID" name="customCustomerID" />
-        </div>
       </div>
 
       <div className='customerAddress'>
@@ -205,26 +195,16 @@ const NewMemberForm = ({ addMember }) => {
           <div className="invalid-feedback">Please add a valid address!</div>
         </div>
         <div className="row g-3">
-          <div className="col-sm-7">
+          <div className="col-sm">
             <label htmlFor="validationCustom10" className="form-label">City</label>
             <input type="text" className="form-control" id="validationCustom10" placeholder="City" name='city' required/>
             <div className="invalid-feedback">Please add a valid City!</div>
           </div>
           <div className="col-sm">
-            <label htmlFor="validationCustom11" className="form-label">Zip/Postal Code</label>
-            <input type="text" className="form-control" id="validationCustom11" placeholder="Zip/Postal Code" name="postalCode" required/>
+            <label htmlFor="validationCustom11" className="form-label">Postal Code</label>
+            <input type="text" className="form-control" id="validationCustom11" placeholder="Postal Code" name="postalCode" required/>
             <div className="invalid-feedback">Please add a valid Zip/Postal Code!</div>
           </div>
-        </div>
-        <div className="mb-1">
-          <label htmlFor="validationCustom12" className="form-label">State/Province</label>
-          <input type="text" className="form-control" id="validationCustom12" placeholder="Province/Territory" name="province" required/>
-          <div className="invalid-feedback">Please add a valid State/Province!</div>
-        </div>
-        <div className="mb-1">
-          <label htmlFor="validationCustom13" className="form-label">Country</label>
-          <input type="text" className="form-control" id="validationCustom13" placeholder="Country" name="country" required/>
-          <div className="invalid-feedback">Please add a valid Country!</div>
         </div>
       </div>
 
