@@ -34,6 +34,22 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
         <input type="text" name="phoneNumber" value={updatedMember.phoneNumber} onChange={handleChange} readOnly={!isEditing} />
         <label> Email: </label>
         <input type="text" name="email" value={updatedMember.email} onChange={handleChange} readOnly={!isEditing} />
+        <label> Customer Notes: </label>
+        <textarea type="text" name="email" value={updatedMember.customerComments} onChange={handleChange} readOnly={!isEditing} />
+        <label> Date of Birth: </label>
+        <input type="text" name="email" value={updatedMember.dateOfBirth} onChange={handleChange} readOnly={!isEditing} />
+        <label> Referral Source: </label>
+        <input type="text" name="email" value={updatedMember.referralSource} onChange={handleChange} readOnly={!isEditing} />
+        <label> Street Adress: </label>
+        <input type="text" name="email" value={updatedMember.streetAddress} onChange={handleChange} readOnly={!isEditing} />
+        <label> City: </label>
+        <input type="text" name="email" value={updatedMember.city} onChange={handleChange} readOnly={!isEditing} />
+        <label> Postal Code: </label>
+        <input type="text" name="email" value={updatedMember.postalCode} onChange={handleChange} readOnly={!isEditing} />
+        <label> Emergency Contact Name: </label>
+        <input type="text" name="email" value={updatedMember.emergencyContactName} onChange={handleChange} readOnly={!isEditing} />
+        <label> Emergency Contact Phone: </label>
+        <input type="text" name="email" value={updatedMember.emergencyContactPhone} onChange={handleChange} readOnly={!isEditing} />
         {isEditing && (
           <>
             <button type="submit">Save Changes</button>
