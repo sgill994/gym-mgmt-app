@@ -3,13 +3,9 @@ import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
 import MemberTabs from '../components/MemberTabs';
-<<<<<<< HEAD
-import ExportCSV from '../components/exportCSV';
-=======
 import ImportCSV from '../components/importCSV';
 import ExportCSV from '../components/ExportCSV';
 import { v4 as uuidv4 } from 'uuid'; // Import uuid for generating unique IDs
->>>>>>> import-feature
 
 const MembersPage = ({ members, addMember, updateMember, deleteMember, setMemberArchived }) => {
   const [activeTab, setActiveTab] = useState('active-members');
@@ -80,15 +76,11 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
             setMemberArchived={setMemberArchived} />
         </>
       )}
-<<<<<<< HEAD
-      <ExportCSV members={members}></ExportCSV>
-=======
       {/* Export members to CSV */}
       <ExportCSV members={members} />
 
       {/* Import members from CSV */}
       <ImportCSV onImportCSV={handleImportCSV} />
->>>>>>> import-feature
     </div>
   );
 };

@@ -184,6 +184,15 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
                     <LeadComments lead={commentLead} updateLead={updateLead} />
                 </Modal.Body>
             </Modal>
+
+            <Modal show={historyModal} onHide={closeHistoryModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Lead Communication History</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        
+                    </Modal.Body>
+            </Modal>
         </div>
     );
 };
