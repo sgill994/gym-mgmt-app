@@ -122,8 +122,6 @@ const NewMemberForm = ({ addMember }) => {
       autoclose: true
     });
   }, []);
-
-  console.log("Emergency contact " + emergencyContactPhone);
   
   return (
     <form className={`row g-3 ${validated ? 'was-validated' : ''}`} onSubmit={handleSubmit} noValidate >
