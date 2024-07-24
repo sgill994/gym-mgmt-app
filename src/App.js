@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/App.css'
 import Tabs from './components/Tabs';
 import MembersPage from './pages/MembersPage';

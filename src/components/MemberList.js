@@ -90,7 +90,8 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
         </tbody>
       </Table>
 
-      <Modal show={selectedMember !== null} onHide={closeMemberDetails}>
+      
+      <Modal show={selectedMember !== null} onHide={closeMemberDetails} className="custom-modal">
         <Modal.Header closeButton>
           <Modal.Title>Member Details</Modal.Title>
         </Modal.Header>
