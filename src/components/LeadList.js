@@ -4,7 +4,7 @@ import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
 import LeadDetails from '../components/LeadDetails';
 import LeadComments from '../components/LeadComments';
 
-const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
+const LeadList = ({leads, setLeadStatus, deleteLead, updateLead, updateLeadHistory}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
     const [currentStatus, setCurrentStatus] = useState('');
@@ -14,8 +14,6 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
     const [editingLead, setLeadToEdit] = useState(null);
     const [commentModal, setCommentModal] = useState(false);
     const [commentLead, setCommentLead] = useState(null);
-    const [historyModal, setHistoryModal] = useState(false);
-    const [historyLead, setHistoryLead] = useState(null);
     
     // Allows user to edit lead's 'follow up status' with dropdown options
     const handleStatusEdit = (leadID, currentStatus) => {
@@ -79,16 +77,6 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
         setCommentModal(false);
     }
 
-    const openHistoryModal = (lead) => {
-        setHistoryLead(lead);
-        setHistoryModal(true);
-    }
-
-    const closeHistoryModal = () => {
-        setHistoryLead(null);
-        setHistoryModal(false);
-    }
-
     return (
         <div>
             <Table striped bordered hover>
@@ -108,7 +96,7 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
                         <tr key={index}>
                             <td>
                                 {lead.oldLeadID !== '' ? 
-                                    <Button variant="primary" onClick={() => openHistoryModal(lead)}><FaCheck /></Button> : <label>''</label>
+                                    <Button variant="primary" onClick={() => openCommentModal(lead)}><FaCheck /></Button> : <label></label>
                                 }
                             </td>
                             <td>
@@ -181,17 +169,8 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead}) => {
                     <Modal.Title>Lead Interactions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <LeadComments lead={commentLead} updateLead={updateLead} />
+                    <LeadComments lead={commentLead} updateLead={updateLead} updateLeadHistory={updateLeadHistory} />
                 </Modal.Body>
-            </Modal>
-
-            <Modal show={historyModal} onHide={closeHistoryModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Lead Communication History</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        
-                    </Modal.Body>
             </Modal>
         </div>
     );
