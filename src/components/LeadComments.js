@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Form} from 'react-bootstrap';
+import {Table, Form, Button, Modal} from 'react-bootstrap';
 import {FaEdit, FaTrashAlt, FaSave, FaTimes} from 'react-icons/fa';
 
 const LeadComments = ({lead, updateLead}) => {
@@ -7,6 +7,21 @@ const LeadComments = ({lead, updateLead}) => {
     const [newComment, setNewComment] = useState('');
     const [editingCommentIndex, setEditingCommentIndex] = useState(null);
     const [editingCommentText, setEditingCommentText] = useState('');
+    const [historicalCommentModal, setHistoricalCommentModal] = useState(false);
+    const [historicalComments, setHistoricalComments] = useState([]);
+    const [historicalTimestamps, setHistoricalTimestamps] = useState([]);
+
+    const openHistoricalCommentModal = (comments, timestamps) => {
+        setHistoricalComments(comments);
+        setHistoricalTimestamps(timestamps);
+        setHistoricalCommentModal(true);
+    };
+
+    const closeHistoricalCommentModal = () => {
+        setHistoricalComments([]);
+        setHistoricalTimestamps([]);
+        setHistoricalCommentModal(false);
+    };
 
     // Updates lead's comment list and timestamps on save for new and editted comments 
     // Sets lead object to point to updated copy
@@ -58,6 +73,37 @@ const LeadComments = ({lead, updateLead}) => {
 
     return (
         <div data-comment="new comment text input">
+            {commentLead?.leadHistory.length > 0 && (
+                <div>
+                    <h5>Related Leads</h5>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {commentLead?.leadHistory.map((relatedLead, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <Button variant="link" onClick={() => openHistoricalCommentModal(relatedLead.comments, relatedLead.timestamps)}>
+                                            {relatedLead.firstName}
+                                        </Button>
+                                    </td>
+                                    <td>{relatedLead.lastName}</td>
+                                    <td>{relatedLead.phoneNumber}</td>
+                                    <td>{relatedLead.email}</td>
+                                    <td>{relatedLead.followUpStatus}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+            )}
             <h2>Follow-Ups with {commentLead?.firstName} {commentLead?.lastName}</h2>
             <Form>
                 <Form.Group>
@@ -98,6 +144,25 @@ const LeadComments = ({lead, updateLead}) => {
                     </div>
                     ))}
             </div>
+            <Modal show={historicalCommentModal} onHide={closeHistoricalCommentModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Historical Comments</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <ul>
+                        {historicalComments.map((comment, index) => (
+                            <li key={index}>
+                                {comment} - <em>{new Date(historicalTimestamps[index]).toLocaleString()}</em>
+                            </li>
+                        ))}
+                    </ul>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closeHistoricalCommentModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

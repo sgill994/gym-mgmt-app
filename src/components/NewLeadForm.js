@@ -77,6 +77,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                 archived: false,
                 declined: false,
                 oldLeadID: '',
+                leadHistory: [],
                 addedFromArchived: false
             });
 
@@ -98,6 +99,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                 archived: false,
                 declined: false,
                 oldLeadID: '',
+                leadHistory: [],
                 addedFromArchived: false
             }));
 
@@ -120,6 +122,7 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
             archived: false,
             declined: false,
             oldLeadID: lead.oldLeadID !== '' ? lead.oldLeadID : lead.leadID,
+            leadHistory: [...lead.leadHistory, lead],
             addedFromArchived: false
             }));
 

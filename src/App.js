@@ -57,6 +57,10 @@ const App = () => {
     setLeads(updatedLeads);
   }
 
+  const updateLeadHistory = (lead, leads) => {
+
+  }
+
   const addMember = (member) => {
     setMembers((prevMembers) => [...prevMembers, member]);
   };
@@ -165,6 +169,7 @@ const App = () => {
         setLeadStatus={setLeadStatus}
         updateLead={updateLead} 
         updateLeadList={updateLeadList}
+        updateLeadHistory={updateLeadHistory}
       /> }
     </div>
   );

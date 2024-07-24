@@ -5,7 +5,7 @@ import LeadList from '../components/LeadList';
 import LeadTabs from '../components/LeadTabs';
 
 
-const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLead, updateLeadList}) => {
+const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLead, updateLeadList, updateLeadHistory}) => {
     const [showModal, setShowModal] = useState(false);
     const [activeTab, setActiveTab] = useState('active-leads');
     const handleOpen = () => setShowModal(true);
@@ -32,6 +32,7 @@ const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLe
                         setLeadStatus={setLeadStatus}
                         deleteLead={deleteLead}
                         updateLead={updateLead}
+                        updateLeadHistory={updateLeadHistory}
                     />
                 </>
             )}
@@ -43,6 +44,7 @@ const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLe
                         setLeadStatus={setLeadStatus}
                         deleteLead={deleteLead}
                         updateLead={updateLead}
+                        updateLeadHistory={updateLeadHistory}
                     />
                 </>
             )}
