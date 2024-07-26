@@ -58,7 +58,11 @@ const App = () => {
   }
 
   const updateLeadHistory = (lead, leads) => {
-
+    const updatedLeadHistory = lead.leadHistory.map(historyLead => {
+      const matchingLead = leads.find(l => l.leadID === historyLead.leadID);
+      return matchingLead ? matchingLead : historyLead;
+    });
+    return { ...lead, leadHistory: updatedLeadHistory };
   }
 
   const addMember = (member) => {

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Table, Form, Button, Modal} from 'react-bootstrap';
 import {FaEdit, FaTrashAlt, FaSave, FaTimes} from 'react-icons/fa';
 
-const LeadComments = ({lead, updateLead}) => {
+const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
     const [commentLead, setCommentLead] = useState(lead);
     const [newComment, setNewComment] = useState('');
     const [editingCommentIndex, setEditingCommentIndex] = useState(null);
