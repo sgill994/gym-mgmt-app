@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Table, Form, Button, Modal} from 'react-bootstrap';
+import {Table, Form, Button, Modal, Alert} from 'react-bootstrap';
 import {FaEdit, FaTrashAlt, FaSave, FaTimes} from 'react-icons/fa';
 
 const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
@@ -10,6 +10,8 @@ const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
     const [historicalCommentModal, setHistoricalCommentModal] = useState(false);
     const [historicalComments, setHistoricalComments] = useState([]);
     const [historicalTimestamps, setHistoricalTimestamps] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessageEdit, setErrorMessageEdit] = useState('');
 
     const openHistoricalCommentModal = (comments, timestamps) => {
         setHistoricalComments(comments);
@@ -26,28 +28,44 @@ const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
     // Updates lead's comment list and timestamps on save for new and editted comments 
     // Sets lead object to point to updated copy
     const saveComment = () => {
+        // Prevent user from saving blank comment
+        if (newComment.trim() === '' && editingCommentIndex === null) {
+            setErrorMessage('Comment cannot be blank.');
+            return;
+        }
+
         const timestamp = new Date().toLocaleString();
         let updatedComments;
         let updatedTimestamps;
+        let updatedEditedComments;
 
         if (editingCommentIndex !== null) {
+            if(editingCommentText.trim() === '') {
+                setErrorMessageEdit('Comment cannot be blank.');
+                return;
+            }
             // Editing an existing comment
             updatedComments = [...commentLead.comments];
             updatedTimestamps = [...commentLead.timestamps];
+            updatedEditedComments = [...commentLead.editedComments];
             updatedComments[editingCommentIndex] = editingCommentText;
             updatedTimestamps[editingCommentIndex] = timestamp;
+            updatedEditedComments[editingCommentIndex] = true;
             setEditingCommentIndex(null);
             setEditingCommentText('');
         } else {
             // Adding a new comment to empty comments list
             updatedComments = [newComment, ...commentLead.comments];
             updatedTimestamps = [timestamp, ...commentLead.timestamps]; 
+            updatedEditedComments = [false, ...commentLead.editedComments || []];
             setNewComment('');
         }
 
-        const updatedLead = { ...commentLead, comments: updatedComments, timestamps: updatedTimestamps };
+        const updatedLead = { ...commentLead, comments: updatedComments, timestamps: updatedTimestamps, editedComments: updatedEditedComments};
         updateLead(updatedLead, commentLead);
         setCommentLead(updatedLead);
+        setErrorMessage('');
+        setErrorMessageEdit('');
     };
     
     // Sets index and comment's text for comment to edit
@@ -112,7 +130,13 @@ const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
                     as="textarea" 
                     rows="3" 
                     value={newComment} 
-                    onChange={(e) => setNewComment(e.target.value)} />
+                    onChange={(e) => setNewComment(e.target.value)} 
+                    />
+                    {errorMessage && (
+                        <Alert variant="danger" style={{fontSize: '12px', padding: '5px'}}>
+                            {errorMessage}
+                        </Alert>
+                    )}
                 </Form.Group>
             </Form>
             <Button variant="primary" onClick={saveComment}>Save</Button>
@@ -129,6 +153,11 @@ const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
                                         value={editingCommentText}
                                         onChange={(e) => setEditingCommentText(e.target.value)}
                                     />
+                                    {errorMessageEdit && (
+                                        <Alert variant="danger" style={{fontSize: '12px', padding: '5px'}}>
+                                        {errorMessageEdit}
+                                        </Alert>
+                                    )}
                                     <Button variant="primary" onClick={saveComment}><FaSave /></Button>
                                     <Button variant="secondary" onClick={cancelEdit}><FaTimes /></Button>
                                 </div>
@@ -136,6 +165,9 @@ const LeadComments = ({lead, leads, updateLead, updateLeadHistory}) => {
                                 <div data-comment="read-only view for all comments">
                                     <p>{comment}</p>
                                     <small>{commentLead.timestamps[index]}</small>
+                                    {commentLead.editedComments[index] === true && 
+                                    <small>(edited)</small>
+                                    }
                                     <Button variant="link" onClick={() => editComment(index)}><FaEdit /></Button>
                                     <Button variant="link" onClick={() => deleteComment(index)}><FaTrashAlt /></Button>
                                 </div>

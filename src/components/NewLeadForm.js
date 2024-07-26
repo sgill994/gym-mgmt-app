@@ -53,6 +53,8 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const leadFromDate = new Date().toLocaleString();
+
         // Create a new Lead by entering contact details manually 
         if (addNewLead) {
             const form = e.currentTarget;
@@ -78,7 +80,9 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                 declined: false,
                 oldLeadID: '',
                 leadHistory: [],
-                addedFromArchived: false
+                addedFromArchived: false,
+                source: 'to do',
+                dateAdded: leadFromDate
             });
 
             closeNewLeadForm();
@@ -100,7 +104,9 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
                 declined: false,
                 oldLeadID: '',
                 leadHistory: [],
-                addedFromArchived: false
+                addedFromArchived: false,
+                source: 'to do',
+                dateAdded: leadFromDate
             }));
 
             addLead(newLeads);        
@@ -123,7 +129,9 @@ const NewLeadForm = ({ addLead, members, leads, updateLeadList, closeModal }) =>
             declined: false,
             oldLeadID: lead.oldLeadID !== '' ? lead.oldLeadID : lead.leadID,
             leadHistory: [...lead.leadHistory, lead],
-            addedFromArchived: false
+            addedFromArchived: false,
+            source: 'to do',
+            dateAdded: leadFromDate
             }));
 
             // Set 'fromArchivedLead' to True for all added archived Leads to remove them from archived Lead list

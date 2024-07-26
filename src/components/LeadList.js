@@ -86,10 +86,12 @@ const LeadList = ({leads, filteredLeads, setLeadStatus, deleteLead, updateLead, 
                 <thead>
                     <tr>
                         <th>History</th>
+                        <th>Date</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Phone Number</th>
                         <th>Email</th>
+                        <th>Campaign</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -102,12 +104,14 @@ const LeadList = ({leads, filteredLeads, setLeadStatus, deleteLead, updateLead, 
                                     <Button variant="primary" onClick={() => openCommentModal(lead)}><FaCheck /></Button> : <label></label>
                                 }
                             </td>
+                            <td>{new Date(lead.dateAdded).toLocaleDateString()}</td>
                             <td>
                                 <Button variant="link" onClick={() => openCommentModal(lead)}>{lead.firstName}</Button>
                             </td>
                             <td>{lead.lastName}</td>
                             <td>{lead.phoneNumber}</td>
                             <td>{lead.email}</td>
+                            <td>{lead.source}</td>
                             <td>
                                 {editingLeadID === lead.leadID ? (
                                     <>
