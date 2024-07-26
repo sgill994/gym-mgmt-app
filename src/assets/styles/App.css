@@ -1,7 +1,7 @@
 .new-members{
     width: 100%;
 }
-.customerWelcome{
+.customerWelcome {
     float: left;
     width: 50%;
 }
@@ -24,4 +24,33 @@
 .custom-modal .modal-dialog {
     max-width: 99%; /* Adjust as needed */
     width: auto;
+}
+.memberDetailsForm{
+    float: left;
+    width: 80%;
+}
+.profilepic{
+    width: '100%';
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.scrollable-form-container {
+    max-height: 750px; /* Adjust as needed */
+    overflow-y: auto; /* Adds vertical scrollbar */
+    padding: 15px; /* Optional: add some padding */
+    border: 1px solid #ddd; /* Optional: add a border */
+    border-radius: 5px; /* Optional: add rounded corners */
   }
+  .notification-form {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .form-check.form-switch {
+    display: inline-block;
+  }
+  
+  

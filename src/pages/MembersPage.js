@@ -50,7 +50,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
       {activeTab === 'active-members' && (
         <>
           <Button variant="primary" onClick={handleOpen}>Add New Member</Button>
-          <Modal show={showModal} onHide={handleClose}>
+          <Modal show={showModal} onHide={handleClose} className="custom-modal">
             <Modal.Header closeButton>
               <Modal.Title>Add New Member</Modal.Title>
             </Modal.Header>

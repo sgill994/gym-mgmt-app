@@ -94,7 +94,8 @@ const NewMemberForm = ({ addMember }) => {
         postalCode,
         emergencyContactName,
         emergencyContactPhone,
-        archived: false
+        archived: false,
+        relationships: []
       });
 
       // Reset form and validation status
@@ -166,7 +167,7 @@ const NewMemberForm = ({ addMember }) => {
         </div>
       </div>
 
-      <div className='customerAdditionalInfo'>
+      <div className='customerAdditionalInfo' style={{float:'left',width:'50%'}}>
         <legend>Additonal Info</legend>
         <div className="mb-3">
           <label htmlFor="validationCustom05" className="form-label">Customer Notes</label>
@@ -187,7 +188,7 @@ const NewMemberForm = ({ addMember }) => {
         </div>
       </div>
 
-      <div className='customerAddress'>
+      <div className='customerAddress' style={{float:'left',width:'50%'}}>
         <legend>Address</legend>
         <div className="mb-3">
           <label htmlFor="validationCustom09" className="form-label">Street Adress</label>
@@ -208,7 +209,7 @@ const NewMemberForm = ({ addMember }) => {
         </div>
       </div>
 
-      <div className='customerEmergencyContact'>
+      <div className='customerEmergencyContact' style={{float:'left',width:'50%'}}>
         <legend>Emergency Contact</legend>
         <div className="mb-3">
           <label htmlFor="validationCustom14" className="form-label">Emergency Contact Name</label>
