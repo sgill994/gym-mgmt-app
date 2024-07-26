@@ -4,7 +4,7 @@ import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
 import LeadDetails from '../components/LeadDetails';
 import LeadComments from '../components/LeadComments';
 
-const LeadList = ({leads, setLeadStatus, deleteLead, updateLead, updateLeadHistory}) => {
+const LeadList = ({leads, filteredLeads, setLeadStatus, deleteLead, updateLead, updateLeadHistory}) => {
     const [editingLeadID, setEditingLeadID] = useState(null);
     const [FUStatus, setFUStatus] = useState('Never Contacted');
     const [currentStatus, setCurrentStatus] = useState('');
@@ -67,7 +67,10 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead, updateLeadHisto
 
     // Sets 'Comment Modal' condition to true to open lead comments window
     const openCommentModal = (lead) => {
-        setCommentLead(lead);
+        const updatedLead = updateLeadHistory(lead, leads);
+        updateLead(updatedLead, lead);
+        console.log("State of lead passed to comment modal: ", lead);
+        setCommentLead(updatedLead);
         setCommentModal(true);
     }
 
@@ -92,7 +95,7 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead, updateLeadHisto
                     </tr>
                 </thead>
                 <tbody>
-                    {leads.map((lead, index) => (
+                    {filteredLeads.map((lead, index) => (
                         <tr key={index}>
                             <td>
                                 {lead.oldLeadID !== '' ? 
@@ -169,7 +172,7 @@ const LeadList = ({leads, setLeadStatus, deleteLead, updateLead, updateLeadHisto
                     <Modal.Title>Lead Interactions</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <LeadComments lead={commentLead} updateLead={updateLead} updateLeadHistory={updateLeadHistory} />
+                    <LeadComments lead={commentLead} leads={leads} updateLead={updateLead} updateLeadHistory={updateLeadHistory} />
                 </Modal.Body>
             </Modal>
         </div>

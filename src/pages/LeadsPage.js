@@ -28,7 +28,8 @@ const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLe
                 <>
                     <h3>Active Leads</h3>
                     <LeadList 
-                        leads={leads.filter(lead => !lead.archived && !lead.declined)} 
+                        leads={leads}
+                        filteredLeads={leads.filter(lead => !lead.archived && !lead.declined)} 
                         setLeadStatus={setLeadStatus}
                         deleteLead={deleteLead}
                         updateLead={updateLead}
@@ -40,7 +41,8 @@ const LeadsPage = ({members, leads, addLead, deleteLead, setLeadStatus, updateLe
                 <>
                     <h3>Active Leads</h3>
                     <LeadList 
-                        leads={leads.filter(lead => lead.archived || lead.declined)} 
+                        leads={leads}
+                        filteredLeads={leads.filter(lead => lead.archived || lead.declined)} 
                         setLeadStatus={setLeadStatus}
                         deleteLead={deleteLead}
                         updateLead={updateLead}
