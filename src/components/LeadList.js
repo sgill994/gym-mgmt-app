@@ -82,7 +82,7 @@ const LeadList = ({leads, filteredLeads, setLeadStatus, deleteLead, updateLead, 
 
     return (
         <div>
-            <Table striped bordered hover>
+            <Table striped bordered hover className="table-center">
                 <thead>
                     <tr>
                         <th>History</th>

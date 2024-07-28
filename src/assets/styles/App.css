@@ -25,3 +25,9 @@
     max-width: 99%; /* Adjust as needed */
     width: auto;
   }
+
+.table-center th,
+.table-center td {
+    text-align: center;
+    vertical-align: middle; 
+}

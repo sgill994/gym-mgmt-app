@@ -45,7 +45,7 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
 
   return (
     <div>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="table-center">
         <thead>
           <tr>
             <th>First Name</th>

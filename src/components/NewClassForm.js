@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import '../assets/styles/Classes.css';
+import Select from 'react-select';
+
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -17,7 +20,28 @@ const NewClassForm = ({ addClass }) => {
   const [reservationLimit, setReservationLimit] = useState('');
   const [checkBoxError, setCheckBoxError] = useState('');
   const [reservationError, setReservationError] = useState('');
+  const [calendarColor, setCalendarColor] = useState('');
 
+  const colorOptions = [
+    { name: 'Red', hex: '#FF0000' },
+    { name: 'Green', hex: '#00FF00' },
+    { name: 'Blue', hex: '#0000FF' },
+    { name: 'Yellow', hex: '#FFFF00' },
+    { name: 'Orange', hex: '#FFA500' },
+    { name: 'Purple', hex: '#800080' },
+    { name: 'Pink', hex: '#FFC0CB' },
+    { name: 'Brown', hex: '#A52A2A' },
+    { name: 'Cyan', hex: '#00FFFF' },
+    { name: 'Magenta', hex: '#FF00FF' },
+    { name: 'Lime', hex: '#00FF00' },
+    { name: 'Maroon', hex: '#800000' },
+    { name: 'Olive', hex: '#808000' },
+    { name: 'Navy', hex: '#000080' },
+    { name: 'Teal', hex: '#008080' },
+    { name: 'Grey', hex: '#808080' },
+    { name: 'Sky Blue', hex: '#87CEEB' },
+    { name: 'Coral', hex: '#FF7F50' }
+  ].map(color => ({ value: color.hex, label: color.name, color: color.hex }));
 
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
@@ -59,6 +83,7 @@ const NewClassForm = ({ addClass }) => {
       time, 
       length, 
       instructor, 
+      calendarColor,
       reservationLimit: limitReservations ? reservationLimit : undefined
     };
 
@@ -180,6 +205,22 @@ const NewClassForm = ({ addClass }) => {
             <option>Iain Small</option>
             <option>Alvin Valle</option>
           </select>
+      </div>
+      <div className="class-form-group">
+        <label htmlFor="calendar-color-select">Calendar Color:</label>
+        <Select 
+          id="calendar-color-select" 
+          className="react-select-container"
+          classNamePrefix="react-select"
+          options={colorOptions} 
+          value={colorOptions.find(option => option.value === calendarColor)} 
+          onChange={(selectedOption) => setCalendarColor(selectedOption.value)}
+          formatOptionLabel={option => (
+            <div className="color-option" data-color={option.color}>
+              {option.label}
+            </div>
+          )}
+        />
       </div>
       <div className="class-form-group">
         <label htmlFor="limit-reservations">

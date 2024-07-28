@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Modal, Button } from 'react-bootstrap';
 import ClassDetails from '../components/ClassDetails';
 import { FaCheck, FaPencilAlt, FaTimes } from 'react-icons/fa';
+import '../assets/styles/Classes.css';
 
 const ClassList = ({ classes, updateClass, deleteClass }) => {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -43,7 +44,7 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
 
   return (
     <div>
-      <Table striped bordered hover>
+      <Table striped bordered hover className="table-center">
         <thead>
           <tr>
             <th>Name</th>
@@ -52,6 +53,7 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
             <th>Length</th>
             <th>Class Limit</th>
             <th>Instructor</th>
+            <th>Calendar Color</th>
             <th>Delete</th>
           </tr>
         </thead>
@@ -68,8 +70,11 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
               <td>{course.length}</td>
               <td>{course.reservationLimit ? course.reservationLimit : 'No limit'}</td>
               <td>{course.instructor}</td>
+              <td className="table-cell-center">
+                <div className="color-circle" style={{ backgroundColor: course.calendarColor }}></div>
+              </td>
               <td>
-                <Button variant="danger" onClick={() => handleDelete(course)}><FaTimes /></Button>
+                <Button variant="danger" onClick={() => handleDelete(course)}><FaTimes/></Button>
               </td>
             </tr>
           ))}
