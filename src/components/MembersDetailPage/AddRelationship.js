@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 const AddRelationship = ({ members, member, updateMember }) => {
   const [checkedMembers, setCheckedMembers] = useState([]);
-  console.log(member);
 
   useEffect(() => {
     if (member && Array.isArray(member.relationships)) {
@@ -23,15 +22,11 @@ const AddRelationship = ({ members, member, updateMember }) => {
       ...member,
       relationships: checkedMembers
     };
-
-    // Log the current relationships before update
-    console.log('Current relationships before save:', member.relationships);
-
     updateMember(updatedMember);
-
-    // Log the updated relationships after update
-    console.log('Current relationships after save:', checkedMembers);
   };
+
+  // Filter out the current member from the members list
+  const filteredMembers = members.filter(m => m.memberID !== member.memberID);
 
   return (
     <div className='memberDetailsForm'>
@@ -46,7 +41,7 @@ const AddRelationship = ({ members, member, updateMember }) => {
             </tr>
           </thead>
           <tbody>
-            {members.map(m => (
+            {filteredMembers.map(m => (
               <tr key={m.memberID}>
                 <td>
                   <input
