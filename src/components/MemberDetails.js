@@ -51,6 +51,7 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
 
   const handleLinkClick = (form) => () => setCurrentForm(form);
 
+
   return (
     <div>
       <div className="flex-shrink-0 p-3" style={{ width: "20%", float: "left" }}>
@@ -167,7 +168,8 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
       {currentForm === 'AddRelationship' &&
         <AddRelationship
           members={members}
-          member={member}
+          member={updatedMember}
+          setUpdatedMember={setUpdatedMember}
           updateMember={handleSaveRelationships}
         />}
       {currentForm === 'ActivityForm' && <ActivityForm />}

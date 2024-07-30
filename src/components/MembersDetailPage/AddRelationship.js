@@ -1,28 +1,49 @@
 import React, { useState, useEffect } from 'react';
 
-const AddRelationship = ({ members, member, updateMember }) => {
-  const [checkedMembers, setCheckedMembers] = useState([]);
+const relationshipTypes = ['Parent', 'Child', 'Relative', 'Sibling'];
+
+const AddRelationship = ({ members, member, setUpdatedMember, updateMember }) => {
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [relationshipType, setRelationshipType] = useState({});
 
   useEffect(() => {
     if (member && Array.isArray(member.relationships)) {
-      setCheckedMembers(member.relationships);
+      const initialSelectedMembers = member.relationships.map(rel => rel.memberID);
+      const initialRelationshipType = member.relationships.reduce((acc, rel) => {
+        acc[rel.memberID] = rel.type;
+        return acc;
+      }, {});
+
+      setSelectedMembers(initialSelectedMembers);
+      setRelationshipType(initialRelationshipType);
     }
   }, [member]);
 
   const handleCheckboxChange = (event, memberID) => {
     if (event.target.checked) {
-      setCheckedMembers(prev => [...prev, memberID]);
+      setSelectedMembers(prev => [...prev, memberID]);
     } else {
-      setCheckedMembers(prev => prev.filter(id => id !== memberID));
+      setSelectedMembers(prev => prev.filter(id => id !== memberID));
     }
   };
 
-  const handleSave = () => {
+  const handleRelationshipTypeChange = (memberID, type) => {
+    setRelationshipType(prevTypes => ({
+      ...prevTypes,
+      [memberID]: type
+    }));
+  };
+
+  const handleAddRelationships = () => {
     const updatedMember = {
       ...member,
-      relationships: checkedMembers
+      relationships: selectedMembers.map(memberID => ({
+        memberID,
+        type: relationshipType[memberID] || 'Unknown'
+      }))
     };
     updateMember(updatedMember);
+    setUpdatedMember(updatedMember);
   };
 
   // Filter out the current member from the members list
@@ -31,32 +52,46 @@ const AddRelationship = ({ members, member, updateMember }) => {
   return (
     <div className='memberDetailsForm'>
       <form className='all-form'>
-        <h3>Add Relationship</h3>
+        <h2>Add Relationships</h2>
         <table className="table">
           <thead>
             <tr>
-              <th>Relationship</th>
+              <th>Select</th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>Relationship Type</th>
             </tr>
           </thead>
           <tbody>
-            {filteredMembers.map(m => (
-              <tr key={m.memberID}>
+            {filteredMembers.map(member => (
+              <tr key={member.memberID}>
                 <td>
                   <input
                     type="checkbox"
-                    checked={checkedMembers.includes(m.memberID)}
-                    onChange={(event) => handleCheckboxChange(event, m.memberID)}
+                    checked={selectedMembers.includes(member.memberID)}
+                    onChange={(e) => handleCheckboxChange(e, member.memberID)}
                   />
                 </td>
-                <td>{m.firstName}</td>
-                <td>{m.lastName}</td>
+                <td>{member.firstName}</td>
+                <td>{member.lastName}</td>
+                <td>
+                  {selectedMembers.includes(member.memberID) && (
+                    <select
+                      value={relationshipType[member.memberID] || ''}
+                      onChange={(e) => handleRelationshipTypeChange(member.memberID, e.target.value)}
+                    >
+                      <option value="">Select Relationship Type</option>
+                      {relationshipTypes.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button type="button" onClick={handleSave}>Save Relationships</button>
+        <button type="submit" className="btn btn-primary mt-3" onClick={handleAddRelationships}>Add Relationships</button>
       </form>
     </div>
   );

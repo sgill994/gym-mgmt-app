@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './assets/styles/App.css'
+import './assets/styles/App.css';
 import Tabs from './components/Tabs';
 import MembersPage from './pages/MembersPage';
 import ClassesPage from './pages/ClassesPage';
@@ -14,12 +14,9 @@ const App = () => {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
-    // This will log when the members state changes
     console.log('Members updated:', members);
   }, [members]);
 
-  // Allows a single (new lead form) or multiple new leads (from archived Members) 
-  // to be added to leads array 
   const addLead = (newLeads) => {
     if (Array.isArray(newLeads)) {
       setLeads(prevLeads => [...prevLeads, ...newLeads]);
@@ -28,12 +25,11 @@ const App = () => {
     }
   };
 
-  // Updates 'follow up' status on edit & save in Leads table dropdown menu
   const setLeadStatus = (leadID, newFollowUpStatus) => {
-    setLeads((prevLeads) =>
-      prevLeads.map((lead) =>
+    setLeads(prevLeads =>
+      prevLeads.map(lead =>
         lead.leadID === leadID ? {
-          ...lead, 
+          ...lead,
           followUpStatus: newFollowUpStatus,
           archived: newFollowUpStatus === 'Archived' ? true : (lead.followUpStatus === 'Archived' ? false : lead.archived),
           declined: newFollowUpStatus === 'Declined' ? true : (lead.followUpStatus === 'Declined' ? false : lead.declined)
@@ -42,16 +38,15 @@ const App = () => {
     );
   };
 
-  // Deletes lead on delete in delete confirmation pop-up window
   const deleteLead = (leadID) => {
-    setLeads((prevLeads) =>
-      prevLeads.filter((lead) => lead.leadID !== leadID)
+    setLeads(prevLeads =>
+      prevLeads.filter(lead => lead.leadID !== leadID)
     );
   };
 
   const updateLead = (updatedLead, originalLead) => {
-    setLeads((prevLeads) =>
-      prevLeads.map((lead) =>
+    setLeads(prevLeads =>
+      prevLeads.map(lead =>
         lead.leadID === originalLead.leadID ? updatedLead : lead
       )
     );
@@ -59,36 +54,65 @@ const App = () => {
 
   const updateLeadList = (updatedLeads) => {
     setLeads(updatedLeads);
-  }
+  };
 
   const updateLeadHistory = (lead, leads) => {
-
-  }
+    // To be implemented
+  };
 
   const addMember = (member) => {
-    setMembers((prevMembers) => [...prevMembers, member]);
+    setMembers(prevMembers => [...prevMembers, member]);
   };
 
-  // Replaces existing member with updated member in array on edit & save in MemberDetails window
   const updateMember = (updatedMember, originalMember) => {
-    setMembers((prevMembers) =>
-      prevMembers.map((member) => 
+    setMembers(prevMembers => {
+      if (!Array.isArray(prevMembers)) {
+        console.error('prevMembers is not an array');
+        return prevMembers;
+      }
+
+      // Update the primary member
+      const newMembers = prevMembers.map(member =>
         member.memberID === originalMember.memberID ? updatedMember : member
-      )
-    );
+      );
+
+      // Update related members
+      updatedMember.relationships?.forEach(rel => {
+        const relatedMember = newMembers.find(m => m.memberID === rel.memberID);
+        if (relatedMember) {
+          const reciprocalRelationshipType = rel.type === 'Parent' ? 'Child' :
+                                              rel.type === 'Child' ? 'Parent' :
+                                              rel.type === 'Sibling' ? 'Sibling' :
+                                              'Relative';
+
+          // Add or update the reciprocal relationship
+          const updatedRelatedMember = {
+            ...relatedMember,
+            relationships: [
+              ...(relatedMember.relationships || []).filter(r => r.memberID !== updatedMember.memberID),
+              { memberID: updatedMember.memberID, type: reciprocalRelationshipType }
+            ]
+          };
+
+          // Replace the updated related member in the list
+          newMembers[newMembers.indexOf(relatedMember)] = updatedRelatedMember;
+        }
+      });
+
+      return newMembers;
+    });
   };
-  
-  // Deletes member on delete in MemberList delete confirmation pop-up window
+
   const deleteMember = (memberID) => {
-    setMembers((prevMembers) =>
-      prevMembers.filter((member) => member.memberID !== memberID)
+    setMembers(prevMembers =>
+      prevMembers.filter(member => member.memberID !== memberID)
     );
   };
 
   const setMemberArchived = (memberID, archivedStatus) => {
-    setMembers((prevMembers) =>
-      prevMembers.map((member) =>
-        member.memberID === memberID ? {...member, archived: archivedStatus} : member
+    setMembers(prevMembers =>
+      prevMembers.map(member =>
+        member.memberID === memberID ? { ...member, archived: archivedStatus } : member
       )
     );
   };
@@ -97,31 +121,28 @@ const App = () => {
     setClasses([...classes, course]);
   };
 
-  // Replaces existing class with updated class in array on edit & save in ClassDetails window
   const updateClass = (updatedClass, originalClass) => {
-    setClasses((prevClasses) => 
-      prevClasses.map((course) => 
+    setClasses(prevClasses =>
+      prevClasses.map(course =>
         course.courseID === originalClass.courseID ? updatedClass : course
       )
     );
   };
 
-  // Deletes class on delete in ClassList delete confirmation pop-up window
   const deleteClass = (courseID) => {
-    setClasses((prevClasses) =>
-      prevClasses.filter((course) => course.courseID !== courseID)
+    setClasses(prevClasses =>
+      prevClasses.filter(course => course.courseID !== courseID)
     );
-  }
+  };
 
-  // TO DO: have not started on Staff Tab in Manage Page 
   const [employees, setEmployees] = useState([]);
   const addEmployee = (employee) => {
     setEmployees([...employees, employee]);
   };
 
   const updateEmployee = (updatedEmployee, originalEmployee) => {
-    setEmployees((prevEmployees) =>
-      prevEmployees.map((employee) =>
+    setEmployees(prevEmployees =>
+      prevEmployees.map(employee =>
         employee.employeeID === originalEmployee.employeeID ? updatedEmployee : employee
       )
     );
@@ -130,45 +151,42 @@ const App = () => {
   return (
     <div>
       <header style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
-        <img src={images.logo} alt="Mendoza Gym Logo"  style={{height:'50px', marginRight:'10px'}} />
+        <img src={images.logo} alt="Mendoza Gym Logo" style={{ height: '50px', marginRight: '10px' }} />
         <h1>Mendoza Gym Management</h1>
       </header>
 
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      {activeTab === 'members' && 
-      <MembersPage
-        members={members} 
-        addMember={addMember} updateMember={updateMember} 
-        deleteMember={deleteMember} 
-        setMemberArchived={setMemberArchived} 
-      />}
-
-      {activeTab === 'classes' && 
-      <ClassesPage 
-        classes={classes} 
-        addClass={addClass} 
-        updateClass={updateClass}
-        deleteClass={deleteClass} 
-      />}
-
-      {activeTab === 'manage' && 
-      <ManagePage 
-        employees={employees} 
-        addEmployee={addEmployee} 
-        updateEmployee={updateEmployee} 
-      />  }
-
-      {activeTab === 'leads' && 
-      <LeadsPage 
-        members={members} 
-        leads={leads} 
-        addLead={addLead} 
-        deleteLead={deleteLead}
-        setLeadStatus={setLeadStatus}
-        updateLead={updateLead} 
-        updateLeadList={updateLeadList}
-        updateLeadHistory={updateLeadHistory}
-      /> }
+      {activeTab === 'members' &&
+        <MembersPage
+          members={members}
+          addMember={addMember} updateMember={updateMember}
+          deleteMember={deleteMember}
+          setMemberArchived={setMemberArchived}
+        />}
+      {activeTab === 'classes' &&
+        <ClassesPage
+          classes={classes}
+          addClass={addClass}
+          updateClass={updateClass}
+          deleteClass={deleteClass}
+        />}
+      {activeTab === 'manage' &&
+        <ManagePage
+          employees={employees}
+          addEmployee={addEmployee}
+          updateEmployee={updateEmployee}
+        />}
+      {activeTab === 'leads' &&
+        <LeadsPage
+          members={members}
+          leads={leads}
+          addLead={addLead}
+          deleteLead={deleteLead}
+          setLeadStatus={setLeadStatus}
+          updateLead={updateLead}
+          updateLeadList={updateLeadList}
+          updateLeadHistory={updateLeadHistory}
+        />}
     </div>
   );
 };
