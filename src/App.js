@@ -5,6 +5,7 @@ import MembersPage from './pages/MembersPage';
 import ClassesPage from './pages/ClassesPage';
 import ManagePage from './pages/ManagePage';
 import LeadsPage from './pages/LeadsPage';
+import SchedulePage from './pages/SchedulePage';
 import images from './assets/images';
 
 const App = () => {
@@ -161,7 +162,7 @@ const App = () => {
         employees={employees} 
         addEmployee={addEmployee} 
         updateEmployee={updateEmployee} 
-      />  }
+      />}
 
       {activeTab === 'leads' && 
       <LeadsPage 
@@ -173,7 +174,11 @@ const App = () => {
         updateLead={updateLead} 
         updateLeadList={updateLeadList}
         updateLeadHistory={updateLeadHistory}
-      /> }
+      />}
+      {activeTab === 'schedule' &&
+      <SchedulePage 
+        classes={classes}
+      />}
     </div>
   );
 };
