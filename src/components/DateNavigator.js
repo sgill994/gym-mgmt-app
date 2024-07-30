@@ -4,8 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 
-const DateNavigator = ({view}) => {
-    const [selectedDate, setSelectedDate] = useState(new Date());
+const DateNavigator = ({view, selectedDate, setSelectedDate}) => {
     const [showCalendar, setShowCalendar] = useState(false);
 
     // Assigns 'selectedDate' to the Sunday of the week containing the selected date
@@ -90,15 +89,11 @@ const DateNavigator = ({view}) => {
             <Button onClick={handlePrev}><FaChevronLeft /></Button>
             <Button onClick={toggleCalendar}>{formatDate()}</Button>
             <Button onClick={handleNext}><FaChevronRight /></Button>
-
-            <Modal show={showCalendar} onHide={toggleCalendar}>
-                <Modal.Header>
-                    Select Date
-                </Modal.Header>
-                <Modal.Body>
-                    <DatePicker selected={selectedDate} onChange={handleDateChange} inline />
-                </Modal.Body>
-            </Modal>
+            {showCalendar && (
+                <div>
+                <DatePicker selected={selectedDate} onChange={handleDateChange} inline />
+                </div>
+            )}
         </div>
     );
 };

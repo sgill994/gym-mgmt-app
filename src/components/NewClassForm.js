@@ -13,8 +13,8 @@ const NewClassForm = ({ addClass }) => {
   const [Friday, setFriday] = useState(false);
   const [Saturday, setSaturday] = useState(false);
   const [Sunday, setSunday] = useState(false);
-  const [time, setTime] = useState('');
-  const [length, setLength] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [duration, setDuration] = useState('');
   const [instructor, setInstructor] = useState('');
   const [limitReservations, setLimitReservations] = useState(false);
   const [reservationLimit, setReservationLimit] = useState('');
@@ -43,6 +43,49 @@ const NewClassForm = ({ addClass }) => {
     { name: 'Coral', hex: '#FF7F50' }
   ].map(color => ({ value: color.hex, label: color.name, color: color.hex }));
 
+  const timeTo24HourFormat = (time) => {
+    const [timePart, modifier] = time.split(' ');
+    let [hour, min] = timePart.split(':');
+    if (hour === '12') {
+        hour = '00';
+    }
+    if (modifier === 'PM') {
+        hour = parseInt(hour, 10) + 12;
+    }
+    return `${hour}:${min}`;
+};
+
+  const calculateEndTime = (time, duration) => {
+    // Convert start time to 24-hour format and assign to Date object
+    const [hour, min] = timeTo24HourFormat(time).split(':');
+    let startDate = new Date();
+    startDate.setHours(parseInt(hour), parseInt(min), 0, 0);
+
+    // Create an array for class length string and extract hours/minutes 
+    // to compute total minutes 
+    const durationParts = duration.split(' ');
+    let totalMin = 0;
+    for (let i = 0; i < durationParts.length; i += 2) {
+        // Extract hours, multiply by 60, & add to running sum
+        if (durationParts[i + 1] === 'hr' || durationParts[i + 1] === 'hrs') {
+            totalMin += parseInt(durationParts[i]) * 60;
+        // Extract minutes & add to running sum
+        } else if (durationParts[i + 1] === 'min' || durationParts[i + 1] === 'mins') {
+            totalMin += parseInt(durationParts[i]);
+        }
+    }
+    // Add sum of minutes to start time
+    startDate.setMinutes(startDate.getMinutes() + totalMin);
+
+    // Convert 24-hour format end time to 12-hour format
+    const endHour24 = startDate.getHours();
+    const endMin = startDate.getMinutes();
+    const endMod = endHour24 >= 12 ? 'PM' : 'AM';
+    const endHour12 = endHour24 % 12 || 12;
+    // Return as string to be assigned to 'endTime' field for class
+    return `${endHour12.toString()}:${endMin.toString()} ${endMod}`;
+};
+
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
     const setDay = {
@@ -70,6 +113,7 @@ const NewClassForm = ({ addClass }) => {
     }
 
     const courseID = uuidv4();
+    const endTime = calculateEndTime(startTime, duration);
     const course = {
       courseID,
       title, 
@@ -80,11 +124,13 @@ const NewClassForm = ({ addClass }) => {
       Friday, 
       Saturday, 
       Sunday, 
-      time, 
-      length, 
+      startTime, 
+      endTime,
+      duration, 
       instructor, 
       calendarColor,
-      reservationLimit: limitReservations ? reservationLimit : undefined
+      reservationLimit: limitReservations ? reservationLimit : undefined,
+      clientsBooked: 0
     };
 
     addClass(course);
@@ -97,8 +143,8 @@ const NewClassForm = ({ addClass }) => {
     setFriday(false);
     setSaturday(false);
     setSunday(false);
-    setTime('');
-    setLength('');
+    setStartTime('');
+    setDuration('');
     setInstructor('');
     setCheckBoxError('');
     setLimitReservations(false);
@@ -124,7 +170,7 @@ const NewClassForm = ({ addClass }) => {
       {checkBoxError && <div className="text-danger">{checkBoxError}</div>}
       <div className="class-form-group">
         <label htmlFor="class-time-select">Class Start Time:</label>
-        <select className="time-form-select" id="class-time-select" value={time} onChange={(e) => setTime(e.target.value)} required>
+        <select className="time-form-select" id="class-time-select" value={startTime} onChange={(e) => setStartTime(e.target.value)} required>
             <option selected disabled value="">--:--</option>
             <option>9:00 AM</option>
             <option>9:15 AM</option>
@@ -182,7 +228,7 @@ const NewClassForm = ({ addClass }) => {
       </div>
       <div className="class-form-group">
         <label htmlFor="class-length-select">Class Length: </label>
-        <select className="length-form-select" id="class-length-select" value={length} onChange={(e) => setLength(e.target.value)} required>
+        <select className="length-form-select" id="class-length-select" value={duration} onChange={(e) => setDuration(e.target.value)} required>
             <option selected disabled value=""> --- </option>
             <option>45 min</option>
             <option>60 min</option>

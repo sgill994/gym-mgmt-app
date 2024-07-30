@@ -66,8 +66,8 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
                 </a>
               </td>
               <td>{countDays(course)}</td>
-              <td>{course.time}</td>
-              <td>{course.length}</td>
+              <td>{course.startTime}</td>
+              <td>{course.duration}</td>
               <td>{course.reservationLimit ? course.reservationLimit : 'No limit'}</td>
               <td>{course.instructor}</td>
               <td className="table-cell-center">
