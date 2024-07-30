@@ -34,7 +34,8 @@ const NotificationForm = () => {
   };
 
   return (
-    <form className="notification-form" onSubmit={handleSubmit}>
+    <div className='memberDetailsForm'>
+      <form className="all-form" onSubmit={handleSubmit}>
       <table className="table">
         <thead>
           <tr>
@@ -139,6 +140,8 @@ const NotificationForm = () => {
 
       <button type="submit" className="btn btn-primary mt-3">Save Changes</button>
     </form>
+
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Collapsible from './CollapsibleSidebar';
 import ProfileDetailForm from './MembersDetailPage/ProfileDetail';
 import ProfileOverview from './MembersDetailPage/ProfileOverview';
@@ -10,8 +10,9 @@ import RewardsForm from './MembersDetailPage/RewardsForm';
 import BeltHistoryForm from './MembersDetailPage/BeltHistoryForm';
 import ContactHistoryForm from './MembersDetailPage/ContactHistoryForm';
 import DocumentsForm from './MembersDetailPage/DocumentsForm';
+import AddRelationship from './MembersDetailPage/AddRelationship';
 
-const MemberDetails = ({ member, updateMember, closeDetails }) => {
+const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedMember, setUpdatedMember] = useState(member);
   const [currentForm, setCurrentForm] = useState(null);
@@ -39,9 +40,13 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMember(updatedMember, member);
+    updateMember(updatedMember);
     setIsEditing(false);
     closeDetails();
+  };
+
+  const handleSaveRelationships = (updatedMember) => {
+    updateMember(updatedMember, member);
   };
 
   const handleLinkClick = (form) => () => setCurrentForm(form);
@@ -81,7 +86,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
           <li className="mb-1">
             <Collapsible title="Relationship" icon="bi-person-plus-fill">
               <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a className="link-body-emphasis d-inline-flex text-decoration-none rounded" href="#">Add Relationship</a></li>
+              <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={() => setCurrentForm('AddRelationship')}>Add Relationship</a></li>
               </ul>
             </Collapsible>
           </li>
@@ -147,7 +152,7 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
         </ul>
       </div>
       {currentForm === 'ProfileDetailForm' &&
-          <ProfileDetailForm
+        <ProfileDetailForm
           isEditing={isEditing}
           updatedMember={updatedMember}
           handleChange={handleChange}
@@ -155,9 +160,16 @@ const MemberDetails = ({ member, updateMember, closeDetails }) => {
           handleCancel={handleCancel}
           handleEdit={handleEdit}
           handleFileChange={handleFileChange} 
+          members={members}
         />}
       {currentForm === 'ProfileOverview' && <ProfileOverview member={member}/>}
       {currentForm === 'NotificationsForm' && <NotificationsForm />}
+      {currentForm === 'AddRelationship' &&
+        <AddRelationship
+          members={members}
+          member={member}
+          updateMember={handleSaveRelationships}
+        />}
       {currentForm === 'ActivityForm' && <ActivityForm />}
       {currentForm === 'AttendanceForm' && <AttendanceForm />}
       {currentForm === 'AttendanceHistoryForm' && <AttendanceHistoryForm />}

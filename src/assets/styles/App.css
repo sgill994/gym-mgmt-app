@@ -29,6 +29,22 @@
     float: left;
     width: 80%;
 }
+.memberDetailsFormRelations{
+    float: left;
+    width: 20%;
+}
+.userInfo{
+    float: left;
+    width: 60%;
+}
+.userRelationship{
+    width: 40%;
+    float: left;
+}
+.userButton{
+    float: left;
+    width: 100%;
+}
 .profilepic{
     width: '100%';
     margin-left: auto;
@@ -42,8 +58,7 @@
     border: 1px solid #ddd; /* Optional: add a border */
     border-radius: 5px; /* Optional: add rounded corners */
   }
-  .notification-form {
-    max-width: 900px;
+  .all-form {
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ddd;

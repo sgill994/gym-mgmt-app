@@ -60,7 +60,8 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
           </Modal>
           <h3>Active Members</h3>
           <MemberList 
-            members={members.filter(member => !member.archived)}
+            members = {members}
+            filteredMembers={members.filter(member => !member.archived)}
             updateMember={updateMember} 
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived} />
@@ -70,7 +71,8 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
         <>
           <h3>Archived Members</h3>
           <MemberList 
-            members={members.filter(member => member.archived)} 
+            members = {members}
+            filteredMembers={members.filter(member => member.archived)} 
             updateMember={updateMember} 
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived} />

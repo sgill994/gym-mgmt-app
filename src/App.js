@@ -13,6 +13,11 @@ const App = () => {
   const [leads, setLeads] = useState([]);
   const [classes, setClasses] = useState([]);
 
+  useEffect(() => {
+    // This will log when the members state changes
+    console.log('Members updated:', members);
+  }, [members]);
+
   // Allows a single (new lead form) or multiple new leads (from archived Members) 
   // to be added to leads array 
   const addLead = (newLeads) => {
@@ -72,7 +77,7 @@ const App = () => {
       )
     );
   };
-
+  
   // Deletes member on delete in MemberList delete confirmation pop-up window
   const deleteMember = (memberID) => {
     setMembers((prevMembers) =>
@@ -121,12 +126,6 @@ const App = () => {
       )
     );
   };
-
-  
-  useEffect(() => {
-    console.log('Current members:', members);
-  }, [members]);
-
 
   return (
     <div>

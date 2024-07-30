@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
-const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) => {
+const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setMemberArchived }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [editingMemberID, setEditingMemberID] = useState(null);
   const [archivedStatus, setArchivedStatus] = useState(null);
@@ -57,7 +57,7 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
           </tr>
         </thead>
         <tbody>
-          {members.map((member, index) => (
+          {filteredMembers.map((member, index) => (
             <tr key={index}>
               <td>
                 <a href="#" style={{ color: 'blue', textDecoration: 'underline' }} onClick={() => openMemberDetails(member)}>
@@ -96,7 +96,7 @@ const MemberList = ({ members, updateMember, deleteMember, setMemberArchived }) 
           <Modal.Title>Member Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedMember && (<MemberDetails member={selectedMember} updateMember={updateMember} closeDetails={closeMemberDetails} />
+          {selectedMember && (<MemberDetails member={selectedMember} updateMember={updateMember} closeDetails={closeMemberDetails} members = {members}/>
           )}
         </Modal.Body>
       </Modal>
