@@ -172,6 +172,10 @@ const NewClassForm = ({ addClass }) => {
         <label htmlFor="class-time-select">Class Start Time:</label>
         <select className="time-form-select" id="class-time-select" value={startTime} onChange={(e) => setStartTime(e.target.value)} required>
             <option selected disabled value="">--:--</option>
+            <option>8:00 AM</option>
+            <option>8:15 AM</option>
+            <option>8:30 AM</option>
+            <option>8:45 AM</option>
             <option>9:00 AM</option>
             <option>9:15 AM</option>
             <option>9:30 AM</option>
@@ -224,18 +228,22 @@ const NewClassForm = ({ addClass }) => {
             <option>8:15 PM</option>
             <option>8:30 PM</option>
             <option>8:45 PM</option>
+            <option>9:00 PM</option>
           </select>
       </div>
       <div className="class-form-group">
         <label htmlFor="class-length-select">Class Length: </label>
         <select className="length-form-select" id="class-length-select" value={duration} onChange={(e) => setDuration(e.target.value)} required>
             <option selected disabled value=""> --- </option>
+            <option>30 min</option>
             <option>45 min</option>
             <option>60 min</option>
             <option>1 hr 15 min</option>
             <option>1 hr 30 min</option>
             <option>1 hr 45 min</option>
             <option>2 hr</option>
+            <option>2 hr 15 min</option>
+            <option>2 hr 30 min</option> 
         </select>
       </div>
       <div className="class-form-group">
