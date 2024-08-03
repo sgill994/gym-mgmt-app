@@ -95,7 +95,10 @@ const NewMemberForm = ({ addMember }) => {
         emergencyContactName,
         emergencyContactPhone,
         archived: false,
-        relationships: []
+        relationships: [],
+        waiverSigned: false,
+        waiverDate,
+        signature
       });
 
       // Reset form and validation status

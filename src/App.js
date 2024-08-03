@@ -6,6 +6,8 @@ import ClassesPage from './pages/ClassesPage';
 import ManagePage from './pages/ManagePage';
 import LeadsPage from './pages/LeadsPage';
 import images from './assets/images';
+import 'react-signature-canvas';
+
 
 const App = () => {
   const [members, setMembers] = useState([]);

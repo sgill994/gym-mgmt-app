@@ -9,7 +9,7 @@ import AccountForm from './MembersDetailPage/AccountForm';
 import RewardsForm from './MembersDetailPage/RewardsForm';
 import BeltHistoryForm from './MembersDetailPage/BeltHistoryForm';
 import ContactHistoryForm from './MembersDetailPage/ContactHistoryForm';
-import DocumentsForm from './MembersDetailPage/DocumentsForm';
+import WaiverForm from './MembersDetailPage/WaiverForm';
 import AddRelationship from './MembersDetailPage/AddRelationship';
 
 const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
@@ -144,7 +144,7 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
           <li className="mb-1">
             <Collapsible title="Documents" icon="bi-file-earmark-text">
               <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('DocumentsForm')}>Waiver</a></li>
+                <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('WaiverForm')}>Waiver</a></li>
                 <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('ContractsForm')}>Contracts</a></li>
                 <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('AttachmentsForm')}>Attachments</a></li>
               </ul>
@@ -183,7 +183,13 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
       {currentForm === 'PrizesForm' && <PrizesForm />}
       {currentForm === 'BeltHistoryForm' && <BeltHistoryForm />}
       {currentForm === 'ContactHistoryForm' && <ContactHistoryForm />}
-      {currentForm === 'DocumentsForm' && <DocumentsForm />}
+      {currentForm === 'WaiverForm' && 
+      <WaiverForm 
+        member={member}
+        updateMember={updateMember}
+        updatedMember = {updatedMember}
+        setUpdatedMember = {setUpdatedMember}
+      />}
       {currentForm === 'ContractsForm' && <ContractsForm />}
       {currentForm === 'AttachmentsForm' && <AttachmentsForm />}
     </div>
