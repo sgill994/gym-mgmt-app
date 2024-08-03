@@ -97,8 +97,8 @@ const NewMemberForm = ({ addMember }) => {
         archived: false,
         relationships: [],
         waiverSigned: false,
-        waiverDate,
-        signature
+        waiverDate: '',
+        signature: ''
       });
 
       // Reset form and validation status
