@@ -21,15 +21,9 @@ const SchedulePage = ({classes}) => {
             <ScheduleFormatTabs activeTab={activeFormatTab} setActiveTab={setActiveFormatTab} />
             <SchedulePeriodTabs activeTab={activePeriodTab} setActiveTab={setActivePeriodTab} />
             <DateNavigator view={view} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-            {activeFormatTab === 'list-schedule' &&
-                <ListSchedule view={view} classes={classes} selectedDate={selectedDate} />
-            }
-            {activeFormatTab === 'list-schedule' && activePeriodTab ==='month-schedule' && (
-                setActiveFormatTab('calendar-schedule')
-            )}
-            {activeFormatTab === 'calendar-schedule' && 
-                <CalendarSchedule view={view} classes={classes} selectedDate={selectedDate} />
-            }
+            {activeFormatTab === 'list-schedule' && <ListSchedule view={view} classes={classes} selectedDate={selectedDate} />}
+            {activeFormatTab === 'list-schedule' && activePeriodTab ==='month-schedule' && (setActiveFormatTab('calendar-schedule'))}
+            {activeFormatTab === 'calendar-schedule' && <CalendarSchedule view={view} classes={classes} selectedDate={selectedDate} />}
         </div>
     );
 }

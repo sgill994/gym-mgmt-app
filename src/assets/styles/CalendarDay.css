@@ -1,0 +1,25 @@
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-day-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.calendar-day-classes {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-class {
+    padding: 5px;
+    margin-bottom: 5px;
+    color: white;
+    border-radius: 4px;
+}
+
+.class-time, .class-title, .class-instructor {
+    font-size: 0.9em;
+}

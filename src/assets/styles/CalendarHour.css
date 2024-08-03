@@ -1,0 +1,22 @@
+.calendar-hour {
+    position: relative;
+    height: 100%;
+}
+
+.calendar-class {
+    position: absolute;
+    width: 100%;
+    color: white;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.class-title {
+    font-size: 0.9em;
+}
+
+.class-instructor {
+    font-size: 0.8em;
+}
