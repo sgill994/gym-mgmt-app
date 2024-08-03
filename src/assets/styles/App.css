@@ -153,11 +153,11 @@
 
 .signature-pad-wrapper {
   width: 100%;
-  max-width: 500px; /* Adjust this value to fit your design */
   height: 200px; /* Adjust this value to fit your design */
   border: 1px solid #ccc;
   margin-bottom: 20px;
   overflow: hidden; /* Ensure the signature does not overflow */
+  position: relative; /* Ensure the positioning is relative to handle child elements */
 }
 
 .signature-pad {

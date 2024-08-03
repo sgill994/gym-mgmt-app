@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SignaturePad from 'react-signature-canvas';
-import { Modal, Button} from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 
 const WaiverButton = ({ onSignatureSave, disabled }) => {
   const [show, setShow] = useState(false);
+  const [canvasSize, setCanvasSize] = useState({ width: 500, height: 200 });
   const signaturePadRef = React.useRef(null);
 
   const handleClose = () => setShow(false);
@@ -22,6 +23,22 @@ const WaiverButton = ({ onSignatureSave, disabled }) => {
       handleClose();
     }
   };
+
+  useEffect(() => {
+    const updateCanvasSize = () => {
+      const container = document.querySelector('.signature-pad-wrapper');
+      if (container) {
+        setCanvasSize({ width: container.offsetWidth, height: container.offsetHeight });
+      }
+    };
+
+    window.addEventListener('resize', updateCanvasSize);
+    updateCanvasSize();
+
+    return () => {
+      window.removeEventListener('resize', updateCanvasSize);
+    };
+  }, []);
 
   return (
     <>
@@ -44,7 +61,10 @@ const WaiverButton = ({ onSignatureSave, disabled }) => {
               Signature of participant and/or legal guardian/parent of participant 18 years old or younger
             </h3>
             <div className="signature-pad-wrapper">
-              <SignaturePad ref={signaturePadRef} canvasProps={{ className: 'signature-pad' }} />
+              <SignaturePad
+                ref={signaturePadRef}
+                canvasProps={{ className: 'signature-pad' }}
+              />
             </div>
             <p className="signature-description">
               Use your mouse or touch screen to sign above.
@@ -53,11 +73,11 @@ const WaiverButton = ({ onSignatureSave, disabled }) => {
               By signing this agreement with an electronic signature, I agree that such signature will be as valid as handwritten signatures to the extent allowed by local law.
             </p>
             <div className="signature-buttons">
-              <button variant="secondary" onClick={handleClear} className="btn btn-secondary">Clear</button>
+              <button onClick={handleClear} className="btn btn-secondary">Clear</button>
               <Button variant="secondary" onClick={handleSave} disabled={disabled}>
                 {disabled ? 'Please agree to the terms first' : 'Save Signature'}
               </Button>
-              <button variant="secondary" onClick={handleClose} className="btn btn-secondary">Cancel</button>
+              <button onClick={handleClose} className="btn btn-secondary">Cancel</button>
             </div>
           </div>
         </Modal.Body>
