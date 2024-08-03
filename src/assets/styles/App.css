@@ -1,139 +1,189 @@
-.new-members{
-    width: 100%;
+.new-members {
+  width: 100%;
 }
+
 .customerWelcome {
-    float: left;
-    width: 50%;
+  float: left;
+  width: 50%;
 }
 
-.customerAdditionalInfo{
-    float: left;
-    width: 50%;
+.customerAdditionalInfo {
+  float: left;
+  width: 50%;
 }
 
-.customerAddress{
-    float: left;
-    width: 50%;
+.customerAddress {
+  float: left;
+  width: 50%;
 }
 
-.customerEmergencyContact{
-    float: left;
-    width: 50%;
+.customerEmergencyContact {
+  float: left;
+  width: 50%;
 }
 
 .custom-modal .modal-dialog {
-    max-width: 99%; /* Adjust as needed */
-    width: auto;
+  max-width: 99%; /* Adjust as needed */
+  width: auto;
 }
-.memberDetailsForm{
-    float: left;
-    width: 80%;
+
+.memberDetailsForm {
+  float: left;
+  width: 80%;
 }
-.memberDetailsFormRelations{
-    float: left;
-    width: 20%;
+
+.memberDetailsFormRelations {
+  float: left;
+  width: 20%;
 }
-.userInfo{
-    float: left;
-    width: 60%;
+
+.userInfo {
+  float: left;
+  width: 60%;
 }
-.userRelationship{
-    width: 40%;
-    float: left;
+
+.userRelationship {
+  width: 40%;
+  float: left;
 }
-.userButton{
-    float: left;
-    width: 100%;
+
+.userButton {
+  float: left;
+  width: 100%;
 }
-.profilepic{
-    width: '100%';
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+
+.profilepic {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
+
 .scrollable-form-container {
-    max-height: 750px; /* Adjust as needed */
-    overflow-y: auto; /* Adds vertical scrollbar */
-    padding: 15px; /* Optional: add some padding */
-    border: 1px solid #ddd; /* Optional: add a border */
-    border-radius: 5px; /* Optional: add rounded corners */
-  }
-  .all-form {
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  .form-check.form-switch {
-    display: inline-block;
-  }
-  .waiver-text ul {
-    list-style: none;
-    padding-left: 0;
-  }
+  max-height: 750px; /* Adjust as needed */
+  overflow-y: auto; /* Adds vertical scrollbar */
+  padding: 15px; /* Optional: add some padding */
+  border: 1px solid #ddd; /* Optional: add a border */
+  border-radius: 5px; /* Optional: add rounded corners */
+}
 
-  .waiver-text ul li {
-    padding-left: 1em;
-    text-indent: -1em;
-  }
+.all-form {
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
 
-  .signature-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .signature-text {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .signature-canvas {
-    border: 1px solid #ddd;
-    width: 100%;
-    height: 200px; /* Adjust height as needed */
-  }
-  
-  .signature-disclaimer {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 0.9rem;
-    color: #555;
-  }
-  
-  .use-pad-button {
-    margin-bottom: 20px;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px; /* Spacing between buttons */
-  }
-  
-  .btn-secondary {
-    margin: 5px;
-  }
-  .waiver-form {
-    position: relative;
-    padding: 20px;
-    /* Adjust height if needed */
-  } 
-  .signature-display {
-    bottom: 20px; /* Distance from the bottom of the container */
-    right: 20px;  /* Distance from the right of the container */
-    text-align: right;
-    margin-top: 20px; /* Adjust space between the Acknowledgement and the signature display */
-  }
-  
-  .signature-img {
-    max-width: 150px; /* Adjust size as needed */
-    height: auto;
-  }
-  
-  .signature-display p {
-    margin-top: 10px; /* Space between the image and text */
-  }
-  
-  
-  
+.form-check.form-switch {
+  display: inline-block;
+}
+
+.waiver-text ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.waiver-text ul li {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+
+.signature-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signature-text {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signature-canvas {
+  border: 1px solid #ddd;
+  width: 100%;
+  height: 200px; /* Adjust height as needed */
+}
+
+.signature-disclaimer {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.use-pad-button {
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Spacing between buttons */
+}
+
+.btn-secondary {
+  margin: 5px;
+}
+
+.waiver-form {
+  padding: 20px;
+}
+
+.signature-display {
+  text-align: right;
+  margin-top: 20px; /* Adjust space between the Acknowledgement and the signature display */
+}
+
+.signature-img {
+  max-width: 150px; /* Adjust size as needed */
+  height: auto;
+}
+
+.signature-display p {
+  margin-top: 10px; /* Space between the image and text */
+}
+
+.signature-pad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.signature-pad-wrapper {
+  width: 100%;
+  max-width: 500px; /* Adjust this value to fit your design */
+  height: 200px; /* Adjust this value to fit your design */
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  overflow: hidden; /* Ensure the signature does not overflow */
+}
+
+.signature-pad {
+  width: 100%;
+  height: 100%;
+}
+
+.signature-heading {
+  margin-bottom: 20px;
+}
+
+.signature-description {
+  margin: 20px 0;
+}
+
+.signature-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.signature-buttons .btn {
+  margin: 5px;
+}
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

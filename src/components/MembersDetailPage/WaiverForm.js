@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import WaiverButton from './WaiverPageButtons/WaiverButton';
+import WaiverButton from './WaiverPageButtons/Waiverbutton';
 
 const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) => {
   const [waiverDate, setWaiverDate] = useState(member.waiverDate || 'Not yet signed');
@@ -31,7 +31,6 @@ const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) =
       <div className="scrollable-form-container waiver-text">
         <p>This is a binding legal agreement. As a Participant in the competitions, programs, activities and events with Mendoza Boxing Club, the undersigned acknowledges and agrees to the following terms:</p>
 
-        {/* Description of Risks */}
         <h3>Description of Risks</h3>
         <p>1. In consideration of my participation in the competitions, programs, activities and events, I hereby acknowledge that I am aware of the risks and hazards associated with or related to any such competitions, programs, activities and events. The risks and hazards include, but are not limited to, injuries from:</p>
         <ul>
@@ -59,7 +58,6 @@ const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) =
           <li>f) That participant acknowledged that they do not have any physical or mental limitations, that would prevent the participant in engaging in the activity</li>
         </ul>
 
-        {/* Release of Liability and Disclaimer */}
         <h3>Release of Liability and Disclaimer</h3>
         <p>In consideration of the Canadian Amateur Boxing Association and Boxing BC at Mendoza Boxing Club allowing me to participate, I agree:</p>
         <ul>
@@ -69,22 +67,17 @@ const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) =
           <li>d) To RELEASE and DISCHARGE Mendoza Boxing Club and all directors, officers, committee members, clubs, members, employees, coaches, volunteers, officials, judges, participants, agents and representatives from any and all liability, for any and all claims, demands, actions, judgments, executions and costs that might arise out of my participating, even though any such risks, injuries, loss, damage, claims, demands, actions or costs may have been caused by any manner whatsoever, including but not limited to, the negligence of the Canadian Amateur Boxing Association or Boxing BC.</li>
         </ul>
 
-        {/* Youth Video Waiver / Media Consent */}
         <h3>Youth Video Waiver / Media Consent</h3>
         <p>1. I hereby authorize any images or video footage taken of my youth (under 18 years of age), in whole or in part, individually or in conjunction with other images and video footage, to be displayed on the Mendoza Boxing Website and other official channels, and to be used for media purposes including promotional presentations and marketing campaigns. I also authorize the display and use of any media material created by my youth under Mendoza Boxing Club.</p>
         <p>2. I waive rights to privacy and compensation, which I may have in connection with such use of my youth’s name and likeness, including rights to be written copy that may be created in connection with video production, editing and promotion therewith.</p>
         <p>3. I am over 19 years-of-age and the parent or legal guardian of the youth, and I have read this waiver and am familiar with its content.</p>
 
-        {/* Adult Waiver / Media Consent */}
         <h3>Adult Waiver / Media Consent</h3>
         <p>1. I hereby authorize any images or video footage taken of myself, in whole or in part, individually or in conjunction with other images and video footage, to be displayed on the Mendoza Boxing Website and other official channels, and to be used for media purposes including promotional presentations and marketing campaigns. I also authorize any media material created by myself within the Mendoza Boxing Club.</p>
         <p>2. I waive rights to privacy and compensation, which I may have in connection with such use of my name and likeness, including rights to be written copy that may be created in connection with video production, editing and promotion therewith.</p>
 
-        {/* Acknowledgement */}
         <h3>Acknowledgement</h3>
         <p>1. I acknowledge that I have read and understand this agreement, that I have executed this agreement voluntarily, and that this agreement is to be binding upon myself, my heirs, executors, administrators, and representatives.</p>
-
-        {/* Conditional rendering based on waiver status */}
         {!updatedMember.waiverSigned ? (
           <>
             <div className="form-check">
@@ -104,7 +97,7 @@ const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) =
         ) : (
           <div className="signature-display">
             <img src={updatedMember.signature} alt="Saved Signature" className="signature-img" />
-            <p>{member.firstName} {member.lastName} signed on {updatedMember.waiverDate}</p>
+            <p>{updatedMember.firstName} {updatedMember.lastName} signed on {updatedMember.waiverDate}</p>
           </div>
         )}
       </div>
