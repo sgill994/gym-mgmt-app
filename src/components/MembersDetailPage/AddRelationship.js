@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const relationshipTypes = ['Parent', 'Child', 'Relative', 'Sibling'];
+const relationshipTypes = ['Parent', 'Child', 'Relative', 'Sibling', 'Spouse'];
 
 const AddRelationship = ({ members, member, setUpdatedMember, updateMember }) => {
   const [selectedMembers, setSelectedMembers] = useState([]);
