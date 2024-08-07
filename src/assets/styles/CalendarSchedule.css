@@ -1,0 +1,16 @@
+.calendar-schedule {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-week, .calendar-month {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.calendar-week .calendar-day, .calendar-month .calendar-day {
+    flex: 1 1 calc(100% / 7); /* Adjust for the number of days in the week */
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+}

@@ -55,35 +55,34 @@ const NewClassForm = ({ addClass }) => {
     return `${hour}:${min}`;
 };
 
-  const calculateEndTime = (time, duration) => {
-    // Convert start time to 24-hour format and assign to Date object
-    const [hour, min] = timeTo24HourFormat(time).split(':');
-    let startDate = new Date();
-    startDate.setHours(parseInt(hour), parseInt(min), 0, 0);
-
-    // Create an array for class length string and extract hours/minutes 
-    // to compute total minutes 
+  // Compute numeric class duration from dropdown selection
+  const calculateDurationMinutes = (duration) => {
     const durationParts = duration.split(' ');
     let totalMin = 0;
     for (let i = 0; i < durationParts.length; i += 2) {
         // Extract hours, multiply by 60, & add to running sum
-        if (durationParts[i + 1] === 'hr' || durationParts[i + 1] === 'hrs') {
+        if (durationParts[i + 1] === 'hr') {
             totalMin += parseInt(durationParts[i]) * 60;
         // Extract minutes & add to running sum
-        } else if (durationParts[i + 1] === 'min' || durationParts[i + 1] === 'mins') {
+        } else if (durationParts[i + 1] === 'min') {
             totalMin += parseInt(durationParts[i]);
         }
     }
+    return totalMin;
+  }
+
+  const calculateEndTime = (startTime, duration) => {
+    totalMin = calculateDurationMinutes(duration);
     // Add sum of minutes to start time
-    startDate.setMinutes(startDate.getMinutes() + totalMin);
+    const endTime = new Date (startTime.setMinutes(startTime.getMinutes() + totalMin));
 
     // Convert 24-hour format end time to 12-hour format
-    const endHour24 = startDate.getHours();
-    const endMin = startDate.getMinutes();
+    const endHour24 = endTime.getHours();
+    const endMin = endTime.getMinutes();
     const endMod = endHour24 >= 12 ? 'PM' : 'AM';
     const endHour12 = endHour24 % 12 || 12;
     // Return as string to be assigned to 'endTime' field for class
-    return `${endHour12.toString()}:${endMin.toString()} ${endMod}`;
+    return [`${endHour12.toString()}:${endMin.toString().padStart(2, '0')} ${endMod}`, endHour12, endMin, endMod];
 };
 
   const handleCheckBoxChange = (e) => {
@@ -113,7 +112,17 @@ const NewClassForm = ({ addClass }) => {
     }
 
     const courseID = uuidv4();
-    const endTime = calculateEndTime(startTime, duration);
+    // Parse selected start time from dropdown, convert to 24-hour format & create Date object
+    const [startHour24, startMin24] = timeTo24HourFormat(startTime).split(':');
+    let startTimeObject = new Date();
+    startTimeObject.setHours(parseInt(startHour24), parseInt(startMin24), 0, 0);
+    // Extract numeric values for times & modifiers (AM/PM)
+    const [endTime, endHour, endMin, endTimeMod] = calculateEndTime(startTimeObject, duration);
+    const [startTimePart, startTimeMod] = startTime.split(' ');
+    const [startHour, startMin] = startTimePart.split(':');
+    // Compute number of 15-minute time increments in duration
+    timeCells = calculateDurationMinutes(duration) / 15;
+
     const course = {
       courseID,
       title, 
@@ -125,12 +134,20 @@ const NewClassForm = ({ addClass }) => {
       Saturday, 
       Sunday, 
       startTime, 
+      startHour,
+      startMin,
+      startTimeMod,
       endTime,
+      endHour,
+      endMin,
+      endTimeMod,
       duration, 
       instructor, 
       calendarColor,
       reservationLimit: limitReservations ? reservationLimit : undefined,
-      clientsBooked: 0
+      clientsBooked: 0,
+      waitlist: 0,
+      dateCreated: startTimeObject
     };
 
     addClass(course);

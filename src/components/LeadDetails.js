@@ -27,13 +27,13 @@ const LeadDetails = ({ lead, updateLead, closeEditModal }) => {
             <h2>Lead Details</h2>
             <form onSubmit={handleSubmit}>
                 <label>First Name:</label>
-                <input type="text" name="firstName" value={updatedLead.firstName} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="firstName" value={updatedLead.firstName} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
                 <label>Last Name:</label>
-                <input type="text" name="lastName" value={updatedLead.lastName} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="lastName" value={updatedLead.lastName} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
                 <label>Phone Number:</label>
-                <input type="text" name="phoneNumber" value={updatedLead.phoneNumber} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="phoneNumber" value={updatedLead.phoneNumber} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
                 <label>Email:</label>
-                <input type="text" name="email" value={updatedLead.email} onChange={handleChange} readOnly={!isEditing} />
+                <input type="text" name="email" value={updatedLead.email} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
                 {isEditing && (
                     <>
                     <button type="submit">Save Changes</button>

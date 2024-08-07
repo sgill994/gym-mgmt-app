@@ -17,6 +17,7 @@ const ListScheduleDay = ({classes, selectedDate}) => {
                         <th>Capacity</th>
                         <th>Clients</th>
                         <th>Wait List</th>
+                        <th> </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -30,6 +31,7 @@ const ListScheduleDay = ({classes, selectedDate}) => {
                                 <td>{c.instructor}</td>
                                 <td>{c.reservationLimit}</td>
                                 <td>{c.clientsBooked}</td>
+                                <td>{c.waitlist}</td>
                                 <td>
                                     <button>...</button>
                                 </td>
