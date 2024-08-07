@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import WaiverButton from './WaiverPageButtons/Waiverbutton';
 
-const WaiverForm = ({members, member, updateMember, updatedMember, setUpdatedMember }) => {
+const WaiverForm = ({members, member, setUpdatedMember, updateMember }) => {
   const [waiverDate, setWaiverDate] = useState(member.waiverDate || 'Not yet signed');
   const [agreed, setAgreed] = useState(false);
 
   const handleSignatureSave = (signatureDataURL) => {
     const currentDate = new Date().toLocaleDateString();
     setWaiverDate(currentDate);
-    setUpdatedMember({
-      ...updatedMember,
-      waiverDate: currentDate,
-      signature: signatureDataURL,
-      waiverSigned: true
-    });
+    const updatedMember = {...member,
+                          waiverDate: currentDate,
+                          signature: signatureDataURL,
+                          waiverSigned: true
+    }
     updateMember(updatedMember, member);
+    setUpdatedMember(updatedMember);
   };
 
   const handleAgreeChange = (e) => {
     setAgreed(e.target.checked);
     
   };
-  console.log("Updated Member ", updatedMember);
+  console.log("Updated Member ", member);
   console.log("Members Array ", members);
   return (
     <div className="waiver-form">
@@ -80,7 +80,7 @@ const WaiverForm = ({members, member, updateMember, updatedMember, setUpdatedMem
 
         <h3>Acknowledgement</h3>
         <p>1. I acknowledge that I have read and understand this agreement, that I have executed this agreement voluntarily, and that this agreement is to be binding upon myself, my heirs, executors, administrators, and representatives.</p>
-        {!updatedMember.waiverSigned ? (
+        {!member.waiverSigned ? (
           <>
             <div className="form-check">
               <input
@@ -98,8 +98,8 @@ const WaiverForm = ({members, member, updateMember, updatedMember, setUpdatedMem
           </>
         ) : (
           <div className="signature-display">
-            <img src={updatedMember.signature} alt="Saved Signature" className="signature-img" />
-            <p>{updatedMember.firstName} {updatedMember.lastName} signed on {updatedMember.waiverDate}</p>
+            <img src={member.signature} alt="Saved Signature" className="signature-img" />
+            <p>{member.firstName} {member.lastName} signed on {member.waiverDate}</p>
           </div>
         )}
       </div>

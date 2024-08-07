@@ -213,9 +213,8 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
       <WaiverForm
         members={members}
         member={updatedMember}
-        updateMember={updateMember}
-        updatedMember = {updatedMember}
         setUpdatedMember = {setUpdatedMember}
+        updateMember = {updateMember}
       />}
       {currentForm === 'ContractsForm' && <ContractsForm />}
       {currentForm === 'AttachmentsForm' && <AttachmentsForm />}
