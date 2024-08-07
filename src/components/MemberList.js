@@ -44,6 +44,8 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
     setMemberToDelete(null);
   }
 
+  console.log("filtered Member ", filteredMembers);
+
   return (
     <div className='memberDetailsForm'>
       <table className='table'>
@@ -87,7 +89,7 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
               <td>
                 <Button variant="danger" onClick={() => handleDelete(member)}>Delete</Button>
               </td>
-              <td>{member.waiverSignedCheck ? <i class="bi bi-check2-circle"></i> : <i className="bi bi-ban ms-1"></i>}</td>
+              <td>{member.waiverSigned ? <i className="bi bi-check2-circle"></i> : <i className="bi bi-ban ms-1"></i>}</td>
             </tr>
           ))}
         </tbody>
