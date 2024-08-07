@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Collapsible from './CollapsibleSidebar';
 import ProfileDetailForm from './MembersDetailPage/ProfileDetail';
 import ProfileOverview from './MembersDetailPage/ProfileOverview';
@@ -51,6 +51,30 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
 
   const handleLinkClick = (form) => () => setCurrentForm(form);
 
+  const waiverSignedCheck = () => {
+    if(updatedMember.waiverSigned === false){
+      return (
+        <a 
+          href="#" 
+          className="link-body-emphasis d-inline-flex text-decoration-none rounded" 
+          onClick={handleLinkClick('WaiverForm')}
+        >
+          Waiver <i className="bi bi-ban ms-1"></i>
+        </a>
+      );
+    }
+    else{
+      return (
+        <a 
+          href="#" 
+          className="link-body-emphasis d-inline-flex text-decoration-none rounded" 
+          onClick={handleLinkClick('WaiverForm')}
+        >
+          Waiver
+        </a>
+      );
+    }
+  };
 
   return (
     <div>
@@ -144,7 +168,9 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
           <li className="mb-1">
             <Collapsible title="Documents" icon="bi-file-earmark-text">
               <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('WaiverForm')}>Waiver</a></li>
+                <li>
+                {waiverSignedCheck()}
+                </li>
                 <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('ContractsForm')}>Contracts</a></li>
                 <li><a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('AttachmentsForm')}>Attachments</a></li>
               </ul>
@@ -184,8 +210,9 @@ const MemberDetails = ({ members, member, updateMember, closeDetails }) => {
       {currentForm === 'BeltHistoryForm' && <BeltHistoryForm />}
       {currentForm === 'ContactHistoryForm' && <ContactHistoryForm />}
       {currentForm === 'WaiverForm' && 
-      <WaiverForm 
-        member={member}
+      <WaiverForm
+        members={members}
+        member={updatedMember}
         updateMember={updateMember}
         updatedMember = {updatedMember}
         setUpdatedMember = {setUpdatedMember}

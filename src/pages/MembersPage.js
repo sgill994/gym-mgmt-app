@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
@@ -42,7 +42,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
     });
     
   };
-
+  
   return (
     <div id="members" className="tab active">
       <h1>Members</h1>
@@ -78,11 +78,13 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
             setMemberArchived={setMemberArchived} />
         </>
       )}
+      <div className='userButton'>
       {/* Export members to CSV */}
       <ExportCSV members={members} />
 
       {/* Import members from CSV */}
       <ImportCSV onImportCSV={handleImportCSV} />
+      </div>
     </div>
   );
 };

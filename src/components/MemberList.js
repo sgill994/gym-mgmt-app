@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Modal, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import MemberDetails from '../components/MemberDetails';
 
@@ -8,6 +8,7 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
   const [archivedStatus, setArchivedStatus] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState(null);
+  const [updatedFilterMembers, setupdatedFilterMembers] = useState(filteredMembers);
 
   const openMemberDetails = (member) => {
     setSelectedMember(member);
@@ -44,8 +45,8 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
   }
 
   return (
-    <div>
-      <Table striped bordered hover>
+    <div className='memberDetailsForm'>
+      <table className='table'>
         <thead>
           <tr>
             <th>First Name</th>
@@ -54,6 +55,7 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
             <th>Email</th>
             <th>Status</th>
             <th>Delete</th>
+            <th>Waiver Signed</th>
           </tr>
         </thead>
         <tbody>
@@ -85,10 +87,11 @@ const MemberList = ({ members, filteredMembers, updateMember, deleteMember, setM
               <td>
                 <Button variant="danger" onClick={() => handleDelete(member)}>Delete</Button>
               </td>
+              <td>{member.waiverSignedCheck ? <i class="bi bi-check2-circle"></i> : <i className="bi bi-ban ms-1"></i>}</td>
             </tr>
           ))}
         </tbody>
-      </Table>
+      </table>
 
       
       <Modal show={selectedMember !== null} onHide={closeMemberDetails} className="custom-modal">

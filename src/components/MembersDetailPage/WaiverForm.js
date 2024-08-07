@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import WaiverButton from './WaiverPageButtons/Waiverbutton';
 
-const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) => {
+const WaiverForm = ({members, member, updateMember, updatedMember, setUpdatedMember }) => {
   const [waiverDate, setWaiverDate] = useState(member.waiverDate || 'Not yet signed');
   const [agreed, setAgreed] = useState(false);
 
@@ -19,8 +19,10 @@ const WaiverForm = ({ member, updateMember, updatedMember, setUpdatedMember }) =
 
   const handleAgreeChange = (e) => {
     setAgreed(e.target.checked);
+    
   };
-
+  console.log("Updated Member ", updatedMember);
+  console.log("Members Array ", members);
   return (
     <div className="waiver-form">
       <h2>Waiver Agreement</h2>
