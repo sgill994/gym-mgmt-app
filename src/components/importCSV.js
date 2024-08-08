@@ -53,16 +53,25 @@ const ImportCSV = ({ onImportCSV }) => {
           .replace(/\s+/g, ''); // Convert spaces to camelCase
       
         // Special handling for memberID
-        if (key === 'memberId') {
+        if (key === 'memberid') {
           obj['memberID'] = values[index].trim() || uuidv4(); // Fill memberID if blank
         } else if (key === 'archived') {
           obj[key] = values[index].trim().toLowerCase() === 'yes';
+        } else if (key === 'waiversigned') {
+          obj[key] = values[index].trim().toLowerCase() === 'true'; // Convert waiverSigned to boolean
         } else {
           obj[key] = values[index].trim(); // Assign value to object property
         }
 
         return obj;
       }, {});
+    });
+
+    // Ensure waiverSigned is set to false if null
+    data.forEach(member => {
+      if (member.waiverSigned == null) {
+        member.waiverSigned = false;
+      }
     });
 
     return data; // Return parsed data array

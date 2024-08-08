@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import NewMemberForm from '../components/NewMemberForm';
 import MemberList from '../components/MemberList';
@@ -42,7 +42,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
     });
     
   };
-
+  
   return (
     <div id="members" className="tab active">
       <h1>Members</h1>
@@ -50,7 +50,7 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
       {activeTab === 'active-members' && (
         <>
           <Button variant="primary" onClick={handleOpen}>Add New Member</Button>
-          <Modal show={showModal} onHide={handleClose}>
+          <Modal show={showModal} onHide={handleClose} className="custom-modal">
             <Modal.Header closeButton>
               <Modal.Title>Add New Member</Modal.Title>
             </Modal.Header>
@@ -60,7 +60,8 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
           </Modal>
           <h3>Active Members</h3>
           <MemberList 
-            members={members.filter(member => !member.archived)}
+            members = {members}
+            filteredMembers={members.filter(member => !member.archived)}
             updateMember={updateMember} 
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived} />
@@ -70,17 +71,20 @@ const MembersPage = ({ members, addMember, updateMember, deleteMember, setMember
         <>
           <h3>Archived Members</h3>
           <MemberList 
-            members={members.filter(member => member.archived)} 
+            members = {members}
+            filteredMembers={members.filter(member => member.archived)} 
             updateMember={updateMember} 
             deleteMember={deleteMember}
             setMemberArchived={setMemberArchived} />
         </>
       )}
+      <div className='userButton'>
       {/* Export members to CSV */}
       <ExportCSV members={members} />
 
       {/* Import members from CSV */}
       <ImportCSV onImportCSV={handleImportCSV} />
+      </div>
     </div>
   );
 };
