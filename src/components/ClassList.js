@@ -12,6 +12,7 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
   // Sets class associated with row as selected for pop-up window; Class Details Modal show condition
   const openClassDetails = (course) => {
     setSelectedClass(course);
+    console.log(course);
   };
 
   // Sets selected class to null on pop-up window close; Class Details Modal hide condition
@@ -42,6 +43,7 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
     setClassToDelete(null);
   }
 
+
   return (
     <div>
       <Table striped bordered hover className="table-center">
@@ -66,7 +68,7 @@ const ClassList = ({ classes, updateClass, deleteClass }) => {
                 </a>
               </td>
               <td>{countDays(course)}</td>
-              <td>{course.startTime}</td>
+              <td>{course.startTimeStr}</td>
               <td>{course.duration}</td>
               <td>{course.reservationLimit ? course.reservationLimit : 'No limit'}</td>
               <td>{course.instructor}</td>

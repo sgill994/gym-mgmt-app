@@ -1,5 +1,4 @@
 import React from 'react';
-import '../assets/styles/CalendarDay.css';
 
 const CalendarDay = ({classes, day}) => {
     const currentDay = new Date(day);

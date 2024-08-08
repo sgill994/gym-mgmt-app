@@ -1,5 +1,4 @@
 import React from 'react';
-import '../assets/styles/CalendarCell.css';
 
 const CalendarCell = ({classes, day}) => {
     const dayOfWeek = day.toLocaleDateString('en-US', {weekday: 'long'});

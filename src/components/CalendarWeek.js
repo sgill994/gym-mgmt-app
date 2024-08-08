@@ -1,7 +1,6 @@
 import React from 'react';
 import CalendarMinsBlock from '../components/CalendarMinsBlock';
 import CalendarCell from '../components/CalendarCell';
-import '../assets/styles/CalendarWeek.css';
 
 const CalendarWeek = ({classes, selectedDate}) => {
     // Returns array of Date objects for week of 'selectedDate' when view it set to week schedule

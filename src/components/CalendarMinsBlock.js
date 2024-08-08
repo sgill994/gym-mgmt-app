@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import '../assets/styles/CalendarMinsBlock.css'
 
 const CalenderMinsBlock = ({minutes, onClick}) => {
     const [hovered, setHovered] = useState(false);

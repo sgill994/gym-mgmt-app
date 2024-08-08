@@ -25,7 +25,7 @@ const ListScheduleDay = ({classes, selectedDate}) => {
                     {filteredClasses.length > 0 ? (
                         filteredClasses.map((c, index) => (
                             <tr key={index}>
-                                <td>{c.startTime} - {c.endTime}</td>
+                                <td>{c.startTimeStr} - {c.endTimeStr}</td>
                                 <td>{c.title}</td>
                                 <td>{c.duration}</td>
                                 <td>{c.instructor}</td>

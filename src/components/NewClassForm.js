@@ -13,7 +13,7 @@ const NewClassForm = ({ addClass }) => {
   const [Friday, setFriday] = useState(false);
   const [Saturday, setSaturday] = useState(false);
   const [Sunday, setSunday] = useState(false);
-  const [startTime, setStartTime] = useState('');
+  const [startTimeStr, setStartTimeStr] = useState('');
   const [duration, setDuration] = useState('');
   const [instructor, setInstructor] = useState('');
   const [limitReservations, setLimitReservations] = useState(false);
@@ -43,8 +43,9 @@ const NewClassForm = ({ addClass }) => {
     { name: 'Coral', hex: '#FF7F50' }
   ].map(color => ({ value: color.hex, label: color.name, color: color.hex }));
 
-  const timeTo24HourFormat = (time) => {
-    const [timePart, modifier] = time.split(' ');
+  // Convert a string of format HH:MM AM/PM to 24-hour format
+  const timeStrTo24HourFormat = (timeStr) => {
+    const [timePart, modifier] = timeStr.split(' ');
     let [hour, min] = timePart.split(':');
     if (hour === '12') {
         hour = '00';
@@ -52,8 +53,18 @@ const NewClassForm = ({ addClass }) => {
     if (modifier === 'PM') {
         hour = parseInt(hour, 10) + 12;
     }
-    return `${hour}:${min}`;
+    return [hour, min];
 };
+
+  // Returns 12-hour format time from Date object
+  const timeTo12HourFormat = (datetime) => {
+    const hour24 = datetime.getHours();
+    const min = datetime.getMinutes();
+    const mod = hour24 >= 12 ? 'PM' : 'AM';
+    const hour12 = hour24 % 12 || 12;
+
+    return [hour12, min, mod]
+  }
 
   // Compute numeric class duration from dropdown selection
   const calculateDurationMinutes = (duration) => {
@@ -73,16 +84,12 @@ const NewClassForm = ({ addClass }) => {
 
   const calculateEndTime = (startTime, duration) => {
     const totalMin = calculateDurationMinutes(duration);
-    // Add sum of minutes to start time
+    // Create end time Date object by adding minutes of duration to start time Date object
     const endTime = new Date (startTime.setMinutes(startTime.getMinutes() + totalMin));
-
     // Convert 24-hour format end time to 12-hour format
-    const endHour24 = endTime.getHours();
-    const endMin = endTime.getMinutes();
-    const endMod = endHour24 >= 12 ? 'PM' : 'AM';
-    const endHour12 = endHour24 % 12 || 12;
-    // Return as string to be assigned to 'endTime' field for class
-    return [`${endHour12.toString()}:${endMin.toString().padStart(2, '0')} ${endMod}`, endHour12, endMin, endMod];
+    const [endHour12, endMin, endMod] = timeTo12HourFormat(endTime);
+    
+    return [`${endHour12.toString()}:${endMin.toString().padStart(2, '0')} ${endMod}`, endTime, endTime.getHours(), endHour12, endMin, endMod];
 };
 
   const handleCheckBoxChange = (e) => {
@@ -113,16 +120,12 @@ const NewClassForm = ({ addClass }) => {
 
     const courseID = uuidv4();
     // Parse selected start time from dropdown, convert to 24-hour format & create Date object
-    const [startHour24, startMin24] = timeTo24HourFormat(startTime).split(':');
-    let startTimeObject = new Date();
-    startTimeObject.setHours(parseInt(startHour24), parseInt(startMin24), 0, 0);
-    // Extract numeric values for times & modifiers (AM/PM)
-    const [endTime, endHour, endMin, endTimeMod] = calculateEndTime(startTimeObject, duration);
-    const [startTimePart, startTimeMod] = startTime.split(' ');
-    const [startHour, startMin] = startTimePart.split(':');
-    // Compute number of 15-minute time increments in duration
-   const timeCells = calculateDurationMinutes(duration) / 15;
-
+    const [startHour24, startMin24] = timeStrTo24HourFormat(startTimeStr);
+    let startDateTime = new Date();
+    startDateTime.setHours(parseInt(startHour24), parseInt(startMin24), 0, 0);
+    const [startHour12, startMin, startTimeMod] = timeTo12HourFormat(startDateTime);
+    const [endTimeStr, endDateTime, endHour24, endHour12, endMin, endTimeMod] = calculateEndTime(startDateTime, duration);
+    
     const course = {
       courseID,
       title, 
@@ -133,23 +136,26 @@ const NewClassForm = ({ addClass }) => {
       Friday, 
       Saturday, 
       Sunday, 
-      startTime, 
-      startHour,
-      startMin,
-      startTimeMod,
-      endTime,
-      endHour,
-      endMin,
-      endTimeMod,
+      startTimeStr, 
+      startDateTime, // manual update req'd
+      startHour24: parseInt(startHour24), // manual update req'd
+      startHour12, // manual update req'd
+      startMin, // manual update req'd
+      startTimeMod, // manual update req'd
+      endTimeStr, // manual update req'd
+      endDateTime, // manual update req'd
+      endHour24, // manual update req'd
+      endHour12, // manual update req'd
+      endMin, // manual update req'd
+      endTimeMod, // manual update req'd
       duration, 
-      durationMins: calculateDurationMinutes(duration),
-      timeCells,
       instructor, 
       calendarColor,
       reservationLimit: limitReservations ? reservationLimit : undefined,
-      clientsBooked: 0,
-      waitlist: 0,
-      dateCreated: startTimeObject
+      clientsBooked: 0, // manual update req'd
+      waitlist: 0, // manual update req'd
+      dateCreated: new Date(),
+      lastEdited: new Date() // manual update req'd
     };
 
     addClass(course);
@@ -162,7 +168,7 @@ const NewClassForm = ({ addClass }) => {
     setFriday(false);
     setSaturday(false);
     setSunday(false);
-    setStartTime('');
+    setStartTimeStr('');
     setDuration('');
     setInstructor('');
     setCheckBoxError('');
@@ -189,7 +195,7 @@ const NewClassForm = ({ addClass }) => {
       {checkBoxError && <div className="text-danger">{checkBoxError}</div>}
       <div className="class-form-group">
         <label htmlFor="class-time-select">Class Start Time:</label>
-        <select className="time-form-select" id="class-time-select" value={startTime} onChange={(e) => setStartTime(e.target.value)} required>
+        <select className="time-form-select" id="class-time-select" value={startTimeStr} onChange={(e) => setStartTimeStr(e.target.value)} required>
             <option selected disabled value="">--:--</option>
             <option>8:00 AM</option>
             <option>8:15 AM</option>
