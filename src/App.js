@@ -6,6 +6,7 @@ import ClassesPage from './pages/ClassesPage';
 import ManagePage from './pages/ManagePage';
 import LeadsPage from './pages/LeadsPage';
 import SchedulePage from './pages/SchedulePage';
+import StorePage from './pages/StorePage';
 import images from './assets/images';
 import 'react-signature-canvas';
 
@@ -15,6 +16,8 @@ const App = () => {
   const [activeTab, setActiveTab] = useState('members');
   const [leads, setLeads] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [memberships, setMemberships] = useState([]);
+  const [merch, setMerch] = useState([]);
 
   useEffect(() => {
     console.log('Members updated:', members);
@@ -155,6 +158,14 @@ const App = () => {
     );
   };
 
+  const addMerch = (item) => {
+    setMerch(prevMerch => [...prevMerch, item]);
+  };
+
+  const addMembership = (membership) => {
+    setMemberships(prevMemberships => [...prevMemberships, membership]);
+  };
+
   return (
     <div>
       <header style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
@@ -163,7 +174,6 @@ const App = () => {
       </header>
 
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-<<<<<<< HEAD
       {activeTab === 'members' && 
       <MembersPage
         members={members} 
@@ -202,39 +212,14 @@ const App = () => {
       <SchedulePage 
         classes={classes}
       />}
-=======
-      {activeTab === 'members' &&
-        <MembersPage
-          members={members}
-          addMember={addMember} updateMember={updateMember}
-          deleteMember={deleteMember}
-          setMemberArchived={setMemberArchived}
-        />}
-      {activeTab === 'classes' &&
-        <ClassesPage
-          classes={classes}
-          addClass={addClass}
-          updateClass={updateClass}
-          deleteClass={deleteClass}
-        />}
-      {activeTab === 'manage' &&
-        <ManagePage
-          employees={employees}
-          addEmployee={addEmployee}
-          updateEmployee={updateEmployee}
-        />}
-      {activeTab === 'leads' &&
-        <LeadsPage
-          members={members}
-          leads={leads}
-          addLead={addLead}
-          deleteLead={deleteLead}
-          setLeadStatus={setLeadStatus}
-          updateLead={updateLead}
-          updateLeadList={updateLeadList}
-          updateLeadHistory={updateLeadHistory}
-        />}
->>>>>>> members-detail-page
+      {activeTab === 'store' && 
+      <StorePage 
+        merch={merch}
+        addMerch={addMerch}
+        memberships={memberships}
+        addMembership={addMembership}
+      />
+      }
     </div>
   );
 };

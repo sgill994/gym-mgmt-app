@@ -37,6 +37,13 @@ const Tabs = ({ activeTab, setActiveTab }) => (
     >
       Leads
     </div>
+    <div
+      id="store-tab"
+      className={activeTab === 'store' ? 'active' : ''}
+      onClick={() => setActiveTab('store')}
+    >
+      Store
+    </div>
   </div>
 );
 
