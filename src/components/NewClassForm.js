@@ -72,7 +72,7 @@ const NewClassForm = ({ addClass }) => {
   }
 
   const calculateEndTime = (startTime, duration) => {
-    totalMin = calculateDurationMinutes(duration);
+    const totalMin = calculateDurationMinutes(duration);
     // Add sum of minutes to start time
     const endTime = new Date (startTime.setMinutes(startTime.getMinutes() + totalMin));
 
@@ -121,7 +121,7 @@ const NewClassForm = ({ addClass }) => {
     const [startTimePart, startTimeMod] = startTime.split(' ');
     const [startHour, startMin] = startTimePart.split(':');
     // Compute number of 15-minute time increments in duration
-    timeCells = calculateDurationMinutes(duration) / 15;
+   const timeCells = calculateDurationMinutes(duration) / 15;
 
     const course = {
       courseID,
@@ -142,6 +142,8 @@ const NewClassForm = ({ addClass }) => {
       endMin,
       endTimeMod,
       duration, 
+      durationMins: calculateDurationMinutes(duration),
+      timeCells,
       instructor, 
       calendarColor,
       reservationLimit: limitReservations ? reservationLimit : undefined,

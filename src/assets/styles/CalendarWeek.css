@@ -7,6 +7,10 @@
 .calendar-header {
     display: flex;
     width: 100%;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
 }
 
 .calendar-header-cell {
@@ -25,22 +29,34 @@
 .calendar-row {
     display: flex;
     width: 100%;
-    height: 50px; /* Adjust height as needed */
     position: relative;
 }
 
 .calendar-hour-label {
-    width: 50px; /* Adjust width as needed */
+    width: 50px;
     text-align: right;
     padding-right: 10px;
     border-right: 1px solid #ccc;
-    position: absolute;
+    position: sticky;
     left: 0;
+    background: white;
+    z-index: 1;
 }
 
-.calendar-hour {
+.calendar-day-column {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     position: relative;
+}
+
+.calendar-cell {
+    flex: 1;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
