@@ -26,6 +26,21 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
         const seconds = padZero(date.getSeconds());
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     };
+
+    const classTimeString = (cls) => {
+        let timeStr = `${cls.startHour12}:${padZero(cls.startMin)}${cls.startTimeMod} - `;
+        timeStr += `${cls.endHour12}:${padZero(cls.endMin)}${cls.endTimeMod}`;
+        return timeStr;
+    };
+
+    const eventTitle = (cls) => {
+        let title = `${cls.title}<br />${classTimeString(cls)}`;
+        title += `<br /><small>with ${cls.instructor}</small>`;
+        if (cls.limitReservations) {
+            title += `<br /><small>${cls.clientsBooked}/${cls.reservationLimit}</small>`;
+        }
+        return title;
+    };
     
     const transformEvents = () => {
         let transformedEvents = [];
@@ -45,7 +60,7 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
 
                     transformedEvents.push({
                         id: cls.courseID,
-                        title: cls.title,
+                        title: eventTitle(cls),
                         start: formatDateString(currentDateStart),
                         end: formatDateString(currentDateEnd),
                         backgroundColor: cls.calendarColor,
@@ -55,7 +70,7 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
             } else if (viewType === 'timeGridWeek' || viewType === 'dayGridMonth') {
                 // For each day in the week/month, check if the event should be added based on the boolean
                 const daysInView = viewType === 'timeGridWeek' ? 7 : new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
-                const startDay = viewType === 'timeGridWeek' ? selectedDate.getDay() : 1;  // Start with the correct day of the week
+                // const startDay = viewType === 'timeGridWeek' ? selectedDate.getDay() : 1;  // Start with the correct day of the week
 
                 for (let i = 0; i < daysInView; i++) {
                     const currentDate = new Date(selectedDate);
@@ -71,7 +86,7 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
 
                         transformedEvents.push({
                             id: `${cls.courseID}-${i}`, // Unique ID for each instance
-                            title: cls.title,
+                            title: eventTitle(cls),
                             start: formatDateString(currentDateStart),
                             end: formatDateString(currentDateEnd),
                             backgroundColor: cls.calendarColor,
@@ -94,8 +109,12 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
                 initialDate={selectedDate}
                 events={transformEvents()}
                 headerToolbar={false}
-                slotDuration="00:15:00" 
+                slotLabelInterval="01:00:00"
+                slotDuration="00:15:00"             
                 allDaySlot={false}
+                nowIndicator={true}
+                scrollTime={new Date().toTimeString().slice(0, 5)}
+                eventContent={(arg) => (<div dangerouslySetInnerHTML={{ __html: arg.event.title }} />)}
             />
         </div>
     );

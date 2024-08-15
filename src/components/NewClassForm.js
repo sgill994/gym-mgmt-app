@@ -151,6 +151,7 @@ const NewClassForm = ({ addClass }) => {
       duration, 
       instructor, 
       calendarColor,
+      limitReservations,
       reservationLimit: limitReservations ? reservationLimit : undefined,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
