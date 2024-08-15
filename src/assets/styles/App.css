@@ -187,3 +187,8 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.newMembershipForm{
+  text-align: center;
+  width: 100%;
+}
