@@ -22,6 +22,9 @@ const App = () => {
   useEffect(() => {
     console.log('Members updated:', members);
   }, [members]);
+  useEffect(() => {
+    console.log('Memberships updated:', memberships);
+  }, [memberships]);
 
   const addLead = (newLeads) => {
     if (Array.isArray(newLeads)) {
