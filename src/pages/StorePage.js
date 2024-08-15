@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import StoreTabs from '../components/StorePage/StoreTabs';
 import MembershipForm from '../components/StorePage/MembershipForm';
 
 const StorePage = ({merch, addMerch, memberships, addMembership}) => {
   const [activeTab, setActiveTab] = useState('membership-options');
-  const [currentStore, setCurrentStore] = useState(null);
-  const handleLinkClick = (form) => () => setCurrentStore(form);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const newMembership = [];
 
 
   return (
@@ -14,14 +19,29 @@ const StorePage = ({merch, addMerch, memberships, addMembership}) => {
       {activeTab === 'membership-options' && (
         <>
         <h3>Membership Purchase Options
-        <a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleLinkClick('MembershipForm')}>
+        <a href="#" className="link-body-emphasis d-inline-flex text-decoration-none rounded" onClick={handleShow}>
             <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed">
               <i className="bi bi-pencil-square me-2"></i>
               Add Membership
             </button>
           </a>
           </h3>
-          {currentStore === 'MembershipForm' && <MembershipForm />}
+          <Modal show={show} onHide={handleClose} className="custom-modal">
+            <Modal.Header closeButton>
+              <Modal.Title>New Membership Form</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <MembershipForm />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </>
       )}
       {activeTab === 'merchandise' && (
