@@ -35,9 +35,9 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
 
     const eventTitle = (cls) => {
         let title = `${cls.title}<br />${classTimeString(cls)}`;
-        title += `<br /><small>with ${cls.instructor}</small>`;
+        title += `<br /><span style="font-size: 75%;">with ${cls.instructor}</span>`;
         if (cls.limitReservations) {
-            title += `<br /><small>${cls.clientsBooked}/${cls.reservationLimit}</small>`;
+            title += `<br /><span style="font-size: 75%;">${cls.clientsBooked}/${cls.reservationLimit}</span>`;
         }
         return title;
     };

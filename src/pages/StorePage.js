@@ -31,7 +31,7 @@ const StorePage = ({merch, addMerch, memberships, addMembership}) => {
               <Modal.Title>New Membership Form</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <MembershipForm />
+            <MembershipForm memberships={memberships} addMembership={addMembership} />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MembershipForm = () => {
+const MembershipForm = (memberships, addMembership) => {
 
   return (
     <form className="newMembershipForm">
