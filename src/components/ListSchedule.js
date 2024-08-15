@@ -1,7 +1,7 @@
 import React from 'react';
 import ListScheduleDay from '../components/ListScheduleDay';
 
-const ListSchedule = ({view, classes, selectedDate}) => {
+const ListSchedule = ({viewType, classes, selectedDate}) => {
     const updateDate = (days) => {
         const newDate = new Date(selectedDate);
         newDate.setDate(selectedDate.getDate() + days);
@@ -10,10 +10,10 @@ const ListSchedule = ({view, classes, selectedDate}) => {
 
     return (
         <div>
-            {view === 'day-schedule' && (
+            {viewType === 'timeGridDay' && (
                 <ListScheduleDay classes={classes} selectedDate={selectedDate} />
             )}
-            {view === 'week-schedule' && (
+            {viewType === 'timeGridWeek' && (
                 <>
                 <ListScheduleDay classes={classes} selectedDate={selectedDate} />
                 <ListScheduleDay classes={classes} selectedDate={updateDate(1)} />
@@ -29,5 +29,3 @@ const ListSchedule = ({view, classes, selectedDate}) => {
 };
 
 export default ListSchedule;
-
-

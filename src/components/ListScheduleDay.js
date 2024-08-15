@@ -49,5 +49,3 @@ const ListScheduleDay = ({classes, selectedDate}) => {
 };
 
 export default ListScheduleDay;
-
-
