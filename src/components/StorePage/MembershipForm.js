@@ -253,7 +253,9 @@ const MembershipForm = ({ show, handleClose, addMembership }) => {
                       value={formData.memberType}
                       onChange={handleChange}
                     >
-                      <option value="Active Member">Active Member</option>
+                      <option value="activeMember">Active Member</option>
+                      <option value="inactiveMember">Inactive Member</option>
+                      <option value="prospect">Prospect</option>
                     </select>
                   </td>
                 </tr>

@@ -32,7 +32,7 @@ const StorePage = ({ merch, addMerch, memberships, addMembership }) => {
           <MembershipForm 
             show={show} 
             handleClose={handleClose}
-            addMembership={addMembership} // Pass function to add a membership
+            addMembership={addMembership} 
           />
           <div className='showMemberships'>
 
