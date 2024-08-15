@@ -61,3 +61,59 @@
     height: 20px;
     border-radius: 50%;
 }
+
+/*Custom CSS for CalendarSchedule*/
+/*Makes event containers scrollable*/
+.scrollable-event {
+    overflow-y: auto;
+    padding: 2px; 
+    white-space: normal; 
+  }
+
+/*Extends 'Now Indicator' red line across the entire week*/
+.fc-timegrid-now-indicator-container {
+    overflow: visible !important;
+    .fc-timegrid-now-indicator-line {
+      width: calc(800% + 4px) !important; 
+    }
+  }
+  .fc-day-tue {
+    .fc-timegrid-now-indicator-line {
+      transform: translateX(-20%); 
+    }
+  }
+  .fc-day-wed {
+    .fc-timegrid-now-indicator-line {
+      transform: translateX(-40%);
+    }
+  }
+  .fc-day-thu {
+    .fc-timegrid-now-indicator-line {
+      transform: translateX(-60%);
+    }
+  }
+  .fc-day-fri {
+    .fc-timegrid-now-indicator-line {
+      transform: translateX(-80%);
+    }
+  }
+
+/*Displays classes on Month calender in colored block containers*/
+.fc-daygrid-event {
+    display: block;
+    border-radius: 4px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fc-daygrid-event .fc-event-title {
+    white-space: normal; 
+    line-height: 1.2;
+}
+
+.fc-daygrid-event .fc-event-main {
+    background-color: inherit; 
+    border-radius: 3px;
+}

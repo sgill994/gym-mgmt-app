@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import '../assets/styles/Classes.css';
 
 const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
     const [events, setEvents] = useState([]);
@@ -34,12 +35,19 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
     };
 
     const eventTitle = (cls) => {
-        let title = `${cls.title}<br />${classTimeString(cls)}`;
-        title += `<br /><span style="font-size: 75%;">with ${cls.instructor}</span>`;
-        if (cls.limitReservations) {
-            title += `<br /><span style="font-size: 75%;">${cls.clientsBooked}/${cls.reservationLimit}</span>`;
+        // Only return start time and class name to display on Month calendar view
+        if (viewType === 'dayGridMonth') {
+            let monthTitle = `${cls.startHour12}:${padZero(cls.startMin)}${cls.startTimeMod} ${cls.title}`;
+            return monthTitle.padStart(2, ' ');
         }
-        return title;
+        else {
+            let title = `${cls.title}<br />${classTimeString(cls)}`;
+            title += `<br /><span style="font-size: 75%;">with ${cls.instructor}</span>`;
+            if (cls.limitReservations) {
+                title += `<br /><span style="font-size: 75%;">${cls.clientsBooked}/${cls.reservationLimit}</span>`;
+            }
+            return title;
+        }
     };
     
     const transformEvents = () => {
@@ -114,7 +122,13 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
                 allDaySlot={false}
                 nowIndicator={true}
                 scrollTime={new Date().toTimeString().slice(0, 5)}
-                eventContent={(arg) => (<div dangerouslySetInnerHTML={{ __html: arg.event.title }} />)}
+                eventContent={(arg) => (
+                    <div 
+                        dangerouslySetInnerHTML={{ __html: arg.event.title }}
+                        style={{ backgroundColor: arg.event.backgroundColor }} 
+                    />
+                )}
+                eventClassNames="scrollable-event"
             />
         </div>
     );
