@@ -1,6 +1,24 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-
+// TO DO: Upload Image 
+// paymentStartOption -> on a specific day of 
+// month shows another dropdown for day to be 
+// clientPayAmount line changes dynamically based on 
+// paymentStartOption selected
+// Summary changes dynamically based on paymentAmount
+// and taxes or no taxes option (calculated and displayed)
+// Convert To should be a mapped dropdown from memberships array 
+// of existing membership options
+// Conversion type only has 3 - can be hardcoded
+// Delete Purchase Option Priority field 
+// Add Available to all clients vs. introductory offer for new clients only vs. available to selected client types only 
+// Selected Client Types Only shows dropdowns (see website)
+// Delete Access to Events 
+// Membership Attendance Restriction (apply) shows additional information
+// ASK ALVIN: DO SESSIONS ROLLOVER? DO UNPAID SESSIONS GET RECONCILED WHEN ATTENDENCE RESETS NEXT MONTH/WEEK?
+// Membership Hold Rules have wrong options (should be allowed to hold, not allowed to hold)
+// Move Membership Hold Rules (current) to Membership Hold BEHAVIOR (only appears whne membership CAN be put on hold)
+// Delete Barcode - will be only for MERCH 
 const MembershipForm = ({ show, handleClose, addMembership }) => {
   const [formData, setFormData] = useState({
     membershipName: '',
