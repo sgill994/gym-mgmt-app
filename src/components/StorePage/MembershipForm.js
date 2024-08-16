@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-// TO DO: Upload Image 
+// (1) TO DO: Upload Image 
 
-// paymentStartOption -> on a specific day of month shows another dropdown for day to be clientPayAmount line changes dynamically based on 
-// paymentStartOption selected
-// Summary changes dynamically based on paymentAmount
-// and taxes or no taxes option (calculated and displayed)
-// Convert To should be a mapped dropdown from memberships array 
-// of existing membership options
-// Conversion type only has 3 - can be hardcoded
-// Delete Purchase Option Priority field 
-// Add Available to all clients vs. introductory offer for new clients only vs. available to selected client types only 
-// Selected Client Types Only shows dropdowns (see website)
-// Delete Access to Events 
-// Membership Attendance Restriction (apply) shows additional information
-// ASK ALVIN: DO SESSIONS ROLLOVER? DO UNPAID SESSIONS GET RECONCILED WHEN ATTENDENCE RESETS NEXT MONTH/WEEK?
-// Membership Hold Rules have wrong options (should be allowed to hold, not allowed to hold)
-// Move Membership Hold Rules (current) to Membership Hold BEHAVIOR (only appears whne membership CAN be put on hold)
-// Delete Barcode - will be only for MERCH 
-/*
-ajshdgfj
-asldkfjas;df
-k;asjdhf
-*/
+// (2) paymentStartOption -> on a specific day of month shows another dropdown for day to be set as start of billing cycle
+
+// (3) clientPayAmount line changes dynamically based on paymentStartOption selected (2)
+
+// (4) Summary changes dynamically based on paymentAmount and taxes or no taxes option (calculated and displayed)
+
+// (5) Auto-Convert (after expiration) should be a mapped dropdown of existing memberships options
+
+// (6) Conversion type only has 3 - can be hardcoded
+
+// (7) Add Available to all clients vs. introductory offer for new clients only vs. available to selected client types only 
+// (7.1) Selected Client Types Only shows dropdowns (see website) Client Types can be hardcoded
+// (7.2) Need to see if 'Client Groups' are created anywhere else on App, hardcode few opts for testing
+
+// (8) Delete Access to Events (feature not used by staff)
+
+// (9) Membership Attendance Restriction (apply) shows additional information (4 sub options)
+// (9.1) Enable Session Rollover has additional 4 sub options
+// (9.2) ASK ALVIN: DO SESSIONS ROLLOVER? DO UNPAID SESSIONS GET RECONCILED WHEN ATTENDENCE RESETS NEXT MONTH/WEEK?
+
+// (10) Membership Hold Rules have wrong options (should be allowed to hold, not allowed to hold)
+// (10.1) Move Membership Hold Rules (current) to Membership Hold BEHAVIOR (only appears whne membership CAN be put on hold)
+
+// (11) Charge cancellation fee shows box for $ amount for cancellation
+
+// (12) Delete Barcode - will be only for MERCH 
+
 const MembershipForm = ({ show, handleClose, addMembership }) => {
   const [formData, setFormData] = useState({
     membershipName: '',
