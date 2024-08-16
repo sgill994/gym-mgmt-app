@@ -37,11 +37,11 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
     const eventTitle = (cls) => {
         // Only return start time and class name to display on Month calendar view
         if (viewType === 'dayGridMonth') {
-            let monthTitle = `${cls.startHour12}:${padZero(cls.startMin)}${cls.startTimeMod} ${cls.title}`;
-            return monthTitle.padStart(2, ' ');
+            let monthTitle = `&nbsp;${cls.startHour12}:${padZero(cls.startMin)}${cls.startTimeMod} <b>${cls.title}</b>`;
+            return monthTitle;
         }
         else {
-            let title = `${cls.title}<br />${classTimeString(cls)}`;
+            let title = `<b>${cls.title}</b><br />${classTimeString(cls)}`;
             title += `<br /><span style="font-size: 75%;">with ${cls.instructor}</span>`;
             if (cls.limitReservations) {
                 title += `<br /><span style="font-size: 75%;">${cls.clientsBooked}/${cls.reservationLimit}</span>`;
@@ -73,6 +73,7 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
                         end: formatDateString(currentDateEnd),
                         backgroundColor: cls.calendarColor,
                         borderColor: cls.calendarColor,
+                        textColor: 'black',
                     });
                 }
             } else if (viewType === 'timeGridWeek' || viewType === 'dayGridMonth') {
@@ -99,6 +100,7 @@ const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
                             end: formatDateString(currentDateEnd),
                             backgroundColor: cls.calendarColor,
                             borderColor: cls.calendarColor,
+                            textColor: 'black',
                         });
                     }
                 }

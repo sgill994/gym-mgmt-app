@@ -18,6 +18,7 @@ const App = () => {
   const [classes, setClasses] = useState([]);
   const [memberships, setMemberships] = useState([]);
   const [merch, setMerch] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     console.log('Members updated:', members);
@@ -214,6 +215,8 @@ const App = () => {
       {activeTab === 'schedule' &&
       <SchedulePage 
         classes={classes}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
       />}
       {activeTab === 'store' && 
       <StorePage 
