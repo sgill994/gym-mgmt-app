@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 // TO DO: Upload Image 
-// paymentStartOption -> on a specific day of 
-// month shows another dropdown for day to be 
-// clientPayAmount line changes dynamically based on 
+
+// paymentStartOption -> on a specific day of month shows another dropdown for day to be clientPayAmount line changes dynamically based on 
 // paymentStartOption selected
 // Summary changes dynamically based on paymentAmount
 // and taxes or no taxes option (calculated and displayed)
@@ -19,6 +18,11 @@ import { Modal } from 'react-bootstrap';
 // Membership Hold Rules have wrong options (should be allowed to hold, not allowed to hold)
 // Move Membership Hold Rules (current) to Membership Hold BEHAVIOR (only appears whne membership CAN be put on hold)
 // Delete Barcode - will be only for MERCH 
+/*
+ajshdgfj
+asldkfjas;df
+k;asjdhf
+*/
 const MembershipForm = ({ show, handleClose, addMembership }) => {
   const [formData, setFormData] = useState({
     membershipName: '',
@@ -27,6 +31,7 @@ const MembershipForm = ({ show, handleClose, addMembership }) => {
     durationUnit: 'months',
     autoPaymentEvery: 1,
     paymentStartOption: '',
+    specificDay: '', 
     clientPaymentAmount: '',
     taxes: 'charge',
     expirationAction: 'doNothing',
@@ -131,6 +136,17 @@ const MembershipForm = ({ show, handleClose, addMembership }) => {
                       <option value="lastDay">starting the last day of the month</option>
                       <option value="specificDay">on a specific day of the month</option>
                     </select>
+                     {formData.paymentStartOption === 'specificDay' && (
+                      <input
+                        type="number"
+                        name="specificDay"
+                        min="1"
+                        max="31"
+                        placeholder="Day of month"
+                        value={formData.specificDay}
+                        onChange={handleChange}
+                      />
+                    )}
                   </td>
                 </tr>
                 <tr>
