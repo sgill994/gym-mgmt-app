@@ -1,65 +1,91 @@
-.react-select-container {
-    width: 100%;
+/* Centering the row of color circles */
+.color-options-container {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-.react-select__control {
-    display: flex;
-    align-items: center;
-    color: black;
-}
-
-.react-select__single-value {
-    display: flex;
-    align-items: center;
-    color: black;
-}
-
-.react-select__option {
-    display: flex;
-    align-items: center;
-    color: black;
-    position: relative;
-    padding-left: 30px; 
-}
-
+/* Styling each color option circle */
 .color-option {
-    display: flex;
-    align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
 }
 
-.color-option::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    margin-right: 10px;
+/* Highlight the selected color circle */
+.color-option.selected {
+  border-color: black; /* You can change this color */
 }
 
-.color-option[data-color="#FF0000"]::before { background-color: #FF0000; }
-.color-option[data-color="#00FF00"]::before { background-color: #00FF00; }
-.color-option[data-color="#0000FF"]::before { background-color: #0000FF; }
-.color-option[data-color="#FFFF00"]::before { background-color: #FFFF00; }
-.color-option[data-color="#FFA500"]::before { background-color: #FFA500; }
-.color-option[data-color="#800080"]::before { background-color: #800080; }
-.color-option[data-color="#FFC0CB"]::before { background-color: #FFC0CB; }
-.color-option[data-color="#A52A2A"]::before { background-color: #A52A2A; }
-.color-option[data-color="#00FFFF"]::before { background-color: #00FFFF; }
-.color-option[data-color="#FF00FF"]::before { background-color: #FF00FF; }
-.color-option[data-color="#800000"]::before { background-color: #800000; }
-.color-option[data-color="#808000"]::before { background-color: #808000; }
-.color-option[data-color="#000080"]::before { background-color: #000080; }
-.color-option[data-color="#008080"]::before { background-color: #008080; }
-.color-option[data-color="#808080"]::before { background-color: #808080; }
-.color-option[data-color="#87CEEB"]::before { background-color: #87CEEB; }
-.color-option[data-color="#FF7F50"]::before { background-color: #FF7F50; }
+.color-picker-container {
+  display:absolute;
+  align-items: left;
+  justify-content: left;
+  position:relative;
+}
+
+
+/*CSS for ColorPicker in NewClassForm*/
+.color-row {
+  display: flex;
+  align-items: left;
+  position: relative;
+  left: 50%;
+  margin-left: 10px;
+}
 
 .color-circle {
-    display: inline-block;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+}
+
+.color-picker-button {
+  cursor: pointer;
+  display: flex;
+  align-items: left;
+  position: static;
+  left: 0%;
+  width: 70px;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.dropdown-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.color-circle-overlay {
+  position: absolute;
+  top: 35.3%;
+  left: 7.9%;
+  transform: translate(-50%, -50%);
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.color-picker-popup {
+  position: relative;
+  margin-top: 10px;
 }
 
 /*Custom CSS for CalendarSchedule*/
@@ -116,4 +142,28 @@
 .fc-daygrid-event .fc-event-main {
     background-color: inherit; 
     border-radius: 3px;
+}
+
+/*CSS for ListSchedule to fix table column widths so they do not stagger 
+for individual tables for each day of the week*/
+.classes-page .table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.classes-page .table th, .classes-page .table td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.classes-page .table th:last-child, .classes-page .table td:last-child {
+  width: 4%;
+}
+
+.classes-page .table th:not(:last-child), .classes-page .table td:not(:last-child) {
+  width: 12%;
 }

@@ -5,10 +5,11 @@ import ListSchedule from '../components/ListSchedule';
 import CalendarSchedule from '../components/CalendarSchedule';
 import DateNavigator from '../components/DateNavigator';
 
-const SchedulePage = ({classes, selectedDate, setSelectedDate}) => {
+const SchedulePage = ({classes}) => {
     const [activeFormatTab, setActiveFormatTab] = useState('list-schedule');
     const [activePeriodTab, setActivePeriodTab] = useState('day-schedule');
     const [viewType, setViewType] = useState('timeGridDay');
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     useEffect(() => {
         setViewType(getViewType(activePeriodTab));

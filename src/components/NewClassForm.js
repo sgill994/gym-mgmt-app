@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import '../assets/styles/Classes.css';
-import Select from 'react-select';
-
+import {PhotoshopPicker} from 'react-color';
+import images from '../assets/images';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -20,7 +20,9 @@ const NewClassForm = ({ addClass }) => {
   const [reservationLimit, setReservationLimit] = useState('');
   const [checkBoxError, setCheckBoxError] = useState('');
   const [reservationError, setReservationError] = useState('');
-  const [calendarColor, setCalendarColor] = useState('');
+  const [calendarColor, setCalendarColor] = useState('#4A90E2');
+  const [tempColor, setTempColor] = useState('#4A90E2')
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   const colorOptions = [
     { name: 'Red', hex: '#FF0000' },
@@ -32,16 +34,31 @@ const NewClassForm = ({ addClass }) => {
     { name: 'Pink', hex: '#FFC0CB' },
     { name: 'Brown', hex: '#A52A2A' },
     { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Lime', hex: '#00FF00' },
-    { name: 'Maroon', hex: '#800000' },
-    { name: 'Olive', hex: '#808000' },
-    { name: 'Navy', hex: '#000080' },
-    { name: 'Teal', hex: '#008080' },
-    { name: 'Grey', hex: '#808080' },
-    { name: 'Sky Blue', hex: '#87CEEB' },
-    { name: 'Coral', hex: '#FF7F50' }
-  ].map(color => ({ value: color.hex, label: color.name, color: color.hex }));
+    { name: 'Grey', hex: '#B4C7DD' },
+  ];
+
+  // Sets calendar color from row
+  const handleColorChange = (color) => {
+    setCalendarColor(color.hex);
+  };
+
+  const handleColorChangePicker = (color) => {
+    setTempColor(color.hex);
+  };
+
+  const handleColorSave = () => {
+    setCalendarColor(tempColor);
+    setShowColorPicker(false);
+  };
+
+  const handleColorCancel = () => {
+    setTempColor(calendarColor);
+    setShowColorPicker(false);
+  }
+
+  const toggleColorPicker = () => {
+    setShowColorPicker(!showColorPicker);
+  };
 
   // Convert a string of format HH:MM AM/PM to 24-hour format
   const timeStrTo24HourFormat = (timeStr) => {
@@ -286,22 +303,36 @@ const NewClassForm = ({ addClass }) => {
             <option>Alvin Valle</option>
           </select>
       </div>
-      <div className="class-form-group">
-        <label htmlFor="calendar-color-select">Calendar Color:</label>
-        <Select 
-          id="calendar-color-select" 
-          className="react-select-container"
-          classNamePrefix="react-select"
-          options={colorOptions} 
-          value={colorOptions.find(option => option.value === calendarColor)} 
-          onChange={(selectedOption) => setCalendarColor(selectedOption.value)}
-          formatOptionLabel={option => (
-            <div className="color-option" data-color={option.color}>
-              {option.label}
-            </div>
-          )}
-        />
-      </div>
+      <label htmlFor="calendar-color-select">Calendar Color:</label> 
+      <span>
+        <div className="class-form-group color-picker-container">
+          <div className="color-picker-button" onClick={toggleColorPicker}>
+            <img src={images.dropdownButtonImage} alt="Dropdown" className="dropdown-image" />
+            <div className="color-circle-overlay" style={{backgroundColor: calendarColor}}></div>
+          </div>
+          <div className="color-options-container"> 
+            &nbsp;&nbsp;
+            {colorOptions.map((option) => (
+              <div
+                key={option.value}
+                className="color-circle"
+                style={{backgroundColor: option.hex}}
+                onClick={() => handleColorChange(option)}
+              />
+            ))}
+          </div>
+        </div>
+      </span>
+        {showColorPicker && (
+          <div className="color-picker-popup">
+            <PhotoshopPicker 
+              color={tempColor} 
+              onChangeComplete={handleColorChangePicker}
+              onAccept={handleColorSave}
+              onCancel={handleColorCancel} 
+            />
+          </div>
+        )}
       <div className="class-form-group">
         <label htmlFor="limit-reservations">
           <input type="checkbox" id="limit-reservations" checked={limitReservations} onChange={(e) => setLimitReservations(e.target.checked)} />
