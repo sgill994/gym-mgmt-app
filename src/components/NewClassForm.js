@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import '../assets/styles/Classes.css';
 import {PhotoshopPicker} from 'react-color';
 import images from '../assets/images';
+import ParagraphInput from '../components/ParagraphInput';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -23,6 +24,8 @@ const NewClassForm = ({ addClass }) => {
   const [calendarColor, setCalendarColor] = useState('#4A90E2');
   const [tempColor, setTempColor] = useState('#4A90E2')
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [serviceCategory, setServiceCategory] = useState('');
+  const [description, setDescription] = useState('');
 
   const colorOptions = [
     { name: 'Red', hex: '#FF0000' },
@@ -200,6 +203,19 @@ const NewClassForm = ({ addClass }) => {
       <div className="class-form-group">
         <label htmlFor="course-name">Class Name:</label>
         <input type="text" id="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
+      </div>
+      <div>
+        <label htmlFor="service-type">Service Category</label>
+        <select id="service-type-select" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} required>
+          <option>Class</option>
+          <option>Event</option>
+        </select>
+      </div>
+      <div>
+        <ParagraphInput description={description} setDescription={setDescription} />
+        <br></br>
+        <br></br>
+        <br></br>
       </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
