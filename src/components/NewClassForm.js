@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import '../assets/styles/Classes.css';
 import {PhotoshopPicker} from 'react-color';
 import images from '../assets/images';
-import ParagraphInput from '../components/ParagraphInput';
+import ParagraphInput from '../components/ParagraphInput.js';
+import ToggleButton from '../components/ToggleButton.js';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -26,6 +27,7 @@ const NewClassForm = ({ addClass }) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [serviceCategory, setServiceCategory] = useState('');
   const [description, setDescription] = useState('');
+  const [classIsActive, setClassIsActive] = useState(true);
 
   const colorOptions = [
     { name: 'Red', hex: '#FF0000' },
@@ -40,20 +42,23 @@ const NewClassForm = ({ addClass }) => {
     { name: 'Grey', hex: '#B4C7DD' },
   ];
 
-  // Sets calendar color from row
+  // Sets Calendar color from row
   const handleColorChange = (color) => {
     setCalendarColor(color.hex);
   };
 
+  // Holds color selected from ColorPicker
   const handleColorChangePicker = (color) => {
     setTempColor(color.hex);
   };
 
+  // Sets Calendar color from ColorPicker
   const handleColorSave = () => {
     setCalendarColor(tempColor);
     setShowColorPicker(false);
   };
 
+  // Retains Calendar color if Colorpicker selection cancelled
   const handleColorCancel = () => {
     setTempColor(calendarColor);
     setShowColorPicker(false);
@@ -128,11 +133,12 @@ const NewClassForm = ({ addClass }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check at least one day has been selected
     if (![Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday].some(Boolean)) {
       setCheckBoxError('Please select at least one day.');
       return;
     }
-
+    // Check a reservation limit is number if checkbox selected
     if (limitReservations && !(/^\d*$/.test(reservationLimit))) {
       setReservationError('Please enter a valid number.');
       return;
@@ -146,6 +152,7 @@ const NewClassForm = ({ addClass }) => {
     const [startHour12, startMin, startTimeMod] = timeTo12HourFormat(startDateTime);
     const [endTimeStr, endDateTime, endHour24, endHour12, endMin, endTimeMod] = calculateEndTime(startDateTime, duration);
     
+    // Store all computed & form values into class object
     const course = {
       courseID,
       title, 
@@ -173,14 +180,18 @@ const NewClassForm = ({ addClass }) => {
       calendarColor,
       limitReservations,
       reservationLimit: limitReservations ? reservationLimit : undefined,
+      serviceCategory,
+      decription,
+      classIsActive,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
-      lastEdited: new Date() // manual update req'd
+      lastEdited: new Date() // manual update req'd (TO DO onSubmit function in ClassDetails)
     };
 
     addClass(course);
 
+    // Reset all form values to blank state
     setTitle('');
     setMonday(false);
     setTuesday(false);
@@ -196,6 +207,11 @@ const NewClassForm = ({ addClass }) => {
     setLimitReservations(false);
     setReservationLimit('');
     setReservationError('');
+    setCalendarColor('#4A90E2');
+    setShowColorPicker(false);
+    setServiceCategory('');
+    setDescription('');
+    setClassIsActive(true);
   };
 
     return (
@@ -210,6 +226,9 @@ const NewClassForm = ({ addClass }) => {
           <option>Class</option>
           <option>Event</option>
         </select>
+      </div>
+      <div>
+        <ToggleButton classIsActive={classIsActive} setClassIsActive={setClassIsActive} />
       </div>
       <div>
         <ParagraphInput description={description} setDescription={setDescription} />
