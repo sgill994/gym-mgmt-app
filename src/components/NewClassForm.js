@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import '../assets/styles/Classes.css';
 import {PhotoshopPicker} from 'react-color';
-import images from '../assets/images';
 import ParagraphInput from '../components/ParagraphInput.js';
 import ToggleButton from '../components/ToggleButton.js';
+import images from '../assets/images';
+import '../assets/styles/Classes.css';
+import {colorOptions, classTimeOptions, classDurationOptions,
+        handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
+        timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -28,94 +31,23 @@ const NewClassForm = ({ addClass }) => {
   const [serviceCategory, setServiceCategory] = useState('');
   const [description, setDescription] = useState('');
   const [classIsActive, setClassIsActive] = useState(true);
-
-  const colorOptions = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Purple', hex: '#800080' },
-    { name: 'Pink', hex: '#FFC0CB' },
-    { name: 'Brown', hex: '#A52A2A' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Grey', hex: '#B4C7DD' },
-  ];
-
-  // Sets Calendar color from row
-  const handleColorChange = (color) => {
-    setCalendarColor(color.hex);
-  };
-
-  // Holds color selected from ColorPicker
-  const handleColorChangePicker = (color) => {
-    setTempColor(color.hex);
-  };
+  
+  // // Holds color selected from ColorPicker
+  // const handleColorChangePicker = (color) => {
+  //   setTempColor(color.hex);
+  // };
 
   // Sets Calendar color from ColorPicker
-  const handleColorSave = () => {
-    setCalendarColor(tempColor);
-    setShowColorPicker(false);
-  };
+  // const handleColorSave = () => {
+  //   setCalendarColor(tempColor);
+  //   setShowColorPicker(false);
+  // };
 
   // Retains Calendar color if Colorpicker selection cancelled
-  const handleColorCancel = () => {
-    setTempColor(calendarColor);
-    setShowColorPicker(false);
-  }
-
-  const toggleColorPicker = () => {
-    setShowColorPicker(!showColorPicker);
-  };
-
-  // Convert a string of format HH:MM AM/PM to 24-hour format
-  const timeStrTo24HourFormat = (timeStr) => {
-    const [timePart, modifier] = timeStr.split(' ');
-    let [hour, min] = timePart.split(':');
-    if (hour === '12') {
-        hour = '00';
-    }
-    if (modifier === 'PM') {
-        hour = parseInt(hour, 10) + 12;
-    }
-    return [hour, min];
-};
-
-  // Returns 12-hour format time from Date object
-  const timeTo12HourFormat = (datetime) => {
-    const hour24 = datetime.getHours();
-    const min = datetime.getMinutes();
-    const mod = hour24 >= 12 ? 'PM' : 'AM';
-    const hour12 = hour24 % 12 || 12;
-
-    return [hour12, min, mod]
-  }
-
-  // Compute numeric class duration from dropdown selection
-  const calculateDurationMinutes = (duration) => {
-    const durationParts = duration.split(' ');
-    let totalMin = 0;
-    for (let i = 0; i < durationParts.length; i += 2) {
-        // Extract hours, multiply by 60, & add to running sum
-        if (durationParts[i + 1] === 'hr') {
-            totalMin += parseInt(durationParts[i]) * 60;
-        // Extract minutes & add to running sum
-        } else if (durationParts[i + 1] === 'min') {
-            totalMin += parseInt(durationParts[i]);
-        }
-    }
-    return totalMin;
-  }
-
-  const calculateEndTime = (startTime, duration) => {
-    const totalMin = calculateDurationMinutes(duration);
-    // Create end time Date object by adding minutes of duration to start time Date object
-    const endTime = new Date (startTime.setMinutes(startTime.getMinutes() + totalMin));
-    // Convert 24-hour format end time to 12-hour format
-    const [endHour12, endMin, endMod] = timeTo12HourFormat(endTime);
-    
-    return [`${endHour12.toString()}:${endMin.toString().padStart(2, '0')} ${endMod}`, endTime, endTime.getHours(), endHour12, endMin, endMod];
-};
+  // const handleColorCancel = () => {
+  //   setTempColor(calendarColor);
+  //   setShowColorPicker(false);
+  // }
 
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
@@ -181,60 +113,38 @@ const NewClassForm = ({ addClass }) => {
       limitReservations,
       reservationLimit: limitReservations ? reservationLimit : undefined,
       serviceCategory,
-      decription,
+      description,
       classIsActive,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
       lastEdited: new Date() // manual update req'd (TO DO onSubmit function in ClassDetails)
     };
-
     addClass(course);
-
-    // Reset all form values to blank state
-    setTitle('');
-    setMonday(false);
-    setTuesday(false);
-    setWednesday(false);
-    setThursday(false);
-    setFriday(false);
-    setSaturday(false);
-    setSunday(false);
-    setStartTimeStr('');
-    setDuration('');
-    setInstructor('');
-    setCheckBoxError('');
-    setLimitReservations(false);
-    setReservationLimit('');
-    setReservationError('');
-    setCalendarColor('#4A90E2');
-    setShowColorPicker(false);
-    setServiceCategory('');
-    setDescription('');
-    setClassIsActive(true);
   };
 
     return (
     <form id="new-class-form" onSubmit={handleSubmit}>
       <div className="class-form-group">
         <label htmlFor="course-name">Class Name:</label>
-        <input type="text" id="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <input type="text" name="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
       </div>
       <div>
         <label htmlFor="service-type">Service Category</label>
-        <select id="service-type-select" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} required>
+        <select name="service-type-select" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} required>
           <option>Class</option>
           <option>Event</option>
         </select>
       </div>
       <div>
-        <ToggleButton classIsActive={classIsActive} setClassIsActive={setClassIsActive} />
+        <div className={`toggle-label ${classIsActive ? 'active' : ''}`}>
+          {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
+        </div>
+        <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
       </div>
       <div>
         <ParagraphInput description={description} setDescription={setDescription} />
-        <br></br>
-        <br></br>
-        <br></br>
+        <br/><br/><br/>
       </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
@@ -250,78 +160,18 @@ const NewClassForm = ({ addClass }) => {
         <label htmlFor="class-time-select">Class Start Time:</label>
         <select className="time-form-select" id="class-time-select" value={startTimeStr} onChange={(e) => setStartTimeStr(e.target.value)} required>
             <option selected disabled value="">--:--</option>
-            <option>8:00 AM</option>
-            <option>8:15 AM</option>
-            <option>8:30 AM</option>
-            <option>8:45 AM</option>
-            <option>9:00 AM</option>
-            <option>9:15 AM</option>
-            <option>9:30 AM</option>
-            <option>9:45 AM</option>
-            <option>10:00 AM</option>
-            <option>10:15 AM</option>
-            <option>10:30 AM</option>
-            <option>10:45 AM</option>
-            <option>11:00 AM</option>
-            <option>11:15 AM</option>
-            <option>11:30 AM</option>
-            <option>11:45 AM</option>
-            <option>12:00 PM</option>
-            <option>12:15 PM</option>
-            <option>12:30 PM</option>
-            <option>12:45 PM</option>
-            <option>1:00 PM</option>
-            <option>1:15 PM</option>
-            <option>1:30 PM</option>
-            <option>1:45 PM</option>
-            <option>2:00 PM</option>
-            <option>2:15 PM</option>
-            <option>2:30 PM</option>
-            <option>2:45 PM</option>
-            <option>3:00 PM</option>
-            <option>3:15 PM</option>
-            <option>3:30 PM</option>
-            <option>3:45 PM</option>
-            <option>4:00 PM</option>
-            <option>4:15 PM</option>
-            <option>4:30 PM</option>
-            <option>4:45 PM</option>
-            <option>5:00 PM</option>
-            <option>5:15 PM</option>
-            <option>5:30 PM</option>
-            <option>5:45 PM</option>
-            <option>6:00 PM</option>
-            <option>6:15 PM</option>
-            <option>6:30 PM</option>
-            <option>6:45 PM</option>
-            <option>7:00 PM</option>
-            <option>7:15 PM</option>
-            <option>7:30 PM</option>
-            <option>7:45 PM</option>
-            <option>8:00 PM</option>
-            <option>8:15 PM</option>
-            <option>8:30 PM</option>
-            <option>8:45 PM</option>
-            <option>8:00 PM</option>
-            <option>8:15 PM</option>
-            <option>8:30 PM</option>
-            <option>8:45 PM</option>
-            <option>9:00 PM</option>
-          </select>
+            {classTimeOptions.map(time => (
+              <option key={time}>{time}</option>
+            ))}
+        </select>
       </div>
       <div className="class-form-group">
         <label htmlFor="class-length-select">Class Length: </label>
         <select className="length-form-select" id="class-length-select" value={duration} onChange={(e) => setDuration(e.target.value)} required>
             <option selected disabled value=""> --- </option>
-            <option>30 min</option>
-            <option>45 min</option>
-            <option>60 min</option>
-            <option>1 hr 15 min</option>
-            <option>1 hr 30 min</option>
-            <option>1 hr 45 min</option>
-            <option>2 hr</option>
-            <option>2 hr 15 min</option>
-            <option>2 hr 30 min</option> 
+            {classDurationOptions.map(duration => (
+              <option key={duration}>{duration}</option>
+            ))}
         </select>
       </div>
       <div className="class-form-group">
@@ -341,7 +191,7 @@ const NewClassForm = ({ addClass }) => {
       <label htmlFor="calendar-color-select">Calendar Color:</label> 
       <span>
         <div className="class-form-group color-picker-container">
-          <div className="color-picker-button" onClick={toggleColorPicker}>
+          <div className="color-picker-button" onClick={() => toggleColorPicker(showColorPicker, setShowColorPicker)}>
             <img src={images.dropdownButtonImage} alt="Dropdown" className="dropdown-image" />
             <div className="color-circle-overlay" style={{backgroundColor: calendarColor}}></div>
           </div>
@@ -352,7 +202,7 @@ const NewClassForm = ({ addClass }) => {
                 key={option.value}
                 className="color-circle"
                 style={{backgroundColor: option.hex}}
-                onClick={() => handleColorChange(option)}
+                onClick={() => handleColorChange(option, setCalendarColor)}
               />
             ))}
           </div>
@@ -362,9 +212,9 @@ const NewClassForm = ({ addClass }) => {
           <div className="color-picker-popup">
             <PhotoshopPicker 
               color={tempColor} 
-              onChangeComplete={handleColorChangePicker}
-              onAccept={handleColorSave}
-              onCancel={handleColorCancel} 
+              onChangeComplete={(color) => handleColorChangePicker(color, setTempColor)}
+              onAccept={() => handleColorSave(tempColor, setCalendarColor, setShowColorPicker)}
+              onCancel={() => handleColorCancel(calendarColor, setTempColor, setShowColorPicker)} 
             />
           </div>
         )}

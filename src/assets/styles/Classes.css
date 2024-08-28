@@ -171,9 +171,12 @@ for individual tables for each day of the week in List Schedule view*/
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width:100px;
   background-color: #f0f4f8; /* Light background */
   padding: 20px;
   border-radius: 10px;
+  margin: 0 auto; /* Centers the container horizontally */
 }
 
 .toggle-switch {
@@ -232,4 +235,15 @@ for individual tables for each day of the week in List Schedule view*/
 
 .toggle-switch .toggle-button.active {
   transform: translateX(30px); /* Adjust based on container width */
+}
+
+.toggle-label {
+  font-size: 18px;
+  text-align: center;
+  color: #adb5bd; /* Light grey color for inactive state */
+  transition: color 0.3s ease;
+}
+
+.toggle-label.active {
+  color: #495057; /* Darker grey color for active state */
 }
