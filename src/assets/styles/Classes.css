@@ -173,10 +173,10 @@ for individual tables for each day of the week in List Schedule view*/
   align-items: center;
   justify-content: center;
   width:120px;
-  background-color: #f0f4f8; /* Light background */
+  background-color: #f0f4f8;
   padding: 20px;
   border-radius: 10px;
-  margin: 0 auto; /* Centers the container horizontally */
+  margin: 0 auto; 
 }
 
 .toggle-switch {
@@ -203,7 +203,7 @@ for individual tables for each day of the week in List Schedule view*/
 }
 
 .toggle-switch .toggle-background.active {
-  background-color: #1e73be; /* Blue color for active state */
+  background-color: #1e73be; 
   border-radius: 30px;
 }
 
@@ -228,32 +228,93 @@ for individual tables for each day of the week in List Schedule view*/
   height: 25px;
   background-color: #fff;
   border-radius: 50%;
-  z-index: 1; /* Ensure it stays above the text */
+  z-index: 1;
   transition: transform 0.3s ease;
 }
 
 .toggle-switch .toggle-button.active {
-  transform: translateX(30px); /* Adjust based on container width */
+  transform: translateX(30px); 
 }
 
 .toggle-label {
   font-size: 16px;
   text-align: center;
-  color: #adb5bd; /* Light grey color for inactive state */
+  color: #adb5bd; 
   transition: color 0.3s ease;
 }
 
 .toggle-label.active {
-  color: #495057; /* Darker grey color for active state */
+  color: #495057; 
 }
 
-/* Updated CSS for aligning toggle button and label */
+/* Container to align toggle button and label */
 .special-instructions-container {
-  display: flex; /* Aligns children in a row */
-  align-items: center; /* Aligns items vertically in the center */
-  gap: 8px; /* Adds some space between the button and the label */
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
 }
 
 .special-instructions-label {
-  margin-left: 70px; /* Optional: Adds some margin to the left of the label */
+  margin-left: 70px; 
+}
+
+/*For Purchase Options selection list (from membership types)*/
+.purchase-options-container {
+  margin: 0px;
+}
+
+.lists-wrapper {
+  display: flex; /* Display the lists side-by-side */
+  gap: 10px; /* Space between the lists */
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  width: 230px;
+}
+
+.list {
+  border: 1px solid #ddd;
+  padding: 5px;
+  width: 230px; /* Adjust the width as needed */
+  height: 300px; /* Adjust the height as needed */
+  overflow-y: auto; /* Add scroll for overflow content */
+  display: flex;
+  flex-direction: column;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.actions a {
+  margin-left: 5px;
+  text-decoration: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.actions a:hover {
+  text-decoration: underline;
+}
+
+.list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.list li:hover {
+  background-color: #f0f0f0; /* Hover effect */
 }

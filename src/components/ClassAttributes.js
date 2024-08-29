@@ -37,6 +37,19 @@ export const colorOptions = [
     "2 hr 15 min", "2 hr 30 min"
   ];
 
+  export const purchaseOptions = [
+    'Child (Age 5-10) Boxing Membership',
+    'Two Month Beginner Bronze Membership',
+    'Advanced/Fighter - Loyalty Membership',
+    'Advanced/Fighter - Gold Gloves Membership'
+  ];
+
+  export const instructorOptions = [
+    'Oneal Mendoza', 'Sandeep Mendoza',
+    'Michael Viloria', 'Terrence Viloria', 'Angelo Viloria',
+    'Naseem Bains', 'Iain Small', 'Alvin Valle'
+  ];
+
   export const toggleColorPicker = (showColorPicker, setShowColorPicker) => {
     setShowColorPicker(!showColorPicker);
   };

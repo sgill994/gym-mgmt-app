@@ -5,7 +5,7 @@ import '../assets/styles/Classes.css'
 import '../assets/styles/Toolbar.css';
 import ParagraphInput from '../components/ParagraphInput.js';
 import ToggleButton from '../components/ToggleButton.js';
-import {colorOptions, classTimeOptions, classDurationOptions,
+import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions,
   toggleColorPicker, handleColorChange, handleColorChangePicker, handleColorSave, handleColorCancel, 
   timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
 
@@ -162,14 +162,9 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
             <label>Instructor:</label>
             <select name="instructor" value={updatedClass.instructor} onChange={handleInputChange} disabled={!isEditing} readOnly={!isEditing}>
               <option disabled value="">---</option>
-              <option>Oneal Mendoza</option>
-              <option>Sandeep Mendoza</option>
-              <option>Michael Viloria</option>
-              <option>Terrence Viloria</option>
-              <option>Angelo Viloria</option>
-              <option>Naseem Bains</option>
-              <option>Iain Small</option>
-              <option>Alvin Valle</option>
+              {instructorOptions.map(instructor => (
+              <option key={instructor}>{instructor}</option>
+              ))}
             </select>
             <label htmlFor="calendar-color-select">Calendar Color:</label> 
       <span>

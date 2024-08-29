@@ -3,13 +3,15 @@ import { v4 as uuidv4 } from 'uuid';
 import {PhotoshopPicker} from 'react-color';
 import ParagraphInput from '../components/ParagraphInput.js';
 import ToggleButton from '../components/ToggleButton.js';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHandHoldingDollar, faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons';
+import SelectableLists from '../components/SelectableLists.js';
+import RadioButtons from '../components/RadioButtons.js';
 import images from '../assets/images';
 import '../assets/styles/Classes.css';
-import {colorOptions, classTimeOptions, classDurationOptions,
+import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions,
         handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
         timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faHandHoldingDollar, faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -35,7 +37,9 @@ const NewClassForm = ({ addClass }) => {
   const [classIsActive, setClassIsActive] = useState(true);
   const [specialInstructions, setSpecialInstructions] = useState(false);
   const [specialDescription, setSpecialDescription] = useState('');
-  const [paymentOption, setPaymentOption] = useState('');
+  const [individualSessions, setIndividualSessions] = useState('');
+  const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
@@ -104,7 +108,8 @@ const NewClassForm = ({ addClass }) => {
       description,
       specialDescription,
       classIsActive,
-      paymentOption,
+      paymentOptions: selectedOptions,
+      individualSessions,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -113,7 +118,7 @@ const NewClassForm = ({ addClass }) => {
     addClass(course);
   };
 
-    return (
+  return (
     <form id="new-class-form" onSubmit={handleSubmit}>
       <div className="class-form-group">
         <label htmlFor="course-name">Class Name:</label>
@@ -176,37 +181,40 @@ const NewClassForm = ({ addClass }) => {
           />
         </div>
       )}
-      <div>
-        <label>Purchase Rules</label><br/>
-        <div className="payment-options">
-          <div className="radio-group">
-            <input 
-              type="radio" 
-              id="sell-sessions" 
-              value="Sell Sessions" 
-              checked={paymentOption === 'Sell Sessions'}
-              onChange={(e) => setPaymentOption(e.target.value)}
-              className="radio-input"
-            />
-            <label htmlFor="sell-sessions" className={`radio-box ${paymentOption === 'Sell Sessions' ? 'selected' : ''}`}>
-              Sell Individual Sessions
-              <span><FontAwesomeIcon icon={faHandHoldingDollar} /></span>
-            </label>
-            <input
-              type="radio"
-              id="do-not-sell-sessions"
-              value="Do Not Sell Sessions"
-              checked={paymentOption === 'Do Not Sell Sessions'}
-              onChange={(e) => setPaymentOption(e.target.value)}
-              className="radio-input"
-            />
-            <label htmlFor="do-not-sell-sessions" className={`radio-box ${paymentOption === 'Do Not Sell Sessions' ? 'selected' : ''}`}>
-              Do Not Sell Individual Sessions 
-              <FontAwesomeIcon icon={faFileInvoiceDollar} />
-            </label>
-          </div>
-        </div>
+      <div className="class-form-group">
+        <label htmlFor="limit-reservations">
+          <input type="checkbox" id="limit-reservations" checked={limitReservations} onChange={(e) => setLimitReservations(e.target.checked)} />
+          Limit Number of Reservations 
+        </label>
       </div>
+      {limitReservations && (
+        <div className="class-form-group">
+          <label htmlFor="reservation-limit"> Reservation Limit: </label>
+          <input type="text" id="reservation-limit" className="class-form-control" value={reservationLimit} onChange={(e) => setReservationLimit(e.target.value)} required/>
+          {reservationError && <div className="text-danger">{reservationError}</div>}
+        </div>
+      )}
+      <div className="purchase-options-container">
+        <label>Clients can use these Purchase Options</label>
+        <SelectableLists 
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+          availableOptions={availableOptions}
+          setAvailableOptions={setAvailableOptions}
+        />
+      </div>
+      <div className="purchase-rules">
+        <label>Purchase Rules</label><br/>
+        <RadioButtons 
+          labels={['Sell Individual Sessions', 'Do Not Sell Individual Sessions']}
+          values={['Sell Sessions', 'Do Not Sell Sessions']}
+          icons={[faHandHoldingDollar, faFileInvoiceDollar]}
+          selectedValue={individualSessions}
+          setSelectedValue={setIndividualSessions}
+        />
+        
+      </div>
+
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
@@ -239,29 +247,11 @@ const NewClassForm = ({ addClass }) => {
         <label htmlFor="class-instructor-select">Class Instructor:</label>
         <select className="instructor-form-select" id="class-instructor-select" value={instructor} onChange={(e) => setInstructor(e.target.value)} required>
             <option selected disabled value=""> --- </option>
-            <option>Oneal Mendoza</option>
-            <option>Sandeep Mendoza</option>
-            <option>Michael Viloria</option>
-            <option>Terrence Viloria</option>
-            <option>Angelo Viloria</option>
-            <option>Naseem Bains</option>
-            <option>Iain Small</option>
-            <option>Alvin Valle</option>
+            {instructorOptions.map(instructor => (
+              <option key={instructor}>{instructor}</option>
+            ))}
           </select>
       </div>
-      <div className="class-form-group">
-        <label htmlFor="limit-reservations">
-          <input type="checkbox" id="limit-reservations" checked={limitReservations} onChange={(e) => setLimitReservations(e.target.checked)} />
-          Limit Number of Reservations 
-        </label>
-      </div>
-      {limitReservations && (
-        <div className="class-form-group">
-          <label htmlFor="reservation-limit"> Reservation Limit: </label>
-          <input type="text" id="reservation-limit" className="class-form-control" value={reservationLimit} onChange={(e) => setReservationLimit(e.target.value)} required/>
-          {reservationError && <div className="text-danger">{reservationError}</div>}
-        </div>
-      )}
       <button type="submit" className="btn btn-primary">Save</button>
     </form>
   );
