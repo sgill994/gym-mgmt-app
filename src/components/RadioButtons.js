@@ -1,6 +1,5 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHandHoldingDollar, faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons';
 import '../assets/styles/Classes.css';
 
 const RadioButtons = ({labels, values, icons, selectedValue, setSelectedValue}) => {
@@ -10,13 +9,13 @@ const RadioButtons = ({labels, values, icons, selectedValue, setSelectedValue}) 
                 <React.Fragment key={index}>
                     <input
                         type="radio"
-                        id={`radio-${index}`}
+                        id={`radio-${label}`}
                         value={values[index]}
                         checked={selectedValue === values[index]}
                         onChange={(e) => setSelectedValue(e.target.value)}
                         className="radio-input"
                     />
-                    <label htmlFor={`radio-${index}`} className={`radio-box ${selectedValue === values[index] ? 'selected' : ''}`}>
+                    <label htmlFor={`radio-${label}`} className={`radio-box ${selectedValue === values[index] ? 'selected' : ''}`}>
                         {label}
                         <span><FontAwesomeIcon icon={icons[index]} /></span>
                     </label>

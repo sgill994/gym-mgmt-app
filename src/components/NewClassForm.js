@@ -11,7 +11,7 @@ import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, i
         handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
         timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHandHoldingDollar, faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons';
+import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarCheck, faUserLock} from '@fortawesome/free-solid-svg-icons';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -38,6 +38,7 @@ const NewClassForm = ({ addClass }) => {
   const [specialInstructions, setSpecialInstructions] = useState(false);
   const [specialDescription, setSpecialDescription] = useState('');
   const [individualSessions, setIndividualSessions] = useState('');
+  const [bookOnline, setBookOnline] = useState('');
   const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -110,6 +111,7 @@ const NewClassForm = ({ addClass }) => {
       classIsActive,
       paymentOptions: selectedOptions,
       individualSessions,
+      bookOnline,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -203,8 +205,8 @@ const NewClassForm = ({ addClass }) => {
           setAvailableOptions={setAvailableOptions}
         />
       </div>
-      <div className="purchase-rules">
-        <label>Purchase Rules</label><br/>
+      <label>Purchase Rules</label><br/>
+      <div className="individual-sessions">
         <RadioButtons 
           labels={['Sell Individual Sessions', 'Do Not Sell Individual Sessions']}
           values={['Sell Sessions', 'Do Not Sell Sessions']}
@@ -212,9 +214,16 @@ const NewClassForm = ({ addClass }) => {
           selectedValue={individualSessions}
           setSelectedValue={setIndividualSessions}
         />
-        
       </div>
-
+      <div className="online-booking">
+      <RadioButtons
+          labels={['Clients Can Book online', 'Disable Online Booking', 'Selected Clients Groups Can Book Online']}
+          values={['Can Book', 'Cannot Book', 'Specific Groups']}
+          icons={[faCalendarCheck, faCalendarXmark, faUserLock]}
+          selectedValue={bookOnline}
+          setSelectedValue={setBookOnline}
+        />
+      </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
