@@ -193,3 +193,35 @@
   width: 100%;
 }
 
+.client-control-options {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.client-control-options .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s;
+  text-align: center;
+  user-select: none;
+}
+
+.client-control-options .box.active {
+  border-color: blue;
+}
+
+.client-control-options .text {
+  color: #000;
+  transition: color 0.3s;
+}
+
+.client-control-options .box.active .text {
+  color: blue;
+}
