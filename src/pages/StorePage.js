@@ -33,6 +33,7 @@ const StorePage = ({ merch, addMerch, memberships, addMembership }) => {
             show={show} 
             handleClose={handleClose}
             addMembership={addMembership} 
+            existingMemberships={memberships}
           />
           <div className='showMemberships'>
 
