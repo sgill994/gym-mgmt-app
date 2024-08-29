@@ -32,7 +32,6 @@ const ParagraphInput = ({ description, setDescription }) => {
 
     return (
         <div>
-            <label htmlForm="description">Description</label>
             <ReactQuill
                 theme="snow"
                 value={description}
@@ -41,6 +40,7 @@ const ParagraphInput = ({ description, setDescription }) => {
                 formats={formats}
                 style={{ height: '150px' }}
             />
+            <br/><br/><br/>
         </div>
     );
 };

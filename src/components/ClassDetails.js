@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React, {useState, useEffect} from 'react';
+import {PhotoshopPicker} from 'react-color';
+import images from '../assets/images';
 import '../assets/styles/Classes.css'
+import '../assets/styles/Toolbar.css';
+import ParagraphInput from '../components/ParagraphInput.js';
+import ToggleButton from '../components/ToggleButton.js';
+import {colorOptions, classTimeOptions, classDurationOptions,
+  toggleColorPicker, handleColorChange, handleColorChangePicker, handleColorSave, handleColorCancel, 
+  timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
+
 
 const ClassDetails = ({ course, updateClass, closeDetails }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedClass, setUpdatedClass] = useState(course);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [calendarColor, setCalendarColor] = useState(course.calendarColor);
+  const [tempColor, setTempColor] = useState(course.tempColor);
+  const [classIsActive, setClassIsActive] = useState(course.classIsActive);
+  const [description, setDescription] = useState(course.description);
 
   const handleEdit = () => setIsEditing(true);
   
@@ -13,56 +26,69 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
     setUpdatedClass(course);
   };
 
-  // Convert a string of format HH:MM AM/PM to 24-hour format
-  const timeStrTo24HourFormat = (timeStr) => {
-    const [timePart, modifier] = timeStr.split(' ');
-    let [hour, min] = timePart.split(':');
-    if (hour === '12') {
-        hour = '00';
-    }
-    if (modifier === 'PM') {
-        hour = parseInt(hour, 10) + 12;
-    }
-    return [hour, min];
+  // Updates the class attributes whenever Calendar color, service category,  
+  // or description value changes in edit mode
+  useEffect(() => {
+    setUpdatedClass(prevState => ({
+      ...prevState,
+      calendarColor,
+      classIsActive,
+      description
+    }));
+  }, [calendarColor, classIsActive, description]);
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target;
+    setUpdatedClass({...updatedClass, [name]: value});
   };
 
-  const timeTo12HourFormat = (datetime) => {
-    const hour24 = datetime.getHours();
-    const min = datetime.getMinutes();
-    const mod = hour24 >= 12 ? 'PM' : 'AM';
-    const hour12 = hour24 % 12 || 12;
-
-    return [hour12, min, mod]
+  const handleCheckBoxChange = (e) => {
+    const {id, checked} = e.target;
+    setUpdatedClass({...updatedClass, [id]: checked});
   };
 
-  // Compute numeric class duration from dropdown selection
-  const calculateDurationMinutes = (duration) => {
-    const durationParts = duration.split(' ');
-    let totalMin = 0;
-    for (let i = 0; i < durationParts.length; i += 2) {
-        // Extract hours, multiply by 60, & add to running sum
-        if (durationParts[i + 1] === 'hr') {
-            totalMin += parseInt(durationParts[i]) * 60;
-        // Extract minutes & add to running sum
-        } else if (durationParts[i + 1] === 'min') {
-            totalMin += parseInt(durationParts[i]);
-        }
-    }
-    return totalMin;
+  // Updates class's end time values based on new duration
+  const handleDurationChange = (e) => {
+    const {name, value} = e.target;
+    const [newEndTimeStr, newEndDateTime, newEndHour24, newEndHour12, newEndMin, newEndTimeMod] = calculateEndTime(updatedClass.startDateTime, value);
+    setUpdatedClass({...updatedClass,
+      [name]: value,
+      endTimeStr: newEndTimeStr,
+      endDateTime: newEndDateTime,
+      endHour24: newEndHour24,
+      endHour12: newEndHour12,
+      endMin: newEndMin,
+      endTimeMod: newEndTimeMod
+    });
   };
 
-  const calculateEndTime = (startTime, duration) => {
-    const totalMin = calculateDurationMinutes(duration);
-    // Create end time Date object by adding minutes of duration to start time Date object
-    const endTime = new Date (startTime.setMinutes(startTime.getMinutes() + totalMin));
-    // Convert 24-hour format end time to 12-hour format
-    const [endHour12, endMin, endMod] = timeTo12HourFormat(endTime);
+  // Updates class's start & end time integer, AM/PM and Date values
+  const handleStartTimeChange = (e) => {
+    const {name, value} = e.target;
+    const [newStartHour24, newStartMin24] = timeStrTo24HourFormat(value);
+    const newStartDateTime = new Date();
+    newStartDateTime.setHours(parseInt(newStartHour24), parseInt(newStartMin24), 0, 0);
+    const [newStartHour12, newStartMin, newStartTimeMod] = timeTo12HourFormat(newStartDateTime);
+    const [newEndTimeStr, newEndDateTime, newEndHour24, newEndHour12, newEndMin, newEndTimeMod] = calculateEndTime(newStartDateTime, updatedClass.duration);
     
-    return [`${endHour12.toString()}:${endMin.toString().padStart(2, '0')} ${endMod}`, endTime, endTime.getHours(), endHour12, endMin, endMod];
+    setUpdatedClass({...updatedClass,
+      [name]: value,
+      startDateTime: newStartDateTime,
+      startHour24: parseInt(newStartHour24),
+      startHour12: newStartHour12,
+      startMin: newStartMin,
+      startTimeMod: newStartTimeMod,
+      endTimeStr: newEndTimeStr,
+      endDateTime: newEndDateTime,
+      endHour24: newEndHour24,
+      endHour12: newEndHour12,
+      endMin: newEndMin,
+      endTimeMod: newEndTimeMod
+    });
   };
 
-  const handleChange = (e) => {
-    const {name, value, type, checked} = e.target;
+  const handleReservationLimitChange = (e) => {
+    const {name, value, checked} = e.target;
 
     if (name === 'limitReservations') {
       setUpdatedClass({
@@ -70,70 +96,13 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
         reservationLimit: checked ? updatedClass.reservationLimit || '' : undefined,
         [name]: checked
       });
-    } else if (name === 'reservationLimit') {
+    } else {
       setUpdatedClass({
         ...updatedClass,
         reservationLimit: value
       });
-    } else if (name === 'startTimeStr' || name === 'duration') {
-      const startTime = name ==='startTimeStr' ? value : updatedClass.startTimeStr;
-      const classDuration = name === 'duration' ? value : updatedClass.duration;
-      const [newStartHour24, newStartMin24] = timeStrTo24HourFormat(startTime);
-      const newStartDateTime = new Date();
-      newStartDateTime.setHours(parseInt(newStartHour24), parseInt(newStartMin24), 0, 0);
-      const [newStartHour12, newStartMin, newStartTimeMod] = timeTo12HourFormat(newStartDateTime);
-      const [newEndTimeStr, newEndDateTime, newEndHour24, newEndHour12, newEndMin, newEndTimeMod] = calculateEndTime(newStartDateTime, classDuration);
-      
-      setUpdatedClass({...updatedClass,
-        duration: name === 'duration' ? value : updatedClass.duration,
-        startTimeStr: name === 'startTimeStr' ? value : updatedClass.startTimeStr,
-        startDateTime: name === 'startTimeStr' ? newStartDateTime : updatedClass.startDateTIme,
-        startHour24: parseInt(newStartHour24),
-        startHour12: newStartHour12,
-        startMin: newStartMin,
-        startTimeMod: newStartTimeMod,
-        endTimeStr: newEndTimeStr,
-        endDateTime: newEndDateTime,
-        endHour24: newEndHour24,
-        endHour12: newEndHour12,
-        endMin: newEndMin,
-        endTimeMod: newEndTimeMod
-      });
-    } else {
-      setUpdatedClass({
-        ...updatedClass,
-        [name]: type === 'checkbox' ? checked : value,
-      });
-    }
+    } 
   };
-
-  const handleColorChange = (selectedOption) => {
-    setUpdatedClass({
-      ...updatedClass,
-      calendarColor: selectedOption.value
-    });
-  };
-
-  const colorOptions = [
-    { name: 'Red', hex: '#FF0000' },
-    { name: 'Green', hex: '#00FF00' },
-    { name: 'Blue', hex: '#0000FF' },
-    { name: 'Yellow', hex: '#FFFF00' },
-    { name: 'Orange', hex: '#FFA500' },
-    { name: 'Purple', hex: '#800080' },
-    { name: 'Pink', hex: '#FFC0CB' },
-    { name: 'Brown', hex: '#A52A2A' },
-    { name: 'Cyan', hex: '#00FFFF' },
-    { name: 'Magenta', hex: '#FF00FF' },
-    { name: 'Lime', hex: '#00FF00' },
-    { name: 'Maroon', hex: '#800000' },
-    { name: 'Olive', hex: '#808000' },
-    { name: 'Navy', hex: '#000080' },
-    { name: 'Teal', hex: '#008080' },
-    { name: 'Grey', hex: '#808080' },
-    { name: 'Sky Blue', hex: '#87CEEB' },
-    { name: 'Coral', hex: '#FF7F50' }
-  ].map(color => ({ value: color.hex, label: color.name, color: color.hex }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -146,91 +115,52 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
     <div>
         <h2>Class Details</h2>
         <form onSubmit={handleSubmit}>
-            <label>Title:</label>
-            <input type="text" name="title" value={updatedClass.title} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
-            <label>Days:</label><br />
+            <label>Class Name:</label>
+            <input type="text" name="title" value={updatedClass.title} onChange={handleInputChange} disabled={!isEditing} />
+            <label>Service Category</label>
+            <select 
+              name="serviceCategory" 
+              value={updatedClass.serviceCategory} 
+              onChange={handleInputChange}
+              disabled={!isEditing}>
+                <option>Class</option>
+                <option>Event</option>
+            </select>
+            <div className={`toggle-label ${classIsActive ? 'active' : ''}`}>
+              {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
+            </div>
+            <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
+            <ParagraphInput description={description} setDescription={setDescription} />
+            <br/><br/><br/>
+            <label>Class Schedule Days:</label><br/>
             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
               <div key={day}>
                 <label>{day}</label>
-                <input type="checkbox" name={day} checked={updatedClass[day]} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} /><br />
+                <input 
+                  type="checkbox" 
+                  id={day} 
+                  checked={updatedClass[day]} 
+                  onChange={handleCheckBoxChange} 
+                  disabled={!isEditing} 
+                /><br/>
               </div>
             ))}
             <label>Time:</label>
-            <select name="startTimeStr" value={updatedClass.startTimeStr} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing}>
+            <select name="startTimeStr" value={updatedClass.startTimeStr} onChange={handleStartTimeChange} disabled={!isEditing} readOnly={!isEditing}>
               <option selected disabled value="">--:--</option>
-              <option>8:00 AM</option>
-              <option>8:15 AM</option>
-              <option>8:30 AM</option>
-              <option>8:45 AM</option>
-              <option>9:00 AM</option>
-              <option>9:15 AM</option>
-              <option>9:30 AM</option>
-              <option>9:45 AM</option>
-              <option>10:00 AM</option>
-              <option>10:15 AM</option>
-              <option>10:30 AM</option>
-              <option>10:45 AM</option>
-              <option>11:00 AM</option>
-              <option>11:15 AM</option>
-              <option>11:30 AM</option>
-              <option>11:45 AM</option>
-              <option>12:00 PM</option>
-              <option>12:15 PM</option>
-              <option>12:30 PM</option>
-              <option>12:45 PM</option>
-              <option>1:00 PM</option>
-              <option>1:15 PM</option>
-              <option>1:30 PM</option>
-              <option>1:45 PM</option>
-              <option>2:00 PM</option>
-              <option>2:15 PM</option>
-              <option>2:30 PM</option>
-              <option>2:45 PM</option>
-              <option>3:00 PM</option>
-              <option>3:15 PM</option>
-              <option>3:30 PM</option>
-              <option>3:45 PM</option>
-              <option>4:00 PM</option>
-              <option>4:15 PM</option>
-              <option>4:30 PM</option>
-              <option>4:45 PM</option>
-              <option>5:00 PM</option>
-              <option>5:15 PM</option>
-              <option>5:30 PM</option>
-              <option>5:45 PM</option>
-              <option>6:00 PM</option>
-              <option>6:15 PM</option>
-              <option>6:30 PM</option>
-              <option>6:45 PM</option>
-              <option>7:00 PM</option>
-              <option>7:15 PM</option>
-              <option>7:30 PM</option>
-              <option>7:45 PM</option>
-              <option>8:00 PM</option>
-              <option>8:15 PM</option>
-              <option>8:30 PM</option>
-              <option>8:45 PM</option>
-              <option>8:00 PM</option>
-              <option>8:15 PM</option>
-              <option>8:30 PM</option>
-              <option>8:45 PM</option>
-              <option>9:00 PM</option>
+              {classTimeOptions.map((time) => (
+                <option key={time}>{time}</option>
+              ))}
             </select>
             <label>Length:</label>
-            <select name="duration" value={updatedClass.duration} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing}>
+            <select name="duration" value={updatedClass.duration} onChange={handleDurationChange} disabled={!isEditing} readOnly={!isEditing}>
               <option selected disabled value=""> --- </option>
-              <option>30 min</option>
-              <option>45 min</option>
-              <option>60 min</option>
-              <option>1 hr 15 min</option>
-              <option>1 hr 30 min</option>
-              <option>1 hr 45 min</option>
-              <option>2 hr</option>
-              <option>2 hr 15 min</option>
-              <option>2 hr 30 min</option> 
+              {classDurationOptions.map((duration) =>(
+                <option key={duration}>{duration}</option>
+              ))}
             </select>
             <label>Instructor:</label>
-            <select name="instructor" value={updatedClass.instructor} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing}>
+            <select name="instructor" value={updatedClass.instructor} onChange={handleInputChange} disabled={!isEditing} readOnly={!isEditing}>
               <option disabled value="">---</option>
               <option>Oneal Mendoza</option>
               <option>Sandeep Mendoza</option>
@@ -241,30 +171,45 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
               <option>Iain Small</option>
               <option>Alvin Valle</option>
             </select>
-            <label>Calendar Color:</label>
-            <Select
-              className="react-select-container"
-              classNamePrefix="react-select"
-              options={colorOptions}
-              value={colorOptions.find(option => option.value === updatedClass.calendarColor)}
-              onChange={handleColorChange}
-              formatOptionLabel={option => (
-                <div className="color-option" data-color={option.color}>
-                  {option.label}
-                </div>
-              )}
-              isDisabled={!isEditing}
-              readOnly={!isEditing}
+            <label htmlFor="calendar-color-select">Calendar Color:</label> 
+      <span>
+        <div className="class-form-group color-picker-container">
+          <div className="color-picker-button" onClick={() => toggleColorPicker(showColorPicker, setShowColorPicker)}>
+            <img src={images.dropdownButtonImage} alt="Dropdown" className="dropdown-image" />
+            <div className="color-circle-overlay" style={{backgroundColor: calendarColor}}></div>
+          </div>
+          <div className="color-options-container"> 
+            &nbsp;&nbsp;
+            {colorOptions.map((option) => (
+              <div
+                key={option.value}
+                className="color-circle"
+                style={{backgroundColor: option.hex}}
+                onClick={() => handleColorChange(option, setCalendarColor)}
+              />
+            ))}
+          </div>
+        </div>
+      </span>
+        {showColorPicker && (
+          <div className="color-picker-popup">
+            <PhotoshopPicker 
+              color={tempColor} 
+              onChangeComplete={(color) => handleColorChangePicker(color, setTempColor)}
+              onAccept={() => handleColorSave(tempColor, setCalendarColor, setShowColorPicker)}
+              onCancel={() => handleColorCancel(calendarColor, setTempColor, setShowColorPicker)} 
             />
+          </div>
+        )}
             <div>
               <label>Limit Number of Reservations
-                <input type="checkbox" name="limitReservations" checked={updatedClass.reservationLimit !== undefined} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
+                <input type="checkbox" name="limitReservations" checked={updatedClass.reservationLimit !== undefined} onChange={handleReservationLimitChange} disabled={!isEditing} readOnly={!isEditing} />
               </label>
             </div>
             {updatedClass.reservationLimit !== undefined && (
               <div>
                 <label>Reservation Limit:</label>
-                <input type="text" name="reservationLimit" value={updatedClass.reservationLimit} onChange={handleChange} disabled={!isEditing} readOnly={!isEditing} />
+                <input type="text" name="reservationLimit" value={updatedClass.reservationLimit} onChange={handleReservationLimitChange} disabled={!isEditing} readOnly={!isEditing} />
               </div>
             )}
             {isEditing && (
