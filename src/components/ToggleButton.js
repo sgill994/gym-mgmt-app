@@ -7,13 +7,11 @@ const ToggleButton = ({isActive, setIsActive}) => {
     }
 
     return (
-        <div className="toggle-container">
-            <div className={`toggle-switch ${isActive ? 'active' : ''}`} onClick={toggleSwitch}>
-                <div className={`toggle-background ${isActive ? 'active' : ''}`}>
-                    <span className="toggle-text">{isActive ? 'ON' : 'OFF'}</span>
-                </div>
-                <div className={`toggle-button ${isActive ? 'active' : ''}`}></div>
+        <div className={`toggle-switch ${isActive ? 'active' : ''}`} onClick={toggleSwitch}>
+            <div className={`toggle-background ${isActive ? 'active' : ''}`}>
+                <span className="toggle-text">{isActive ? 'ON' : 'OFF'}</span>
             </div>
+            <div className={`toggle-button ${isActive ? 'active' : ''}`}></div>
         </div>
     );
 };

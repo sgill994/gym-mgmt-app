@@ -193,3 +193,50 @@
   width: 100%;
 }
 
+/*Radio button boxes on New Class Form, New Membership Form, etc.*/
+/* Visually hide the radio inputs */
+.radio-input {
+  display: none;
+}
+
+/* Styles for the radio box labels */
+.radio-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #d3d3d3; /* Default border color */
+  padding: 15px;
+  margin: 10px;
+  width: 200px; /* Adjust width as needed */
+  height: 100px; /* Adjust height as needed */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Hand cursor on hover */
+  text-align: center;
+  font-size: 14px;
+  transition: border-color 0.3s, background-color 0.3s; /* Smooth transition */
+}
+
+.radio-group {
+  display: flex; /* Aligns radio boxes side by side */
+  gap: 1px; /* Space between the boxes */
+  margin-top: 10px; /* Adds space between label and boxes */
+}
+
+/* Styles for the selected radio box */
+.radio-box.selected {
+  border-color: #007bff; /* Highlight border color for selected */
+  background-color: #e6f0ff; /* Background color for selected */
+  color: #007bff; /* Text color for selected */
+}
+
+/* Adjust icon and text styling inside the boxes */
+.radio-box svg {
+  margin-top: 10px; /* Space between icon and text */
+  font-size: 24px; /* Adjust icon size */
+}
+
+.radio-box span {
+  display: block; /* Make sure text appears below the icon */
+}
+

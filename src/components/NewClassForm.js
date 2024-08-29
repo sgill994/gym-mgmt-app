@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import {PhotoshopPicker} from 'react-color';
 import ParagraphInput from '../components/ParagraphInput.js';
 import ToggleButton from '../components/ToggleButton.js';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faHandHoldingDollar, faFileInvoiceDollar} from '@fortawesome/free-solid-svg-icons';
 import images from '../assets/images';
 import '../assets/styles/Classes.css';
 import {colorOptions, classTimeOptions, classDurationOptions,
@@ -31,23 +33,9 @@ const NewClassForm = ({ addClass }) => {
   const [serviceCategory, setServiceCategory] = useState('');
   const [description, setDescription] = useState('');
   const [classIsActive, setClassIsActive] = useState(true);
-  
-  // // Holds color selected from ColorPicker
-  // const handleColorChangePicker = (color) => {
-  //   setTempColor(color.hex);
-  // };
-
-  // Sets Calendar color from ColorPicker
-  // const handleColorSave = () => {
-  //   setCalendarColor(tempColor);
-  //   setShowColorPicker(false);
-  // };
-
-  // Retains Calendar color if Colorpicker selection cancelled
-  // const handleColorCancel = () => {
-  //   setTempColor(calendarColor);
-  //   setShowColorPicker(false);
-  // }
+  const [specialInstructions, setSpecialInstructions] = useState(false);
+  const [specialDescription, setSpecialDescription] = useState('');
+  const [paymentOption, setPaymentOption] = useState('');
 
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
@@ -114,7 +102,9 @@ const NewClassForm = ({ addClass }) => {
       reservationLimit: limitReservations ? reservationLimit : undefined,
       serviceCategory,
       description,
+      specialDescription,
       classIsActive,
+      paymentOption,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -140,11 +130,82 @@ const NewClassForm = ({ addClass }) => {
         <div className={`toggle-label ${classIsActive ? 'active' : ''}`}>
           {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
         </div>
-        <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
+        <div className="toggle-container">
+          <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
+        </div>
       </div>
       <div>
+        <label htmlForm="description">Description</label>
         <ParagraphInput description={description} setDescription={setDescription} />
-        <br/><br/><br/>
+      </div>
+      <div>
+        <label htmlForm="spec-description">Special Instructions</label>
+        <div className="special-instructions-container">
+          <ToggleButton isActive={specialInstructions} setIsActive={setSpecialInstructions} /> 
+          <label className="special-instructions-label">
+            Only display special instructions to clients who have booked this class
+          </label>
+        </div>
+        <ParagraphInput description={specialDescription} setDescription={setSpecialDescription}/>
+      </div>
+      <label htmlFor="calendar-color-select">Calendar Color:</label> 
+      <div className="class-form-group color-picker-container">
+        <div className="color-picker-button" onClick={() => toggleColorPicker(showColorPicker, setShowColorPicker)}>
+          <img src={images.dropdownButtonImage} alt="Dropdown" className="dropdown-image" />
+          <div className="color-circle-overlay" style={{backgroundColor: calendarColor}}></div>
+        </div>
+        <div className="color-options-container"> 
+          &nbsp;&nbsp;
+          {colorOptions.map((option) => (
+            <div
+              key={option.value}
+              className="color-circle"
+              style={{backgroundColor: option.hex}}
+              onClick={() => handleColorChange(option, setCalendarColor)}
+            />
+          ))}
+        </div>
+      </div>
+      {showColorPicker && (
+        <div className="color-picker-popup">
+          <PhotoshopPicker 
+            color={tempColor} 
+            onChangeComplete={(color) => handleColorChangePicker(color, setTempColor)}
+            onAccept={() => handleColorSave(tempColor, setCalendarColor, setShowColorPicker)}
+            onCancel={() => handleColorCancel(calendarColor, setTempColor, setShowColorPicker)} 
+          />
+        </div>
+      )}
+      <div>
+        <label>Purchase Rules</label><br/>
+        <div className="payment-options">
+          <div className="radio-group">
+            <input 
+              type="radio" 
+              id="sell-sessions" 
+              value="Sell Sessions" 
+              checked={paymentOption === 'Sell Sessions'}
+              onChange={(e) => setPaymentOption(e.target.value)}
+              className="radio-input"
+            />
+            <label htmlFor="sell-sessions" className={`radio-box ${paymentOption === 'Sell Sessions' ? 'selected' : ''}`}>
+              Sell Individual Sessions
+              <span><FontAwesomeIcon icon={faHandHoldingDollar} /></span>
+            </label>
+            <input
+              type="radio"
+              id="do-not-sell-sessions"
+              value="Do Not Sell Sessions"
+              checked={paymentOption === 'Do Not Sell Sessions'}
+              onChange={(e) => setPaymentOption(e.target.value)}
+              className="radio-input"
+            />
+            <label htmlFor="do-not-sell-sessions" className={`radio-box ${paymentOption === 'Do Not Sell Sessions' ? 'selected' : ''}`}>
+              Do Not Sell Individual Sessions 
+              <FontAwesomeIcon icon={faFileInvoiceDollar} />
+            </label>
+          </div>
+        </div>
       </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
@@ -188,36 +249,6 @@ const NewClassForm = ({ addClass }) => {
             <option>Alvin Valle</option>
           </select>
       </div>
-      <label htmlFor="calendar-color-select">Calendar Color:</label> 
-      <span>
-        <div className="class-form-group color-picker-container">
-          <div className="color-picker-button" onClick={() => toggleColorPicker(showColorPicker, setShowColorPicker)}>
-            <img src={images.dropdownButtonImage} alt="Dropdown" className="dropdown-image" />
-            <div className="color-circle-overlay" style={{backgroundColor: calendarColor}}></div>
-          </div>
-          <div className="color-options-container"> 
-            &nbsp;&nbsp;
-            {colorOptions.map((option) => (
-              <div
-                key={option.value}
-                className="color-circle"
-                style={{backgroundColor: option.hex}}
-                onClick={() => handleColorChange(option, setCalendarColor)}
-              />
-            ))}
-          </div>
-        </div>
-      </span>
-        {showColorPicker && (
-          <div className="color-picker-popup">
-            <PhotoshopPicker 
-              color={tempColor} 
-              onChangeComplete={(color) => handleColorChangePicker(color, setTempColor)}
-              onAccept={() => handleColorSave(tempColor, setCalendarColor, setShowColorPicker)}
-              onCancel={() => handleColorCancel(calendarColor, setTempColor, setShowColorPicker)} 
-            />
-          </div>
-        )}
       <div className="class-form-group">
         <label htmlFor="limit-reservations">
           <input type="checkbox" id="limit-reservations" checked={limitReservations} onChange={(e) => setLimitReservations(e.target.checked)} />
