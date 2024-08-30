@@ -5,7 +5,7 @@
   justify-content: left;
   align-items: left;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 /* Styling each color option circle */
@@ -73,8 +73,8 @@
 
 .color-circle-overlay {
   position: absolute;
-  top: 35.3%;
-  left: 7.9%;
+  top: 44.5%;
+  left: 7.85%;
   transform: translate(-50%, -50%);
   width: 31px;
   height: 31px;

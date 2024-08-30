@@ -11,7 +11,8 @@ import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, i
         handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
         timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
 import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarCheck, faUserLock,
-        faCreditCard, faPersonCircleCheck, faCommentsDollar} from '@fortawesome/free-solid-svg-icons';
+        faCreditCard, faPersonCircleCheck, faCommentsDollar,
+        faClipboardList, faEyeSlash, faUsers, faUsersSlash} from '@fortawesome/free-solid-svg-icons';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -39,7 +40,12 @@ const NewClassForm = ({ addClass }) => {
   const [specialDescription, setSpecialDescription] = useState('');
   const [individualSessions, setIndividualSessions] = useState('');
   const [bookOnline, setBookOnline] = useState('');
+  const [groupAllowedBooking, setGroupsAllowedBooking] = useState([]);
   const [purchaseTime, setPurchaseTime] = useState('');
+  const [purchaseOptsVisible, setPurchaseOptsVisible] = useState('');
+  const [ageRestriction, setAgeRestriction] = useState('');
+  const [ageRestrictionType, setAgeRestrictionType] = useState('');
+  const [ageRestricted, setAgeRestricted] = useState('');
   const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -113,6 +119,7 @@ const NewClassForm = ({ addClass }) => {
       paymentOptions: selectedOptions,
       individualSessions,
       bookOnline,
+      purchaseTime,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -220,17 +227,51 @@ const NewClassForm = ({ addClass }) => {
         <RadioButtons 
           labels={['Client must purchase online at time of booking', 'Client can only pay when they visit', 'Client can pay online or when they visit']}
           values={['Purchase Online', 'Purchase During Visit', 'Purchase Anytime']}
-          icons={}
+          icons={[faCreditCard, faPersonCircleCheck, faCommentsDollar]}
+          selectedValue={purchaseTime}
+          setSelectedValue={setPurchaseTime}
         />
-
+      </div>
+      <div className="purchase-opts-visibility">
+        <RadioButtons 
+          labels={['Display applicable Purchase Options during booking', 'Hide applicable Purchase Options from clients']}
+          values={['Purchase Options Visible', 'Purchase Options Hidden']}
+          icons={[faClipboardList, faEyeSlash]}
+          selectedValue={purchaseOptsVisible}
+          setSelectedValue={setPurchaseOptsVisible}
+        />
       </div>
       <div className="online-booking">
-      <RadioButtons
-          labels={['Clients Can Book online', 'Disable Online Booking', 'Selected Clients Groups Can Book Online']}
-          values={['Can Book Online', 'Cannot Book Online', 'Specific Groups Only']}
-          icons={[faCalendarCheck, faCalendarXmark, faUserLock]}
-          selectedValue={bookOnline}
-          setSelectedValue={setBookOnline}
+        <label>Client Online Booking</label>
+        <RadioButtons
+            labels={['Clients Can Book online', 'Disable Online Booking', 'Selected Clients Groups Can Book Online']}
+            values={['Can Book Online', 'Cannot Book Online', 'Specific Groups Only']}
+            icons={[faCalendarCheck, faCalendarXmark, faUserLock]}
+            selectedValue={bookOnline}
+            setSelectedValue={setBookOnline}
+          />
+      </div>
+      {bookOnline === 'Specific Groups Only' &&
+        <div className="group-type-allowed">
+          <select>
+            <option>Active Member</option>
+            <option>Inactive Member</option>
+          </select>
+          <select>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+      }
+      <div className="age-restrictions">
+        <label>Age Restriction</label>
+        <RadioButtons 
+          labels={['Open to all ages', 'Restricted to certain ages']}
+          values={['All Ages', 'Age Restricted']}
+          icons={[faUsers, faUsersSlash]}
+          selectedValue={ageRestriction}
+          setSelectedValue={setAgeRestriction}
         />
       </div>
       <div className="class-form-group">

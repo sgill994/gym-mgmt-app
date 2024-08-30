@@ -16,7 +16,7 @@ const RadioButtons = ({labels, values, icons, selectedValue, setSelectedValue}) 
                         className="radio-input"
                     />
                     <label htmlFor={`radio-${label}`} className={`radio-box ${selectedValue === values[index] ? 'selected' : ''}`}>
-                        {label}
+                        <small>{label}</small>
                         <span><FontAwesomeIcon icon={icons[index]} /></span>
                     </label>
                 </React.Fragment>
