@@ -46,6 +46,7 @@ const NewClassForm = ({ addClass }) => {
   const [ageRestriction, setAgeRestriction] = useState('');
   const [ageRestrictionType, setAgeRestrictionType] = useState('');
   const [ageRestricted, setAgeRestricted] = useState('');
+  const [ageRestrictedRange, setAgeRestrictedRange] = useState(['', '']);
   const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -61,6 +62,12 @@ const NewClassForm = ({ addClass }) => {
       Sunday: setSunday,
     }[id];
     setDay(checked);
+  };
+
+  const handleAgeRestrictedChange = (index, value) => {
+    const updatedAgeRestrictedRange = [...ageRestrictedRange];
+    updatedAgeRestrictedRange[index] = value;
+    setAgeRestrictedRange(updatedAgeRestrictedRange);
   };
 
   const handleSubmit = (e) => {
@@ -120,6 +127,9 @@ const NewClassForm = ({ addClass }) => {
       individualSessions,
       bookOnline,
       purchaseTime,
+      ageRestriction,
+      ageRestrictionType,
+      ageRestricted: ageRestrictionType === 'Age Range' ? ageRestrictedRange : ageRestricted,
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -252,16 +262,24 @@ const NewClassForm = ({ addClass }) => {
           />
       </div>
       {bookOnline === 'Specific Groups Only' &&
-        <div className="group-type-allowed">
-          <select>
-            <option>Active Member</option>
-            <option>Inactive Member</option>
-          </select>
-          <select>
-            <option>Beginner</option>
-            <option>Intermediate</option>
-            <option>Advanced</option>
-          </select>
+        <div className="groups-allowed-booking">
+          <div className="dropdown-container">
+            <div className="dropdown-item">
+              <label>Client Types</label><br/>
+              <select>
+                <option>Active Member</option>
+                <option>Inactive Member</option>
+              </select>
+            </div>
+            <div className="dropdown-item">
+              <label>Client Groups</label><br/>
+              <select>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
+          </div>
         </div>
       }
       <div className="age-restrictions">
@@ -273,6 +291,35 @@ const NewClassForm = ({ addClass }) => {
           selectedValue={ageRestriction}
           setSelectedValue={setAgeRestriction}
         />
+        {ageRestriction === 'Age Restricted' && (
+          <div>
+            <label>Age Restriction Options:</label>&nbsp;
+            <select value={ageRestrictionType} onChange={(e) => setAgeRestrictionType(e.target.value)} required>
+              <option>Minimum Age</option>
+              <option>Maximum Age</option>
+              <option>Age Range</option>
+            </select>
+            &nbsp;&nbsp;
+            {ageRestrictionType === 'Age Range' ? (
+              <>
+                <input type="text" className="small-input" value={ageRestrictedRange[0]} onChange={(e) => handleAgeRestrictedChange(0, e.target.value)} required />
+                <label>to</label>&nbsp;
+                <input type="text" className="small-input" value={ageRestrictedRange[1]} onChange={(e) => handleAgeRestrictedChange(1, e.target.value)} required />
+                <label>y/o</label>
+              </>
+            ) : (
+              <>
+                <input 
+                  type="text" 
+                  className="small-input"
+                  value={ageRestricted} 
+                  onChange={(e) => setAgeRestricted(e.target.value)}
+                  required />
+                <label>y/o</label>
+              </>
+            )} 
+          </div>
+        )}
       </div>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
@@ -314,6 +361,6 @@ const NewClassForm = ({ addClass }) => {
       <button type="submit" className="btn btn-primary">Save</button>
     </form>
   );
-}
+};
 
 export default NewClassForm;
