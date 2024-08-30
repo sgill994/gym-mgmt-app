@@ -10,8 +10,8 @@ import '../assets/styles/Classes.css';
 import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions,
         handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
         timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarCheck, faUserLock} from '@fortawesome/free-solid-svg-icons';
+import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarCheck, faUserLock,
+        faCreditCard, faPersonCircleCheck, faCommentsDollar} from '@fortawesome/free-solid-svg-icons';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -39,6 +39,7 @@ const NewClassForm = ({ addClass }) => {
   const [specialDescription, setSpecialDescription] = useState('');
   const [individualSessions, setIndividualSessions] = useState('');
   const [bookOnline, setBookOnline] = useState('');
+  const [purchaseTime, setPurchaseTime] = useState('');
   const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -215,10 +216,18 @@ const NewClassForm = ({ addClass }) => {
           setSelectedValue={setIndividualSessions}
         />
       </div>
+      <div className="purchase-time">
+        <RadioButtons 
+          labels={['Client must purchase online at time of booking', 'Client can only pay when they visit', 'Client can pay online or when they visit']}
+          values={['Purchase Online', 'Purchase During Visit', 'Purchase Anytime']}
+          icons={}
+        />
+
+      </div>
       <div className="online-booking">
       <RadioButtons
           labels={['Clients Can Book online', 'Disable Online Booking', 'Selected Clients Groups Can Book Online']}
-          values={['Can Book', 'Cannot Book', 'Specific Groups']}
+          values={['Can Book Online', 'Cannot Book Online', 'Specific Groups Only']}
           icons={[faCalendarCheck, faCalendarXmark, faUserLock]}
           selectedValue={bookOnline}
           setSelectedValue={setBookOnline}
