@@ -5,14 +5,18 @@ import ParagraphInput from '../components/ParagraphInput.js';
 import ToggleButton from '../components/ToggleButton.js';
 import SelectableLists from '../components/SelectableLists.js';
 import RadioButtons from '../components/RadioButtons.js';
+import CheckTextInputList from '../components/CheckTextInputList.js';
 import images from '../assets/images';
 import '../assets/styles/Classes.css';
-import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions,
+import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions, classOptions,
         handleColorChange, toggleColorPicker, handleColorChangePicker, handleColorSave, handleColorCancel,
         timeStrTo24HourFormat, timeTo12HourFormat, calculateEndTime} from '../components/ClassAttributes.js';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarCheck, faUserLock,
         faCreditCard, faPersonCircleCheck, faCommentsDollar,
-        faClipboardList, faEyeSlash, faUsers, faUsersSlash} from '@fortawesome/free-solid-svg-icons';
+        faClipboardList, faSquareXmark, faUsers, faUsersSlash,
+        faDollarSign, faEye, faEyeSlash,
+        faLock, faLockOpen} from '@fortawesome/free-solid-svg-icons';
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -39,6 +43,8 @@ const NewClassForm = ({ addClass }) => {
   const [specialInstructions, setSpecialInstructions] = useState(false);
   const [specialDescription, setSpecialDescription] = useState('');
   const [individualSessions, setIndividualSessions] = useState('');
+  const [individualSessionCost, setIndividualSessionCost] = useState('35.00');
+  const [individualCostVisibility, setIndividualCostVisibility] = useState(false);
   const [bookOnline, setBookOnline] = useState('');
   const [groupAllowedBooking, setGroupsAllowedBooking] = useState([]);
   const [purchaseTime, setPurchaseTime] = useState('');
@@ -46,9 +52,15 @@ const NewClassForm = ({ addClass }) => {
   const [ageRestriction, setAgeRestriction] = useState('');
   const [ageRestrictionType, setAgeRestrictionType] = useState('');
   const [ageRestricted, setAgeRestricted] = useState('');
+  const [ageRestrictedVisible, setAgeRestrictedVisible] = useState(false);
   const [ageRestrictedRange, setAgeRestrictedRange] = useState(['', '']);
   const [availableOptions, setAvailableOptions] = useState([...purchaseOptions]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [classImage, setClassImage] = useState(null);
+  const [hasPrequisites, setHasPrequisites] = useState('');
+  const [prerequisites, setPrerequisites] = useState({});
+  const [staffNotifications, setStaffNotifications] = useState(true);
+  const [clientNotifications, setClientNotifications] = useState(true);
 
   const handleCheckBoxChange = (e) => {
     const {id, checked} = e.target;
@@ -62,6 +74,17 @@ const NewClassForm = ({ addClass }) => {
       Sunday: setSunday,
     }[id];
     setDay(checked);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setClassImage(reader.result); // Set the image data to state
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleAgeRestrictedChange = (index, value) => {
@@ -130,6 +153,9 @@ const NewClassForm = ({ addClass }) => {
       ageRestriction,
       ageRestrictionType,
       ageRestricted: ageRestrictionType === 'Age Range' ? ageRestrictedRange : ageRestricted,
+      ageRestrictedVisible,
+      hasPrequisites,
+      prerequisites: hasPrequisites === 'Has Prerequisites' ? prerequisites : ({}),
       clientsBooked: 0, // manual update req'd
       waitlist: 0, // manual update req'd
       dateCreated: new Date(),
@@ -140,23 +166,40 @@ const NewClassForm = ({ addClass }) => {
 
   return (
     <form id="new-class-form" onSubmit={handleSubmit}>
-      <div className="class-form-group">
-        <label htmlFor="course-name">Class Name:</label>
-        <input type="text" name="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      </div>
-      <div>
-        <label htmlFor="service-type">Service Category</label>
-        <select name="service-type-select" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} required>
-          <option>Class</option>
-          <option>Event</option>
-        </select>
-      </div>
-      <div>
-        <div className={`toggle-label ${classIsActive ? 'active' : ''}`}>
-          {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
+      <div className="form-layout-container">
+        <div className="image-upload-container">
+          {classImage ? (
+            <img src={classImage} alt="Class" className="uploaded-image" />
+          ) : (
+            <label htmlFor="file-input" className="upload-placeholder">Upload Image</label>
+          )}
+          <input 
+            className="file-input" 
+            type="file" 
+            id="fileInput"
+            accept="image/*"
+            onChange={handleFileChange} />
         </div>
-        <div className="toggle-container">
-          <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
+        <div className="form-fields-container">
+          <div className="class-form-group">
+            <label htmlFor="course-name">Class Name:</label>
+            <input type="text" name="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </div><br/>
+          <div className="service-category-container">
+            <label htmlFor="service-type">Service Category</label><br />
+            <select name="service-type-select" value={serviceCategory} onChange={(e) => setServiceCategory(e.target.value)} required>
+              <option>Class</option>
+              <option>Event</option>
+            </select>
+          </div>
+        </div>
+        <div className="active-class-container">
+          <div className="active-class-toggle">
+            <label className={`active-class-label ${classIsActive ? 'active' : ''}`}>
+              {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
+            </label>
+            <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
+          </div>
         </div>
       </div>
       <div>
@@ -166,10 +209,7 @@ const NewClassForm = ({ addClass }) => {
       <div>
         <label htmlForm="spec-description">Special Instructions</label>
         <div className="special-instructions-container">
-          <ToggleButton isActive={specialInstructions} setIsActive={setSpecialInstructions} /> 
-          <label className="special-instructions-label">
-            Only display special instructions to clients who have booked this class
-          </label>
+          <ToggleButton isActive={specialInstructions} setIsActive={setSpecialInstructions} label="Only display special instructions to clients who have booked this class"/> 
         </div>
         <ParagraphInput description={specialDescription} setDescription={setSpecialDescription}/>
       </div>
@@ -232,6 +272,13 @@ const NewClassForm = ({ addClass }) => {
           selectedValue={individualSessions}
           setSelectedValue={setIndividualSessions}
         />
+        {individualSessions && 
+          <div>
+            <label>Cost Per Session: </label>&nbsp;&nbsp;
+            <FontAwesomeIcon icon={faDollarSign} />&nbsp;
+            <input type="text" value={individualSessionCost} onChange={(e) => setIndividualSessionCost(e.target.value)}/>
+          </div>
+        }
       </div>
       <div className="purchase-time">
         <RadioButtons 
@@ -246,9 +293,18 @@ const NewClassForm = ({ addClass }) => {
         <RadioButtons 
           labels={['Display applicable Purchase Options during booking', 'Hide applicable Purchase Options from clients']}
           values={['Purchase Options Visible', 'Purchase Options Hidden']}
-          icons={[faClipboardList, faEyeSlash]}
+          icons={[faClipboardList, faSquareXmark]}
           selectedValue={purchaseOptsVisible}
           setSelectedValue={setPurchaseOptsVisible}
+        />
+      </div>
+      <div className="purchase-cost-visibility">
+        <RadioButtons
+          labels={['Show individual session price during booking', 'Hide individidual sessions price']}
+          values={['Show Individial Session Cost', 'Hide Individual Session Cost']}
+          icons={[faEye, faEyeSlash]}
+          selectedValue={individualCostVisibility}
+          setSelectedValue={setIndividualCostVisibility}
         />
       </div>
       <div className="online-booking">
@@ -282,6 +338,21 @@ const NewClassForm = ({ addClass }) => {
           </div>
         </div>
       }
+      <div className="pre-requisites">
+        <label>Prerequisites</label>
+        <RadioButtons
+          labels={['Select prerequisite services', 'No prerequisite services required']}
+          values={['Has Prerequisites', 'No Prerequisites']}
+          icons={[faLock, faLockOpen]}
+          selectedValue={hasPrequisites}
+          setSelectedValue={setHasPrequisites}
+        />
+        {hasPrequisites === 'Has Prerequisites' && 
+          <div>
+            <CheckTextInputList classOptions={classOptions} prerequisites={prerequisites} setPrerequisites={setPrerequisites} />
+          </div>
+        }
+      </div>
       <div className="age-restrictions">
         <label>Age Restriction</label>
         <RadioButtons 
@@ -318,9 +389,19 @@ const NewClassForm = ({ addClass }) => {
                 <label>y/o</label>
               </>
             )} 
+            <div>
+              <ToggleButton isActive={ageRestrictedVisible} setIsActive={setAgeRestrictedVisible} label="Display service to clients who do not meet age requirement"/>
+            </div>
           </div>
         )}
-      </div>
+      </div><br/>
+      <div className="notifications">
+        <label>Notifications</label><br/><br/>
+        <ToggleButton isActive={staffNotifications} setIsActive={setStaffNotifications} label="Staff Notifications" />
+        <label><small>Staff with receieve all default notifications</small></label><br/><br/>
+        <ToggleButton isActive={clientNotifications} setIsActive={setClientNotifications} label="Client Notifications" />
+        <label><small>Clients will recieve all default notifications</small></label>
+      </div><br/>
       <div className="class-form-group">
         <label htmlFor="course-day">Class Schedule Days: </label><br />
         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (

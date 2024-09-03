@@ -166,30 +166,123 @@ for individual tables for each day of the week in List Schedule view*/
   width: 12%;
 }
 
-/*Changes colors for 'Active Class' toggle button on NewClassForm*/
-.toggle-container {
+/* Container to hold the image upload, form fields, and toggle side-by-side */
+.form-layout-container {
+  display: flex; 
+  align-items: flex-start; 
+  gap: 20px;
+  margin-bottom: 10px; 
+  width: 100%; 
+}
+
+/* Styling for the image upload container */
+.image-upload-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width:120px;
-  background-color: #f0f4f8;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 0 auto; 
+  width: 150px; 
+  height: 150px; 
+  border: 2px dashed #ddd;
+  border-radius: 8px; 
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  position: relative;
+  cursor: pointer; /* Make the Upload Image box clickable */
+  margin-bottom: 0px;
 }
 
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.upload-placeholder {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+}
+
+.file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Make the "Choose File" button invisible */
+  cursor: pointer; 
+  font-size: 16px;
+}
+
+/* Styling for the center form fields container */
+.form-fields-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Styling for the active class toggle container */
+.active-class-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e6f2fb; /* Light blue background */
+  padding: 10px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+}
+
+.active-class-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; 
+}
+
+.active-class-label {
+  font-size: 12px;
+  text-wrap: nowrap;
+  color: #495057;
+  margin-bottom:5px;
+}
+
+/* General styling for toggle button container */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  margin-left: 5px;
+}
+
+/* Center-aligned styling for specific cases */
+.toggle-wrapper.center-aligned {
+  justify-content: center;
+}
+
+/* Left-aligned styling for cases with labels */
+.toggle-wrapper.left-aligned {
+  justify-content: left;
+}
+
+/* Toggle button styles remain unchanged */
 .toggle-switch {
-  position:absolute;
-  display:inline-flex;
-  align-items: center; 
-  justify-content: center; 
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 60px;
   height: 30px;
-  background-color: #adb5bd; 
+  background-color: #adb5bd;
   border-radius: 30px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.toggle-wrapper.left-aligned .toggle-label {
+  position: relative;
+  margin-left: 70px;
+  font-size: 14px;
+  color: #495057;
 }
 
 .toggle-switch .toggle-background {
@@ -198,12 +291,12 @@ for individual tables for each day of the week in List Schedule view*/
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: #fff; /* Default text color */
+  color: #fff;
   transition: color 0.3s ease;
 }
 
 .toggle-switch .toggle-background.active {
-  background-color: #1e73be; 
+  background-color: #1e73be;
   border-radius: 30px;
 }
 
@@ -213,7 +306,7 @@ for individual tables for each day of the week in List Schedule view*/
   text-align: left;
   z-index: 0;
   font-size: 12px;
-  padding-left: 30px; 
+  padding-left: 30px;
 }
 
 .toggle-switch .toggle-background.active .toggle-text {
@@ -233,29 +326,12 @@ for individual tables for each day of the week in List Schedule view*/
 }
 
 .toggle-switch .toggle-button.active {
-  transform: translateX(30px); 
+  transform: translateX(30px);
 }
 
 .toggle-label {
   font-size: 16px;
-  text-align: center;
-  color: #adb5bd; 
-  transition: color 0.3s ease;
-}
-
-.toggle-label.active {
-  color: #495057; 
-}
-
-/* Container to align toggle button and label */
-.special-instructions-container {
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
-}
-
-.special-instructions-label {
-  margin-left: 70px; 
+  color: #495057;
 }
 
 /*For Purchase Options selection list (from membership types)*/
@@ -354,4 +430,40 @@ for individual tables for each day of the week in List Schedule view*/
 .small-input {
   width: 50px; /* Adjust the width to fit your design */
   margin-right: 5px; /* Add some space between input fields and labels */
+}
+
+.custom-checklist {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 95%;
+  margin: 10px;
+}
+
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.checklist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.checklist-item:nth-child(odd) {
+  background-color: #e5eef5;
+}
+
+.visits-input {
+  width: 50px;
 }

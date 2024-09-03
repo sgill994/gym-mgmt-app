@@ -50,6 +50,15 @@ export const colorOptions = [
     'Naseem Bains', 'Iain Small', 'Alvin Valle'
   ];
 
+  export const classOptions = [
+    'All Levels Sparring Class', 'Beginner Boxing',
+    'Beginner\'s Youth Class', 'Beginner-Intermediate Boxing',
+    'Boxing Bootcamp', 'Competitor\'s Class',
+    'Elite Fighter 500 Class', 'Female Focused Fight Club',
+    'Intermediate Youth Boxing Class', 'Intermediate-Advanced',
+    'Ladies Only Boxing', 'Little Uppercuts'
+  ];
+
   export const toggleColorPicker = (showColorPicker, setShowColorPicker) => {
     setShowColorPicker(!showColorPicker);
   };
