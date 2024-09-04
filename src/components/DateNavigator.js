@@ -4,9 +4,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-const DateNavigator = ({ view, selectedDate, setSelectedDate }) => {
+const DateNavigator = ({ view, selectedDate, setSelectedDate, weekSelectedDate, setWeekSelectedDate}) => {
     const [showCalendar, setShowCalendar] = useState(false);
-    const [weekSelectedDate, setWeekSelectedDate] = useState(new Date(selectedDate));
 
     useEffect(() => {
         if (view === 'week-schedule') {
@@ -14,7 +13,7 @@ const DateNavigator = ({ view, selectedDate, setSelectedDate }) => {
             startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay());
             setWeekSelectedDate(startOfWeek);
         }
-    }, [view]);
+    }, [view, selectedDate, setWeekSelectedDate]);
 
     const updateDate = (days) => {
         let newDate;
@@ -64,7 +63,12 @@ const DateNavigator = ({ view, selectedDate, setSelectedDate }) => {
     };
 
     const handleDateChange = (date) => {
-        setSelectedDate(date);
+        setSelectedDate(new Date(date));
+        if (view === 'week-schedule') {
+            const startOfWeek = new Date(date);
+            startOfWeek.setDate(date.getDate() - date.getDay());
+            setWeekSelectedDate(startOfWeek);
+        }
         setShowCalendar(false);
     };
 

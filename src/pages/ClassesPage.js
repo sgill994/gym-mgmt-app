@@ -9,14 +9,17 @@ const ClassesPage = ({ classes, addClass, updateClass, deleteClass }) => {
   };
 
   useEffect(() => {
+
+    const handleAddClass = (event, classData) => {
+      addClass(classData);
+    };
+
     // Listen for the "add-class" event from the new window
-    ipcRenderer.on('add-class', (event, classData) => {
-      addClass(classData); // Call the addClass function with the new class data
-    });
+    ipcRenderer.on('add-class', handleAddClass);
 
     // Cleanup the event listener when the component is unmounted
     return () => {
-      ipcRenderer.removeAllListeners('add-class');
+      ipcRenderer.removeListener('add-class', handleAddClass);
     };
   }, [addClass]);
 

@@ -10,6 +10,7 @@ const SchedulePage = ({classes}) => {
     const [activePeriodTab, setActivePeriodTab] = useState('day-schedule');
     const [viewType, setViewType] = useState('timeGridDay');
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [weekSelectedDate, setWeekSelectedDate] = useState (new Date());
 
     useEffect(() => {
         setViewType(getViewType(activePeriodTab));
@@ -37,10 +38,23 @@ const SchedulePage = ({classes}) => {
                 view={activePeriodTab}
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
+                weekSelectedDate={weekSelectedDate}
+                setWeekSelectedDate={setWeekSelectedDate}
             />
-            {activeFormatTab === 'list-schedule' && <ListSchedule viewType={viewType} classes={classes} selectedDate={selectedDate} />}
-            {activeFormatTab === 'list-schedule' && activePeriodTab ==='month-schedule' && (setActiveFormatTab('calendar-schedule'))}
-            {activeFormatTab === 'calendar-schedule' && <CalendarSchedule viewType={viewType} classes={classes} selectedDate={selectedDate} />}
+            {activeFormatTab === 'list-schedule' && (
+                <>
+                    {activePeriodTab === 'week-schedule' && <ListSchedule viewType={viewType} classes={classes} selectedDate={weekSelectedDate} />}
+                    {activePeriodTab === 'day-schedule' && <ListSchedule viewType={viewType} classes={classes} selectedDate={selectedDate} />}
+                    {activePeriodTab ==='month-schedule' && (setActiveFormatTab('calendar-schedule'))}
+                </>
+            )}
+            {activeFormatTab === 'calendar-schedule' && (
+                <CalendarSchedule
+                    viewType={viewType}
+                    classes={classes}
+                    selectedDate={activePeriodTab === 'week-schedule' ? weekSelectedDate : selectedDate}
+                />
+            )}
         </div>
     );
 }

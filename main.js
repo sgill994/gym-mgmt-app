@@ -1,8 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
-let mainWindow; // Store a reference to the main window
-let newClassWindow; // Store a reference to the new class window
+let mainWindow;
+let newClassWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -15,7 +15,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadURL('http://localhost:9000'); // Load the main React app
+  mainWindow.loadURL('http://localhost:9000');
 }
 
 function createNewClassWindow() {
@@ -29,25 +29,28 @@ function createNewClassWindow() {
     },
   });
 
-  newClassWindow.loadURL('http://localhost:9000/new-class'); // Adjust the URL to match your route
-
-  // When the form is submitted, listen for the "add-class" event and send the data back to the main window
-  ipcMain.on('add-class', (event, classData) => {
-    mainWindow.webContents.send('add-class', classData); // Send data back to the main window
-    if (newClassWindow) newClassWindow.close(); // Close new class window on save
-  });
+  newClassWindow.loadURL('http://localhost:9000/new-class');
 
   newClassWindow.on('closed', () => {
     newClassWindow = null; // Dereference the window object to avoid memory leaks
   });
 }
 
-// Main application ready event
+// Handle adding a new class and closing the new class window
+ipcMain.on('add-class', (event, classData) => {
+  if (mainWindow) {
+    mainWindow.webContents.send('add-class', classData); // Send data to the main window
+  }
+  if (newClassWindow) {
+    newClassWindow.close(); // Close the new class window after sending data
+  }
+});
+
 app.whenReady().then(() => {
   createWindow();
 
   ipcMain.on('open-new-class-window', () => {
-    createNewClassWindow(); // Call the function to open a new window
+    createNewClassWindow();
   });
 });
 
