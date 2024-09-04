@@ -44,5 +44,6 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+    historyApiFallback: true, // Add this line to enable client-side routing
   },
 };

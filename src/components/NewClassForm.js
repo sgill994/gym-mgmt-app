@@ -17,6 +17,7 @@ import {faHandHoldingDollar, faFileInvoiceDollar, faCalendarXmark, faCalendarChe
         faClipboardList, faSquareXmark, faUsers, faUsersSlash,
         faDollarSign, faEye, faEyeSlash,
         faLock, faLockOpen} from '@fortawesome/free-solid-svg-icons';
+const { ipcRenderer, remote } = window.require('electron');
 
 const NewClassForm = ({ addClass }) => {
   const [title, setTitle] = useState('');
@@ -115,7 +116,7 @@ const NewClassForm = ({ addClass }) => {
     const [endTimeStr, endDateTime, endHour24, endHour12, endMin, endTimeMod] = calculateEndTime(startDateTime, duration);
     
     // Store all computed & form values into class object
-    const course = {
+    const classData = {
       courseID,
       title, 
       Monday, 
@@ -161,11 +162,14 @@ const NewClassForm = ({ addClass }) => {
       dateCreated: new Date(),
       lastEdited: new Date() // manual update req'd (TO DO onSubmit function in ClassDetails)
     };
-    addClass(course);
+
+    // Send class object data to ClassPage to be added to classes array with addClass function
+    ipcRenderer.send('add-class', classData);
   };
 
   return (
-    <form id="new-class-form" onSubmit={handleSubmit}>
+    <form className="new-class-form" id="new-class-form" onSubmit={handleSubmit}>
+      <h3>Create New Class</h3>
       <div className="form-layout-container">
         <div className="image-upload-container">
           {classImage ? (
@@ -182,7 +186,7 @@ const NewClassForm = ({ addClass }) => {
         </div>
         <div className="form-fields-container">
           <div className="class-form-group">
-            <label htmlFor="course-name">Class Name:</label>
+            <label htmlFor="course-name">Class Name:</label><br/>
             <input type="text" name="course-name" className="class-form-control" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div><br/>
           <div className="service-category-container">
@@ -207,10 +211,10 @@ const NewClassForm = ({ addClass }) => {
         <ParagraphInput description={description} setDescription={setDescription} />
       </div>
       <div>
-        <label htmlForm="spec-description">Special Instructions</label>
+        <label htmlForm="spec-description">Special Instructions</label><br/><br/>
         <div className="special-instructions-container">
           <ToggleButton isActive={specialInstructions} setIsActive={setSpecialInstructions} label="Only display special instructions to clients who have booked this class"/> 
-        </div>
+        </div><br/>
         <ParagraphInput description={specialDescription} setDescription={setSpecialDescription}/>
       </div>
       <label htmlFor="calendar-color-select">Calendar Color:</label> 
@@ -389,7 +393,7 @@ const NewClassForm = ({ addClass }) => {
                 <label>y/o</label>
               </>
             )} 
-            <div>
+            <div><br/>
               <ToggleButton isActive={ageRestrictedVisible} setIsActive={setAgeRestrictedVisible} label="Display service to clients who do not meet age requirement"/>
             </div>
           </div>
@@ -439,7 +443,7 @@ const NewClassForm = ({ addClass }) => {
             ))}
           </select>
       </div>
-      <button type="submit" className="btn btn-primary">Save</button>
+      <button type="submit">Save</button>
     </form>
   );
 };

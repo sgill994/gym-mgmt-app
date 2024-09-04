@@ -1,3 +1,6 @@
+.new-class-form {
+  padding: 40px;
+}
 /*CSS for Calendar Color selectin ColorPicker in NewClassForm*/
 /* Centering the row of color circles */
 .color-options-container {
@@ -71,15 +74,15 @@
   position: relative;
 }
 
-.color-circle-overlay {
+.color-picker-container .color-picker-button .color-circle-overlay {
   position: absolute;
-  top: 44.5%;
-  left: 7.85%;
-  transform: translate(-50%, -50%);
+  top: 5px;
+  left: 21px;
   width: 31px;
   height: 31px;
   border-radius: 50%;
   border: 2px solid white;
+  z-index: 10;
 }
 
 .color-picker-popup {
@@ -224,8 +227,8 @@ for individual tables for each day of the week in List Schedule view*/
 .active-class-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: right;
   background-color: #e6f2fb; /* Light blue background */
   padding: 10px;
   padding-bottom: 20px;
