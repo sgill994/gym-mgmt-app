@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/styles/Classes.css'
+import '../assets/styles/Schedule.css';
 
 const ListSchedule = ({viewType, classes, selectedDate}) => {
     // Create new Date objects for Day or Week 

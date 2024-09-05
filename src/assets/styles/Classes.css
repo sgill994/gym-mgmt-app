@@ -1,7 +1,7 @@
 .new-class-form {
   padding: 40px;
 }
-/*CSS for Calendar Color selectin ColorPicker in NewClassForm*/
+/*CSS for Calendar Color selection ColorPicker in NewClassForm*/
 /* Centering the row of color circles */
 .color-options-container {
   display: flex;
@@ -82,91 +82,11 @@
   height: 31px;
   border-radius: 50%;
   border: 2px solid white;
-  z-index: 10;
 }
 
 .color-picker-popup {
   position: relative;
   margin-top: 10px;
-}
-
-/*Makes event containers scrollable on day & week Calendar view*/
-.scrollable-event {
-  overflow-y: auto;
-  padding: 2px; 
-  white-space: normal; 
-}
-
-/*Extends 'Now Indicator' red line across the entire week in Calendar view*/
-.fc-timegrid-now-indicator-container {
-  overflow: visible !important;
-  .fc-timegrid-now-indicator-line {
-    width: calc(800% + 4px) !important; 
-  }
-}
-.fc-day-tue {
-  .fc-timegrid-now-indicator-line {
-    transform: translateX(-20%); 
-  }
-}
-.fc-day-wed {
-  .fc-timegrid-now-indicator-line {
-    transform: translateX(-40%);
-  }
-}
-.fc-day-thu {
-  .fc-timegrid-now-indicator-line {
-    transform: translateX(-60%);
-  }
-}
-.fc-day-fri {
-  .fc-timegrid-now-indicator-line {
-    transform: translateX(-80%);
-  }
-}
-
-/*Displays classes on Month calender in colored block containers*/
-.fc-daygrid-event {
-    display: block;
-    border-radius: 4px;
-    color: black;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.fc-daygrid-event .fc-event-title {
-    white-space: normal; 
-    line-height: 1.2;
-}
-
-.fc-daygrid-event .fc-event-main {
-    background-color: inherit; 
-    border-radius: 3px;
-}
-
-/*Fixes table column widths so they do not stagger 
-for individual tables for each day of the week in List Schedule view*/
-.classes-page .table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-}
-
-.classes-page .table th, .classes-page .table td {
-  padding: 8px;
-  text-align: left;
-  border: 1px solid #ddd;
-  white-space: normal;
-  word-wrap: break-word;
-}
-
-.classes-page .table th:last-child, .classes-page .table td:last-child {
-  width: 4%;
-}
-
-.classes-page .table th:not(:last-child), .classes-page .table td:not(:last-child) {
-  width: 12%;
 }
 
 /* Container to hold the image upload, form fields, and toggle side-by-side */
@@ -212,7 +132,7 @@ for individual tables for each day of the week in List Schedule view*/
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0; /* Make the "Choose File" button invisible */
+  opacity: 0; /* Make 'Choose File' button invisible */
   cursor: pointer; 
   font-size: 16px;
 }
@@ -229,7 +149,7 @@ for individual tables for each day of the week in List Schedule view*/
   flex-direction: column;
   align-items: right;
   justify-content: right;
-  background-color: #e6f2fb; /* Light blue background */
+  background-color: #e6f2fb;
   padding: 10px;
   padding-bottom: 20px;
   border-radius: 8px;
@@ -257,17 +177,23 @@ for individual tables for each day of the week in List Schedule view*/
   margin-left: 5px;
 }
 
-/* Center-aligned styling for specific cases */
+/* Center-aligned styling for ACTIVE/INACTIVE class */
 .toggle-wrapper.center-aligned {
   justify-content: center;
 }
 
-/* Left-aligned styling for cases with labels */
+/* Left-aligned styling for toggle buttons with labels */
 .toggle-wrapper.left-aligned {
   justify-content: left;
 }
 
-/* Toggle button styles remain unchanged */
+.toggle-wrapper.left-aligned .toggle-label {
+  position: relative;
+  margin-left: 70px;
+  font-size: 14px;
+  color: #495057;
+}
+
 .toggle-switch {
   position: absolute;
   display: inline-flex;
@@ -281,13 +207,7 @@ for individual tables for each day of the week in List Schedule view*/
   transition: background-color 0.3s ease;
 }
 
-.toggle-wrapper.left-aligned .toggle-label {
-  position: relative;
-  margin-left: 70px;
-  font-size: 14px;
-  color: #495057;
-}
-
+/* Background is grey in the OFF position */
 .toggle-switch .toggle-background {
   display: flex;
   align-items: center;
@@ -298,11 +218,13 @@ for individual tables for each day of the week in List Schedule view*/
   transition: color 0.3s ease;
 }
 
+/* Background is blue in the ON position */
 .toggle-switch .toggle-background.active {
   background-color: #1e73be;
   border-radius: 30px;
 }
 
+/* OFF text appears on the right side */
 .toggle-switch .toggle-text {
   position: absolute;
   width: 100%;
@@ -312,10 +234,12 @@ for individual tables for each day of the week in List Schedule view*/
   padding-left: 30px;
 }
 
+/* ON text appears on the left side */
 .toggle-switch .toggle-background.active .toggle-text {
   padding-left: 10px;
 }
 
+/* White circle button for switch inside container */
 .toggle-switch .toggle-button {
   position: absolute;
   top: 2.5px;
@@ -324,7 +248,6 @@ for individual tables for each day of the week in List Schedule view*/
   height: 25px;
   background-color: #fff;
   border-radius: 50%;
-  z-index: 1;
   transition: transform 0.3s ease;
 }
 
@@ -332,12 +255,7 @@ for individual tables for each day of the week in List Schedule view*/
   transform: translateX(30px);
 }
 
-.toggle-label {
-  font-size: 16px;
-  color: #495057;
-}
-
-/*For Purchase Options selection list (from membership types)*/
+/* For Purchase Options selection list */
 .purchase-options-container {
   margin: 0px;
 }

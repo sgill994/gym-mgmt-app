@@ -16,68 +16,69 @@
 .ql-picker.ql-font {
     .ql-picker-item[data-value='Raleway']::before, 
     .ql-picker-label[data-value='Raleway']::before {
-        content: 'Raleway';
+
+        content: 'Raleway' !important;
         font-family: 'Raleway', sans-serif;
     }
     
     .ql-picker-item[data-value='Roboto']::before, 
     .ql-picker-label[data-value='Roboto']::before {
-        content: 'Roboto';
+        content: 'Roboto' !important;
         font-family: 'Roboto', sans-serif;
     }
     
     .ql-picker-item[data-value='Ubuntu']::before, 
     .ql-picker-label[data-value='Ubuntu']::before {
-        content: 'Ubuntu';
+        content: 'Ubuntu' !important;
         font-family: 'Ubuntu', sans-serif;
     }
 
     .ql-picker-item[data-value='DM-Serif-Text']::before, 
     .ql-picker-label[data-value='DM-Serif-Text']::before {
-        content: 'DM Serif Text';
+        content: 'DM Serif Text' !important;
         font-family: 'DM Serif Text', serif;
     }
 
     .ql-picker-item[data-value='Georgia']::before, 
     .ql-picker-label[data-value='Georgia']::before {
-        content: 'Georgia';
+        content: 'Georgia' !important;
         font-family: 'Georgia', Georgia, 'Times New Roman', Times, serif;
     }
 
     .ql-picker-item[data-value='Impact']::before, 
     .ql-picker-label[data-value='Impact']::before {
-        content: 'Impact';
+        content: 'Impact' !important;
         font-family: 'Impact', Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     }
 
     .ql-picker-item[data-value='Monospace']::before, 
     .ql-picker-label[data-value='Monospace']::before {
-        content: 'Monospace';
+        content: 'Monospace' !important;
         font-family: 'Monospace', monospace;
     }
 
     .ql-picker-item[data-value='Arial']::before, 
     .ql-picker-label[data-value='Arial']::before {
-        content: 'Arial';
+        content: 'Arial' !important;
         font-family: 'Arial', Arial, Helvetica, sans-serif;
     }
 
     
     .ql-picker-item[data-value='Arial-Black']::before, 
     .ql-picker-label[data-value='Arial-Black']::before {
-        content: 'Arial Black';
+        content: 'Arial Black' !important;
         font-family: 'Arial Black', Arial, Helvetica, sans-serif;
     }
 
     .ql-picker-item[data-value='Trebuchet-MS']::before, 
     .ql-picker-label[data-value='Trebuchet-MS']::before {
-        content: 'Trebuchet MS';
+        content: 'Trebuchet MS' !important;
         font-family: 'Trebucket MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     }
 
     .ql-picker-item[data-value='Helvetica']::before, 
     .ql-picker-label[data-value='Helvetica']::before {
-        content: 'Helvetica';
+        content: 'Helvetica' !important;
         font-family: 'Helvetica', Arial, Helvetica, sans-serif;
     }
 }

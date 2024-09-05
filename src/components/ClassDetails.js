@@ -3,7 +3,7 @@ import {PhotoshopPicker} from 'react-color';
 import images from '../assets/images';
 import '../assets/styles/Classes.css'
 import '../assets/styles/Toolbar.css';
-import ParagraphInput from '../components/ParagraphInput.js';
+import TextEditor from '../components/TextEditor.js';
 import ToggleButton from '../components/ToggleButton.js';
 import {colorOptions, classTimeOptions, classDurationOptions, purchaseOptions, instructorOptions,
   toggleColorPicker, handleColorChange, handleColorChangePicker, handleColorSave, handleColorCancel, 
@@ -130,7 +130,7 @@ const ClassDetails = ({ course, updateClass, closeDetails }) => {
               {classIsActive ? 'ACTIVE CLASS' : 'INACTIVE CLASS'}
             </div>
             <ToggleButton isActive={classIsActive} setIsActive={setClassIsActive} />
-            <ParagraphInput description={description} setDescription={setDescription} />
+            <TextEditor description={description} setDescription={setDescription} />
             <br/><br/><br/>
             <label>Class Schedule Days:</label><br/>
             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (

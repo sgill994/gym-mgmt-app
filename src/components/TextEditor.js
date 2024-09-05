@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ReactQuill, {Quill} from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; 
 import '../assets/styles/Toolbar.css';
 
 var Font = Quill.import('formats/font');
-Font.whitelist = ["Arial", "Arial-Black", "DM-Serif-Text", "Ubuntu", "Raleway", "Roboto", "Georgia", "Impact", "Monospace", "Trebuchet-MS", "Helvetica"];
+Font.whitelist = ['Arial', 'Arial-Black', 'DM-Serif-Text', 'Ubuntu', 'Raleway', 'Roboto', 'Georgia', 'Impact', 'Monospace', 'Trebuchet-MS', 'Helvetica'];
 Quill.register(Font, true);
 
-const ParagraphInput = ({ description, setDescription }) => {
+const TextEditor = ({ description, setDescription }) => {
     const handleChange = (value) => {
         setDescription(value);
     };
@@ -45,4 +45,4 @@ const ParagraphInput = ({ description, setDescription }) => {
     );
 };
 
-export default ParagraphInput;
+export default TextEditor;

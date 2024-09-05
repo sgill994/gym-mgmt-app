@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../assets/styles/Classes.css'
 
-const CheckTextInputList = ({classOptions, prerequisites, setPrerequisites}) => {
+const CheckBoxList = ({classOptions, prerequisites, setPrerequisites}) => {
     const handleToggleClass = (className) => {
         setPrerequisites((prev) => {
             const updated = {...prev};
@@ -64,4 +64,4 @@ const CheckTextInputList = ({classOptions, prerequisites, setPrerequisites}) => 
     );
 };
 
-export default CheckTextInputList;
+export default CheckBoxList;

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import '../assets/styles/Classes.css';
+import '../assets/styles/Schedule.css';
 
 const CalendarSchedule = ({ viewType, classes, selectedDate }) => {
     const [events, setEvents] = useState([]);
